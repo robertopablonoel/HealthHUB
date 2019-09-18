@@ -7,7 +7,7 @@ def main():
     alex = Physician(first_name = 'Alex',last_name = 'Bog',email = 'alexkbog@gmail.com',
                     password = 'abc', hospital = saint_jude)
 
-    
+
 
 if __name__ == '__main__':
     main()
