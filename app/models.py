@@ -81,3 +81,19 @@ class Hospital(db.Model):
 
     def __repr__(self):
         return '<Hospital %r>' % self.name
+
+
+# Alexanders-MacBook-Pro:~ bogdanowicz$ mysqld
+# 2019-09-18T10:06:40.401736Z 0 [System] [MY-010116] [Server] /usr/local/Cellar/mysql/8.0.17_1/bin/mysqld (mysqld 8.0.17) starting as process 60711
+# 2019-09-18T10:06:40.413738Z 0 [Warning] [MY-010159] [Server] Setting lower_case_table_names=2 because file system for /usr/local/var/mysql/ is case insensitive
+# 2019-09-18T10:06:41.047652Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+# 2019-09-18T10:06:41.120228Z 0 [System] [MY-010931] [Server] /usr/local/Cellar/mysql/8.0.17_1/bin/mysqld: ready for connections. Version: '8.0.17'  socket: '/tmp/mysql.sock'  port: 3306  Homebrew.
+# 2019-09-18T10:06:41.180187Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Socket: '/tmp/mysqlx.sock' bind-address: '::' port: 33060
+
+# It's going through mysqldb which is going through port 33060
+#That's the default port that it runs on
+# it's also helpful to note where it's launching from as mysqldb
+# is using a tmp/mysql.sock.lock which is why we can't connect to mamp
+# http://mysql-python.sourceforge.net/MySQLdb.html
+#Helpful link ^^
+## https://dev.mysql.com/doc/mysql-startstop-excerpt/5.7/en/mysqld-multi.html
