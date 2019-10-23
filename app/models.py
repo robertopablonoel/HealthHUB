@@ -5,9 +5,9 @@ from flask_login import UserMixin, AnonymousUserMixin
 from . import db
 from datetime import datetime
 
-# @login_manager.user_loader
-# def load_user(user_id):
-#     return User.query.get(user_id)
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
 
 class User(UserMixin, db.Model):
     user_id = db.Column(db.Integer, primary_key = True)
