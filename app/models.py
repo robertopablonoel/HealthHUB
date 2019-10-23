@@ -115,7 +115,7 @@ class Permission:
     _USER_PERMISSION = 0x01
     _NURSE_PERMISSION = 0x02
     _PHYSICIAN_PERMISSION = 0x03
-    
+
 class Patient(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key = True)
     date_of_birth = db.Column(db.DateTime(), unique = False, nullable = False)

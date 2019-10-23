@@ -33,8 +33,8 @@ def logout():
 """
 
 This registration is unique for patients since the roles of nurse and physician have senitive
-privileges which we don't want just anyone interacting with the platform to be able to 
-register. 
+privileges which we don't want just anyone interacting with the platform to be able to
+register.
 
 """
 
@@ -42,21 +42,22 @@ register.
 def register_patient():
     form = PatientRegistrationForm()
     if form.validate_on_submit():
-        user = User(password = form.password.data)
+        user = User(email = form.email.data,
+                    password = form.password.data,
+                    first_name = form.first_name.data,
+                    last_name = form.last_name.data)
         db.session.add(user)
+        print(user)
         db.session.commit()
-        patient = Patient(email = form.email.data,
-                        first_name = form.first_name.data,
-                        last_name = form.last_name.data,
-                        date_of_birth = form.date_of_birth.data,
-                        user = user)
+        print(user)
+        patient = Patient(date_of_birth = form.date_of_birth.data, user_id = user)
         db.session.add(patient)
         db.session.commit()
         token = user.generate_confirmation_token()
-        send_email(cust.email, 'Confirm Your Account',
-                    'auth/email/confirm', user=cust, token=token)
-        flash('A confirmation email has been sent to you by email.')
-        return redirect(url_for('auth.customerlogin'))
+        # send_email(cust.email, 'Confirm Your Account',
+        #             'auth/email/confirm', user=cust, token=token)
+        # flash('A confirmation email has been sent to you by email.')
+        return redirect(url_for('auth.login'))
     return render_template('auth/register.html', form = form)
 
 @auth.route('/confirm/<token>')
