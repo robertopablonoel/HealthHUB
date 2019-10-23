@@ -12,17 +12,10 @@
   <br>
   <p>
       New Customer?
-      <a href="{{ url_for('auth.register_customer') }}">
+      <a href="{{ url_for('auth.register_patient') }}">
         <br>Create an Account.
       </a>
       <br>
-      <br>Not a Customer?
-        <a href="{{ url_for('auth.agentlogin') }}">
-          <br> Login as Agent.
-        </a>
-        <a href="{{ url_for('auth.partnerlogin') }}">
-          <br> Login as Partner.
-        </a>
   </p>
 </div>
 {% endblock %}
