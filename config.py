@@ -1,12 +1,10 @@
-
-
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 #Config base class contains settings common to all configurations
 #Different subclasses define settings specific to a configuration
 class Config:
-    SECRET_KEY = os.environ.get('EHR_KEY')
+    SECRET_KEY = os.environ.get('EHR_KEY') or 'password'
     SQALCHEMY_COMMIT_ON_TEARDOWN = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     FLASKY_MAIL_SUBJECT_PREFIX = ''

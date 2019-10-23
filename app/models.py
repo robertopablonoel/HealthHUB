@@ -2,7 +2,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
 from flask_login import UserMixin, AnonymousUserMixin
-from . import db
+from . import db, login_manager
 from datetime import datetime
 
 @login_manager.user_loader
@@ -11,6 +11,7 @@ def load_user(user_id):
 
 class User(UserMixin, db.Model):
     user_id = db.Column(db.Integer, primary_key = True)
+    email = db.Column(db.String(64), primary_key = True)
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
     last_seen = db.Column(db.DateTime(), default = datetime.utcnow)
@@ -110,15 +111,20 @@ class Role(db.Model):
             db.session.add(role)
         db.session.commit()
 
-
+class Permission:
+    _USER_PERMISSION = 0x01
+    _NURSE_PERMISSION = 0x02
+    _PHYSICIAN_PERMISSION = 0x03
+    
 class Patient(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key = True)
+    date_of_birth = db.Column(db.DateTime(), unique = False, nullable = False)
     SSN_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
     hospital_id = db.Column(db.Integer, db.ForeignKey('hospital.unique_id'))
     insurance_id = db.Column(db.Integer, db.ForeignKey('insurance.insurance_id'))
     prescribed = db.relationship('Prescription', backref = 'patient', lazy = True)
-    appointments = db.relationship('Appointment', backref = 'patient', lazy = True)
+    # appointments = db.relationship('Appointment', backref = 'patient', lazy = True)
 
     def get_id(self):
         return self.user_id
@@ -127,7 +133,7 @@ class Physician(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key = True)
     hospital_id = db.Column(db.Integer, db.ForeignKey('hospital.unique_id'))
     prescribed = db.relationship('Prescription', backref = 'physician', lazy = True)
-    appointments = db.relationship('Appointment', backref = 'patient', lazy = True)
+    # appointments = db.relationship('Appointment', backref = 'patient', lazy = True)
 
     def get_id(self):
         return self.user_id
@@ -154,18 +160,18 @@ class Hospital(db.Model):
 class Facility(db.Model):
     hospital_id = db.Column(db.Integer, db.ForeignKey('hospital.unique_id'), primary_key = True, unique = False, index = True)
     facility_num = db.Column(db.String(64), primary_key = True, unique = False, index = True)
-    appointment_hospital = db.relationship('Appointment', foreign_keys = 'Appointment.hospital_id', backref = 'facility', lazy = True)
+    # appointment_hospital = db.relationship('Appointment', foreign_keys = 'Appointment.hospital_id', backref = 'facility', lazy = True)
     # appointment_facility = db.relationship('Appointment', foreign_keys = 'Appointment.facility_num', backref = 'facility', lazy = True)
 
-class Appointment(db.Model):
-    appointment_id = db.Column(db.Integer, primary_key = True)
-    patient_id = db.Column(db.Integer, db.ForeignKey('patient.user_id'), nullable = False)
-    physician_id = db.Column(db.Integer, db.ForeignKey('physician.user_id'), nullable = False)
-    hospital_id = db.Column(db.Integer, db.ForeignKey('facility.hospital_id'), nullable = False)
-    # facility_num = db.Column(db.String(64), db.ForeignKey('facility.facility_num'), nullable = False)
-    start_time = db.Column(db.DateTime, nullable = False)
-    end_time = db.Column(db.DateTime, nullable = False)
-    notes = db.Column(db.Text, nullable = True)
+# class Appointment(db.Model):
+#     appointment_id = db.Column(db.Integer, primary_key = True)
+#     patient_id = db.Column(db.Integer, db.ForeignKey('patient.user_id'), nullable = False)
+#     physician_id = db.Column(db.Integer, db.ForeignKey('physician.user_id'), nullable = False)
+#     hospital_id = db.Column(db.Integer, db.ForeignKey('facility.hospital_id'), nullable = False)
+#     # facility_num = db.Column(db.String(64), db.ForeignKey('facility.facility_num'), nullable = False)
+#     start_time = db.Column(db.DateTime, nullable = False)
+#     end_time = db.Column(db.DateTime, nullable = False)
+#     notes = db.Column(db.Text, nullable = True)
 
 class Prescription(db.Model):
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.user_id'), primary_key = True)
