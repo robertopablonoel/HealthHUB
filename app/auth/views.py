@@ -7,6 +7,7 @@ from ..email import send_email
 from .. import db
 import re
 
+
 @auth.route('/login', methods = ['GET','POST'])
 def login():
     form = LoginForm()
@@ -50,7 +51,7 @@ def register_patient():
         print(user)
         db.session.commit()
         print(user)
-        patient = Patient(date_of_birth = form.date_of_birth.data, user_id = user)
+        patient = Patient(date_of_birth = form.date_of_birth.data, user = user)
         db.session.add(patient)
         db.session.commit()
         token = user.generate_confirmation_token()
@@ -58,7 +59,7 @@ def register_patient():
         #             'auth/email/confirm', user=cust, token=token)
         # flash('A confirmation email has been sent to you by email.')
         return redirect(url_for('auth.login'))
-    return render_template('auth/register.html', form = form)
+    return render_template('auth/register_patient.html', form = form)
 
 @auth.route('/confirm/<token>')
 @login_required

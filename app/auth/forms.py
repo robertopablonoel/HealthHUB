@@ -6,7 +6,7 @@ from wtforms.fields.html5 import DateField
 from wtforms_components import DateRange
 from datetime import datetime, date
 from .. import db
-from ..models import User 
+from ..models import User
 
 class PatientRegistrationForm(FlaskForm):
     email = StringField('Email', validators=[Required(), Length(1, 64), Email()])

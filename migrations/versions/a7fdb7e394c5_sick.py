@@ -1,8 +1,8 @@
-"""initial migration
+"""sick
 
-Revision ID: 0449abe5e507
+Revision ID: a7fdb7e394c5
 Revises: 
-Create Date: 2019-10-23 19:37:23.608628
+Create Date: 2019-10-24 02:47:11.886714
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '0449abe5e507'
+revision = 'a7fdb7e394c5'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -46,8 +46,8 @@ def upgrade():
     op.create_index(op.f('ix_facility_facility_num'), 'facility', ['facility_num'], unique=False)
     op.create_index(op.f('ix_facility_hospital_id'), 'facility', ['hospital_id'], unique=False)
     op.create_table('user',
-    sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.Column('email', sa.String(length=64), nullable=False),
+    sa.Column('user_id', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('email', sa.String(length=64), nullable=True),
     sa.Column('password_hash', sa.String(length=128), nullable=True),
     sa.Column('role_id', sa.Integer(), nullable=True),
     sa.Column('last_seen', sa.DateTime(), nullable=True),
@@ -55,7 +55,8 @@ def upgrade():
     sa.Column('first_name', sa.String(length=64), nullable=False),
     sa.Column('last_name', sa.String(length=64), nullable=False),
     sa.ForeignKeyConstraint(['role_id'], ['role.id'], ),
-    sa.PrimaryKeyConstraint('user_id', 'email')
+    sa.PrimaryKeyConstraint('user_id'),
+    sa.UniqueConstraint('email')
     )
     op.create_table('nurse',
     sa.Column('user_id', sa.Integer(), nullable=False),
