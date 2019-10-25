@@ -161,18 +161,20 @@ class Hospital(db.Model):
 class Facility(db.Model):
     hospital_id = db.Column(db.Integer, db.ForeignKey('hospital.unique_id'), primary_key = True, unique = False, index = True)
     facility_num = db.Column(db.String(64), primary_key = True, unique = False, index = True)
-    # appointment_hospital = db.relationship('Appointment', foreign_keys = 'Appointment.hospital_id', backref = 'facility', lazy = True)
-    # appointment_facility = db.relationship('Appointment', foreign_keys = 'Appointment.facility_num', backref = 'facility', lazy = True)
+    #appointment_hospital = db.relationship('Appointment', foreign_keys = 'Appointment.hospital_id', backref = 'facility', lazy = True)
+    #appointment_facility = db.relationship('Appointment', foreign_keys = 'Appointment.facility_num', backref = 'facility', lazy = True)
 
-# class Appointment(db.Model):
-#     appointment_id = db.Column(db.Integer, primary_key = True)
-#     patient_id = db.Column(db.Integer, db.ForeignKey('patient.user_id'), nullable = False)
-#     physician_id = db.Column(db.Integer, db.ForeignKey('physician.user_id'), nullable = False)
-#     hospital_id = db.Column(db.Integer, db.ForeignKey('facility.hospital_id'), nullable = False)
-#     # facility_num = db.Column(db.String(64), db.ForeignKey('facility.facility_num'), nullable = False)
-#     start_time = db.Column(db.DateTime, nullable = False)
-#     end_time = db.Column(db.DateTime, nullable = False)
-#     notes = db.Column(db.Text, nullable = True)
+class Appointment(db.Model):
+    appointment_id = db.Column(db.Integer, primary_key = True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.user_id'), nullable = False)
+    physician_id = db.Column(db.Integer, db.ForeignKey('physician.user_id'), nullable = False)
+    hospital_id = db.Column(db.Integer, db.ForeignKey('facility.hospital_id'), nullable = False)
+    facility_num = db.Column(db.String(64), db.ForeignKey('facility.facility_num'), nullable = False)
+    start_time = db.Column(db.DateTime, nullable = False)
+    end_time = db.Column(db.DateTime, nullable = False)
+    notes = db.Column(db.Text, nullable = True)
+    hospital_id_rel = db.relationship("Facility", foreign_keys=[hospital_id])
+    facility_num_rel = db.relationship("Facility", foreign_keys=[facility_num])
 
 class Prescription(db.Model):
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.user_id'), primary_key = True)

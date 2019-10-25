@@ -14,7 +14,7 @@ class Config:
     MAIL_USE_SSL = True
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') #os.environ.get('MAIL_PASSWORD')
-    SYSTEM_MAIL_SUBJECT_PREFIX = '[HEALTHHub]'
+    SYSTEM_MAIL_SUBJECT_PREFIX = '[HealthHub]'
     SYSTEM_MAIL_SENDER = 'healthhubnotify@gmail.com'
     SYSTEM_ADMIN = os.environ.get('SYSTEM_ADMIN')
 
