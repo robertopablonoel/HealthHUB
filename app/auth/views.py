@@ -55,9 +55,9 @@ def register_patient():
         db.session.add(patient)
         db.session.commit()
         token = user.generate_confirmation_token()
-        # send_email(cust.email, 'Confirm Your Account',
-        #             'auth/email/confirm', user=cust, token=token)
-        # flash('A confirmation email has been sent to you by email.')
+        send_email(user.email, 'Confirm Your Account',
+                     'auth/email/confirm', user=user, token=token)
+        flash('A confirmation email has been sent to you by email.')
         return redirect(url_for('auth.login'))
     return render_template('auth/register_patient.html', form = form)
 

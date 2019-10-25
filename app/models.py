@@ -13,14 +13,15 @@ class User(UserMixin, db.Model):
     user_id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     email = db.Column(db.String(64), unique = True)
     password_hash = db.Column(db.String(128))
+    confirmed = db.Column(db.Boolean, default=False)
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
     last_seen = db.Column(db.DateTime(), default = datetime.utcnow)
     creation_date = db.Column(db.DateTime(), default = datetime.utcnow)
     first_name = db.Column(db.String(64), unique = False, nullable = False)
     last_name = db.Column(db.String(64), unique = False, nullable = False)
-    physicians = db.relationship('Physician', backref = 'user', lazy = True)
-    patient = db.relationship('Patient', backref = 'user', lazy = True)
-    Nurse = db.relationship('Nurse', backref = 'user', lazy = True)
+    physicians = db.relationship('Physician', backref = 'user', lazy = True, passive_deletes=True)
+    patient = db.relationship('Patient', backref = 'user', lazy = True, passive_deletes=True)
+    Nurse = db.relationship('Nurse', backref = 'user', lazy = True, passive_deletes=True)
 
     def get_id(self):
         return self.user_id
@@ -117,7 +118,7 @@ class Permission:
     _PHYSICIAN_PERMISSION = 0x03
 
 class Patient(db.Model):
-    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id', ondelete = 'CASCADE'), primary_key = True)
     date_of_birth = db.Column(db.DateTime(), unique = False, nullable = False)
     SSN_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
@@ -130,7 +131,7 @@ class Patient(db.Model):
         return self.user_id
 
 class Physician(db.Model):
-    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id', ondelete = 'CASCADE'), primary_key = True)
     hospital_id = db.Column(db.Integer, db.ForeignKey('hospital.unique_id'))
     prescribed = db.relationship('Prescription', backref = 'physician', lazy = True)
     # appointments = db.relationship('Appointment', backref = 'patient', lazy = True)
@@ -139,7 +140,7 @@ class Physician(db.Model):
         return self.user_id
 
 class Nurse(db.Model):
-    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id', ondelete = 'CASCADE'), primary_key = True)
     hospital_id = db.Column(db.Integer, db.ForeignKey('hospital.unique_id'))
 
     def get_id(self):
