@@ -120,7 +120,7 @@ class Permission:
 class Patient(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id', ondelete = 'CASCADE'), primary_key = True)
     date_of_birth = db.Column(db.DateTime(), unique = False, nullable = False)
-    SSN_hash = db.Column(db.String(128))
+    SSN = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
     hospital_id = db.Column(db.Integer, db.ForeignKey('hospital.unique_id'))
     insurance_id = db.Column(db.Integer, db.ForeignKey('insurance.insurance_id'))
@@ -134,6 +134,7 @@ class Physician(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id', ondelete = 'CASCADE'), primary_key = True)
     hospital_id = db.Column(db.Integer, db.ForeignKey('hospital.unique_id'))
     prescribed = db.relationship('Prescription', backref = 'physician', lazy = True)
+    schedule = db.relationship('Physician_schedule', backref = 'physician', lazy = True)
     # appointments = db.relationship('Appointment', backref = 'patient', lazy = True)
 
     def get_id(self):
@@ -167,18 +168,25 @@ class Facility(db.Model):
 class Appointment(db.Model):
     appointment_id = db.Column(db.Integer, primary_key = True)
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.user_id'), nullable = False)
-    physician_id = db.Column(db.Integer, db.ForeignKey('physician.user_id'), nullable = False)
     hospital_id = db.Column(db.Integer, db.ForeignKey('facility.hospital_id'), nullable = False)
     facility_num = db.Column(db.String(64), db.ForeignKey('facility.facility_num'), nullable = False)
-    start_time = db.Column(db.DateTime, nullable = False)
-    end_time = db.Column(db.DateTime, nullable = False)
+    event_id = db.Column(db.Integer, db.ForeignKey('physician_schedule.event_id'), nullable = False)
     notes = db.Column(db.Text, nullable = True)
     hospital_id_rel = db.relationship("Facility", foreign_keys=[hospital_id])
     facility_num_rel = db.relationship("Facility", foreign_keys=[facility_num])
 
 class Prescription(db.Model):
-    patient_id = db.Column(db.Integer, db.ForeignKey('patient.user_id'), primary_key = True)
-    physician_id = db.Column(db.Integer, db.ForeignKey('physician.user_id'), primary_key = True)
-    date_prescribed = db.Column(db.Date, primary_key = True)
-    expir_date = db.Column(db.Date, primary_key = True)
+    prescription_id = db.Column(db.Integer, primary_key = True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.user_id'), nullable = False)
+    physician_id = db.Column(db.Integer, db.ForeignKey('physician.user_id'), nullable = False)
+    date_prescribed = db.Column(db.Date, nullable = False)
+    expir_date = db.Column(db.Date, nullable = False)
     description = db.Column(db.Text, nullable = True)
+
+class Physician_schedule(db.Model):
+    event_id = db.Column(db.Integer, primary_key = True)
+    physician_id = db.Column(db.Integer, db.ForeignKey('physician.user_id'), nullable = False)
+    start_time = db.Column(db.DateTime, nullable = False)
+    end_time = db.Column(db.DateTime, nullable = False)
+    event_type = db.Column(db.String(64), nullable = False)
+    appointments = db.relationship("Appointment", backref = 'physician_schedule', lazy = True)
