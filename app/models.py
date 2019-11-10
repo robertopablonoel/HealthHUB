@@ -123,7 +123,6 @@ class Patient(db.Model):
     date_of_birth = db.Column(db.DateTime(), unique = False, nullable = False)
     SSN = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
-    hospital_id = db.Column(db.Integer, db.ForeignKey('hospital.unique_id'))
     insurance_id = db.Column(db.Integer, db.ForeignKey('insurance.insurance_id'))
     prescribed = db.relationship('Prescription', backref = 'patient', lazy = True)
     # appointments = db.relationship('Appointment', backref = 'patient', lazy = True)
@@ -133,7 +132,6 @@ class Patient(db.Model):
 
 class Physician(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id', ondelete = 'CASCADE'), primary_key = True)
-    hospital_id = db.Column(db.Integer, db.ForeignKey('hospital.unique_id'))
     prescribed = db.relationship('Prescription', backref = 'physician', lazy = True)
     schedule = db.relationship('Physician_schedule', backref = 'physician', lazy = True)
     # appointments = db.relationship('Appointment', backref = 'patient', lazy = True)
@@ -143,7 +141,6 @@ class Physician(db.Model):
 
 class Nurse(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id', ondelete = 'CASCADE'), primary_key = True)
-    hospital_id = db.Column(db.Integer, db.ForeignKey('hospital.unique_id'))
 
     def get_id(self):
         return self.user_id
@@ -156,9 +153,6 @@ class Insurance(db.Model):
 class Hospital(db.Model):
     unique_id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(128), nullable = False)
-    physicians = db.relationship('Physician', backref = 'hospital', lazy = True)
-    patients = db.relationship('Patient', backref = 'hospital', lazy = True)
-    nurses = db.relationship('Nurse', backref = 'hospital', lazy = True)
     user = db.relationship('User', backref = 'hospital', lazy = True)
 
 class Facility(db.Model):

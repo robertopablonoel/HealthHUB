@@ -10,7 +10,9 @@ import re
 @login_required
 def schedule():
     form = PatientAppointmentForm()
-    physicians = Physician.query.filter_by(hospital_id=current_user.hospital_id).all()
+    physicians = Physician.query.join(User).filter_by(hospital_id = current_user.hospital_id).all()
+    #
+    # physicians = Physician.query.filter(Physician.user_id.in_([ans.user_id for ans in all_users_with_id])).all()
     physician_users = User.query.filter(User.user_id.in_([ret.user_id for ret in physicians])).all()
     form.physician.choices = [(ret.user_id, "Dr. {} {}".format(ret.first_name,ret.last_name) ) for ret in physician_users]
     physician_schedule = Physician_schedule.query.filter(Physician_schedule.physician_id.in_([ret.user_id for ret in physicians])).all()
