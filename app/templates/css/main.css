@@ -175,7 +175,7 @@ iframe {
   align-items: center;
   padding: 0px;
   background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('img/healthcare-background-2.jpg');
-  background-position:center top;
+  background-position:center bottom;
 }
 
 .wrap-login100 {
@@ -515,8 +515,9 @@ iframe {
 }
 
 .main-menu {
-  background:#212121;
-  border-right:1px solid #000000;
+  background:#a5a5a570;
+  border-left:3px  #00000070;
+  border-right:3px #a5a5a570;
   position:absolute;
   top:0;
   bottom:0;
@@ -553,7 +554,7 @@ iframe {
   padding-top: 15px;
   padding-bottom: 15px;
   border-spacing:0px;
-  color:rgb(82, 82, 82);
+  color:rgb(2, 2, 2);
   font-family: arial;
   font-size: 16px;
   text-decoration:none;
@@ -638,6 +639,12 @@ nav ul,nav li {
   padding: 0px;
   background: linear-gradient( rgba(0, 0, 0, 0.731), rgba(0, 0, 0, 0.6) ), url('img/healthcare-background-3.jpg');
   background-position:center top;
+  background: -moz-linear-gradient(0deg, #0068f0 50%,#0068f0 100%); 
+	background: -webkit-gradient(linear, left top, right bottom, color-stop(50%,#0068f0), color-stop(100%,#0068f0 )); 
+	background: -webkit-linear-gradient(0deg,  #0068f0 50%,#0068f0 100%); 
+	background: -o-linear-gradient(0deg, #0068f0 50%,#0068f0 100%); 
+	background: -ms-linear-gradient(0deg, #0068f0 50%,#0068f0 100%); 
+	background: linear-gradient(0deg,  #0068f0 50%,#002cf0 100%); 
 }
 */
 html, body{
@@ -645,14 +652,9 @@ html, body{
 	height:100%; 
 	padding:0px; 
 	margin:0px;
-	overflow: hidden;
-	background: #191d1e; /* Old browsers */
-	background: -moz-linear-gradient(0deg, #0068f0 50%,#0068f0 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, right bottom, color-stop(50%,#0068f0), color-stop(100%,#0068f0 )); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(0deg,  #0068f0 50%,#0068f0 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(0deg, #0068f0 50%,#0068f0 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(0deg, #0068f0 50%,#0068f0 100%); /* IE10+ */
-	background: linear-gradient(0deg,  #0068f0 50%,#002cf0 100%); /* W3C */
+  overflow: hidden;
+  background: #191d1e; /* Old browsers */
+  background: linear-gradient( rgba(0, 0, 0, 0.731), rgba(0, 0, 0, 0.103) ), url('img/healthcare-background.jpg');
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#191d1e', endColorstr='#283139',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 	background-attachment: fixed
 }

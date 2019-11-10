@@ -19,12 +19,12 @@ var ParticleEngine = (function() {
 		this.compositeStyle = "lighter";
 
 		this.particleSettings = [{id:"small", num:300, fromX:0, toX:this.totalWidth, ballwidth:3, alphamax:0.4, areaHeight:.5, color:"#0cdbf3", fill:false}, 
-								{id:"medium", num:100, fromX:0, toX:this.totalWidth,  ballwidth:8, alphamax:0.3, areaHeight:1, color:"#6fd2f3", fill:true}, 
-								{id:"large", num:10, fromX:0, toX:this.totalWidth, ballwidth:30,  alphamax:0.2, areaHeight:1, color:"#93e9f3", fill:true}];
+								{id:"medium", num:70, fromX:0, toX:this.totalWidth,  ballwidth:8, alphamax:0.3, areaHeight:1, color:"#6fd2f3", fill:true}, 
+								{id:"large", num:8, fromX:0, toX:this.totalWidth, ballwidth:30,  alphamax:0.05, areaHeight:1, color:"#93e9f3", fill:true}];
 		this.particleArray = [];
-		this.lights = [{ellipseWidth:400, ellipseHeight:100, alpha:0.6, offsetX:0, offsetY:0, color:"#6ac6e8"}, 
-						{ellipseWidth:350, ellipseHeight:250, alpha:0.3, offsetX:-50, offsetY:0, color:"#54d5e8"}, 
-						{ellipseWidth:100, ellipseHeight:80, alpha:0.2, offsetX:80, offsetY:-50, color:"#ffffff"}];
+		this.lights = [{ellipseWidth:400, ellipseHeight:100, alpha:0.1, offsetX:-150, offsetY:100, color:"#1597a3"}, 
+						{ellipseWidth:350, ellipseHeight:250, alpha:0.1, offsetX:-150, offsetY:100, color:"#54d5e8"}, 
+						{ellipseWidth:100, ellipseHeight:80, alpha:0, offsetX:-20, offsetY: 50, color:"#ffffff"}];
 
 		this.stage.compositeOperation = _ParticleEngine.compositeStyle;
 

@@ -17,11 +17,11 @@
 
 {% endblock %}
 {% block body %}
-<div class="container-general">
+<div class="container-general"></div>
 
 
 {% block navbar %}
-<nav class="main-menu navbar-expand-lg" style="background-color: #e3f2fd;">
+<nav class="main-menu navbar-expand-lg">
         <ul>
             <li>
                 <a href="{{ url_for('main.index') }}">
@@ -85,7 +85,7 @@
 {% endblock %}
 
 {% block content %}
-<canvas id="projector">Your browser does not support the Canvas element.</canvas>
+<canvas id="projector" style = "z-index: 0; position: absolute">Your browser does not support the Canvas element.</canvas>
 <div class="container">
     {% for message in get_flashed_messages() %}
     <div class="alert alert-warning">

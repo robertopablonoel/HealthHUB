@@ -86,9 +86,9 @@
 
 	<div id="dropDownSelect1"></div>
 	{% block content %}
-	<div class="container">
+	<div class="container">	
     {% for message in get_flashed_messages() %}
-    <div class="alert alert-warning">
+    <div class="alert alert-warning"style = "position: static; margin: -100px; z-index:1000">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
         {{ message }}
     </div>
