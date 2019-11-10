@@ -85,7 +85,7 @@
 {% endblock %}
 
 {% block content %}
-<canvas id="projector" style = "z-index: 0; position: absolute">Your browser does not support the Canvas element.</canvas>
+<canvas id="projector" style = "z-index: 1; position: absolute">Your browser does not support the Canvas element.</canvas>
 <div class="container">
     {% for message in get_flashed_messages() %}
     <div class="alert alert-warning">

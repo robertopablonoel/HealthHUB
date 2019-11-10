@@ -13,3 +13,7 @@ def reserve():
 #Here comes the scheduling code...
 
 #Here comes the scheduling code...
+'''
+hospitals = Hospital.query.all()
+form = PatientRegistrationForm()
+'''

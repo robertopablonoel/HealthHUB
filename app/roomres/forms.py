@@ -7,3 +7,8 @@ from wtforms_components import DateRange
 from datetime import datetime, date
 from .. import db
 from ..models import User
+
+class RoomSearchForm(FlaskForm):
+    physician = SelectField('Physician', validators = [Required()], coerce = int)
+    appointment = SelectField('Appointment', validators = [Required()], coerce = int)
+    submit = InlineSubmitField('See Rooms')
