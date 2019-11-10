@@ -33,7 +33,7 @@ class InlineSubmitField(BooleanField):
     widget = InlineButtonWidget()
 
 class PatientRegistrationForm(FlaskForm):
-    
+
     hospital = SelectField('Hospital', validators = [Required()], coerce = int)
     email = StringField('Email', validators=[Required(), Length(1, 64), Email()])
     first_name = StringField('First Name', validators = [Required(), Length(1, 64), Regexp('^[A-Za-z\s]*$', 0, 'Name must have only letters')])
@@ -54,4 +54,3 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators = [Required()])
     remember_me = BooleanField('Keep me logged in')
     submit = InlineSubmitField('Log In')
-

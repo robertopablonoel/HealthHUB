@@ -4,7 +4,7 @@
 	<title>Register</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-<!--===============================================================================================-->	
+<!--===============================================================================================-->
 	<link rel="stylesheet" type="image/png" href="{{ url_for('static', filename= 'images/icons/favicon.ico') }}">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename= 'vendor/bootstrap/css/bootstrap.min.css') }}">
@@ -14,13 +14,13 @@
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename= 'fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename= 'vendor/animate/animate.css') }}">
-<!--===============================================================================================-->	
+<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename= 'vendor/css-hamburgers/hamburgers.min.css') }}">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename= 'vendor/animsition/css/animsition.min.css') }}">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename= 'vendor/select2/select2.min.css') }}">
-<!--===============================================================================================-->	
+<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename= 'vendor/daterangepicker/daterangepicker.css') }}">
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename= 'css/util.css') }}">
@@ -30,7 +30,7 @@
 {% if current_user.is_authenticated %}
         <meta http-equiv="Refresh" content="0; url={{ url_for('main.index') }}">
     {% else %}
-        
+
 {% endif %}
 </head>
 <body>
@@ -74,7 +74,7 @@
 
 					<div class="container-login100-form-btn">
 						<div class="wrap-login100-form-btn">
-							
+
 							<div class="login100-form-bgbtn"></div>
 							{{ form.submit(class = "login100-form-btn") }}
 						</div>
@@ -94,10 +94,10 @@
 			</div>
 		</div>
 	</div>
-	
+
 
 	<div id="dropDownSelect1"></div>
-	
+
 <!--===============================================================================================-->
 	<script src="{{ url_for('static', filename='vendor/jquery/jquery-3.2.1.min.js')}}"></script>
 <!--===============================================================================================-->

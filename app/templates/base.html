@@ -11,8 +11,8 @@
 {% else %}
 {% endif %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename= 'css/main.css') }}">
-<link 
-  href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" 
+<link
+  href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css"
   rel="stylesheet"  type='text/css'>
 
 {% endblock %}
@@ -30,7 +30,7 @@
                         Home
                     </span>
                 </a>
-              
+
             </li>
             <li class="has-subnav">
                 <a href="{{ url_for('sched.schedule') }}">
@@ -39,7 +39,7 @@
                         Schedule Appointment
                     </span>
                 </a>
-                
+
             </li>
             <li class="has-subnav">
                 <a href="{{ url_for('roomres.reserve') }}">
@@ -48,7 +48,7 @@
                         Reserve Room
                     </span>
                 </a>
-                
+
             </li>
             <li class="has-subnav">
                 <a href="#">
@@ -57,7 +57,7 @@
                         Files
                     </span>
                 </a>
-               
+
             </li>
 
             <li class="has-subnav">
@@ -67,9 +67,9 @@
                             Forum
                         </span>
                     </a>
-                   
+
             </li>
-            
+
         </ul>
         <ul class="logout">
             <li>
@@ -79,7 +79,7 @@
                         Logout
                     </span>
                 </a>
-            </li>  
+            </li>
         </ul>
     </nav>
 {% endblock %}
