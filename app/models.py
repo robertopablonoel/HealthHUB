@@ -22,6 +22,7 @@ class User(UserMixin, db.Model):
     physicians = db.relationship('Physician', backref = 'user', lazy = True, passive_deletes=True)
     patient = db.relationship('Patient', backref = 'user', lazy = True, passive_deletes=True)
     Nurse = db.relationship('Nurse', backref = 'user', lazy = True, passive_deletes=True)
+    hospital_id = db.Column(db.Integer, db.ForeignKey('hospital.unique_id'))
 
     def get_id(self):
         return self.user_id
@@ -158,6 +159,7 @@ class Hospital(db.Model):
     physicians = db.relationship('Physician', backref = 'hospital', lazy = True)
     patients = db.relationship('Patient', backref = 'hospital', lazy = True)
     nurses = db.relationship('Nurse', backref = 'hospital', lazy = True)
+    user = db.relationship('User', backref = 'hospital', lazy = True)
 
 class Facility(db.Model):
     hospital_id = db.Column(db.Integer, db.ForeignKey('hospital.unique_id'), primary_key = True, unique = False, index = True)
@@ -169,9 +171,10 @@ class Appointment(db.Model):
     appointment_id = db.Column(db.Integer, primary_key = True)
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.user_id'), nullable = False)
     hospital_id = db.Column(db.Integer, db.ForeignKey('facility.hospital_id'), nullable = False)
-    facility_num = db.Column(db.String(64), db.ForeignKey('facility.facility_num'), nullable = False)
-    event_id = db.Column(db.Integer, db.ForeignKey('physician_schedule.event_id'), nullable = False)
+    facility_num = db.Column(db.String(64), db.ForeignKey('facility.facility_num'), nullable = True)
+    event_id = db.Column(db.Integer, db.ForeignKey('physician_schedule.event_id'), nullable = True)
     notes = db.Column(db.Text, nullable = True)
+    purpose = db.Column(db.String(64),nullable = True)
     hospital_id_rel = db.relationship("Facility", foreign_keys=[hospital_id])
     facility_num_rel = db.relationship("Facility", foreign_keys=[facility_num])
 
