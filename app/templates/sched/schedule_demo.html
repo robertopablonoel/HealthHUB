@@ -1,0 +1,491 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}HealthHub - Schedule{% endblock %}
+{% block head %}
+{{ super() }}
+<meta charset='utf-8'>
+<title>Calendar</title>
+<script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
+<style type="text/css">
+
+  body > .container {
+    margin-right: 0;
+    margin-left:0;
+    color: white;
+    width: 3000px !important;
+    height: 100% !important;
+  }
+
+
+  #page_contents {
+    height: 100% !important;
+	  width: 100% !important;
+    color: white;
+	/* position: absolute; */
+	z-index: 900;
+  }
+
+
+  #calendar {
+    color: white !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin-left: 5%;
+  }
+
+  #form {
+    padding-top: 5%;
+    /* display: "inline-block"; */
+  }
+
+  html,body{
+    height:100%;
+    min-height:100%;
+    color: white;
+  }
+
+  #date-year {
+    color: white;
+  }
+
+</style>
+{% endblock %}
+{% block page_content %}
+
+<body>
+
+  <div id = "page_contents">
+    <div id = "calendar" class = "col-md-8">
+    </div>
+    <div id = "form" class = "col-md-3">
+      {{ wtf.quick_form(form) }}
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var today = new Date();
+    var currentMonth = today.getMonth();
+    var currentYear = today.getFullYear();
+    // var selectYear = document.getElementById("year");
+    // var selectMonth = document.getElementById("month");
+
+    var time_list = []
+
+    function daysInMonth(month, year) {
+      return new Date(year, month + 1, 0).getDate();
+    }
+
+    function first_day_func(month, year) {
+      return new Date(year, month, 1)
+    }
+
+    var num_days = daysInMonth(currentMonth, currentYear)
+
+    var first_day = first_day_func(currentMonth, currentYear).getDay();
+    var day_1 = first_day
+
+    console.log(currentMonth)
+    console.log(num_days)
+    console.log(first_day)
+
+    var padding = 0;
+
+
+    function getDayPosition(day) {
+      x_pos = day % 7
+      y_pos = Math.floor(day / 7)
+      return [x_pos, y_pos]
+    }
+
+    var months = ['January', 'February', 'March',
+                  'April', 'May', 'June', 'July',
+                  'August', 'September', 'October',
+                  'November', 'December']
+
+    var days_of_week = ['Su','M','T','W','Th','F','S']
+
+    //day position will be a function of width
+
+    d3.selection.prototype.moveToFront = function() {
+        return this.each(function(){
+          this.parentNode.appendChild(this);
+        });
+      };
+
+
+    function main(curr_month, curr_year) {
+
+      d3.select('#calendar').selectAll("*").remove();
+
+      var days_of_week = ['Su','M','T','W','Th','F','S']
+
+      var chartBody = document.getElementById("page_contents");
+      var chartcalendar = document.getElementById("calendar");
+
+      var width = chartcalendar.clientWidth;
+      var height = chartcalendar.clientHeight;
+      var xpad = Math.floor(width * .15)
+      var ypad = Math.floor(height * .20)
+
+      var xScale = d3.scaleLinear()
+                      .domain([0, 6])
+                      .range([0 + xpad, width - xpad]);
+
+      var yScale = d3.scaleLinear()
+                      .domain([0,5])
+                      .range([0 + ypad,height - ypad])
+
+      var rScale = function(width_obj, padding) {
+          return Math.floor((width_obj - (padding*2))/14)
+      }
+
+      var svg = d3.select('#calendar')
+                  .append('svg')
+                  .attr('width', chartcalendar.clientWidth)
+                  .attr('height', chartcalendar.clientHeight)
+
+      svg.append('g')
+          .attr('id', 'date-year')
+          .append('text')
+          .classed('month_and_year', true)
+          .attr('x', Math.floor(width/2))
+          .attr('y', Math.floor(rScale(width, xpad/3)))
+          .text(months[curr_month] + " " + curr_year)
+          .attr("font-family", "sans-serif")
+          .attr("font-size","30px")
+          .attr("text-anchor","middle")
+          .style("fill", "white");
+
+
+      d3.select('#date-year')
+          .append('text')
+          .attr('x', Math.floor(width - xpad * 1.5))
+          .attr('y', Math.floor(rScale(width, xpad/3)))
+          .text('next >>')
+          .attr("font-family", "sans-serif")
+          .attr("font-size","15px")
+          .attr("text-anchor","start")
+          .style("fill", "white")
+          .on("click", function(){
+                        var direction = 1
+                        update_month(direction)
+                      });
+
+      d3.select('#date-year')
+          .append('text')
+          .attr('x', Math.floor(xpad * 1.5))
+          .attr('y', Math.floor(rScale(width, xpad/3)))
+          .text('<< prev')
+          .attr("font-family", "sans-serif")
+          .attr("font-size","15px")
+          .attr("text-anchor","end")
+          .style("fill", "white")
+          .on("click", function(){
+                        var direction = 0
+                        update_month(direction)
+                      });
+
+      svg.append('g')
+          .attr('id', 'calendar_days')
+          .selectAll('days_of_week')
+          .data(days_of_week)
+          .enter()
+          .append('text')
+          .attr('x', function(d,i){return xScale(i)})
+          .attr('y', function(d){return Math.floor(yScale(0) - rScale(width, xpad/2))})
+          .text(function(d) {return d})
+          .attr("font-family", "sans-serif")
+          .attr("font-size","20px")
+          .attr("text-anchor","middle")
+          .style("fill", "white");
+
+      var calendar_days = svg.append('g')
+                              .classed('calendar_days', true);
+
+      var i;
+      for (i = 0; i < num_days; i++) {
+        var position = getDayPosition(i + first_day)
+        calendar_days.append('rect')
+          .attr('rx', 6)
+          .attr('ry', 6)
+          .attr("x", function() {
+                return xScale(position[0]) - rScale(width, xpad)
+            // return padding + position[0] * Math.floor(width / 7)
+          })
+          .attr("y", function() {
+            // padding + position[1] * Math.floor(height / 6
+            return yScale(position[1]) - rScale(width, xpad)
+          })
+          .attr('width', rScale(width,xpad) * 2)
+          .attr('height', rScale(width,xpad) *2)
+          .attr("id", i)
+          .attr("position_x", position[0])
+          .attr("position_y", position[1])
+          .style("stroke-opacity", 0.8)
+          .style("stroke-width", 3)
+          .style("stroke", "rgb(191,191,191)")
+          .style("fill", "rgb(191,191,191)")
+          .style("fill-opacity", 0.1)
+          .on("mouseover", expandDay)
+          .on("mouseout", shrinkDay)
+
+        calendar_days.append("text")
+          .classed('day_num_labels', true)
+          .attr("id", "t" + i)
+          .attr("x", xScale(position[0]) - rScale(width, xpad) + 15)
+          .attr("y", yScale(position[1]) - rScale(width, xpad) + 15)
+          .text((i + 1).toString())
+          .attr("font-family", "sans-serif")
+          .attr("font-size","10px")
+          .attr("text-anchor","end");
+      }
+
+      function update_month (direction){
+        if (direction===1){
+          if (curr_month === 11) {
+            curr_month = 0
+            curr_year += 1
+          } else {
+            curr_month += 1
+          }
+        } else {
+          if (curr_month === 0) {
+            curr_month = 11
+            curr_year -= 1
+          } else {
+            curr_month -= 1
+          }
+        }
+        var old_day_1 = first_day
+        var day_1 = first_day_func(curr_month, curr_year).getDay()
+        var num_days = daysInMonth(curr_month, curr_year)
+        var days_range = [...Array(num_days).keys()]
+
+        var xy_array = []
+
+        calendar_days.selectAll('rect')
+          .each(function(){
+            var temp_x = d3.select(this).attr('x')
+            var temp_y = d3.select(this).attr('y')
+            var temp_day = d3.select(this).attr('id')
+            xy_array.push([temp_day,temp_x, temp_y])
+          })
+
+        calendar_days.selectAll("*").remove()
+
+        calendar_days.selectAll('rect')
+          .data(days_range)
+          .enter()
+          .append('rect')
+          .attr('rx', 6)
+          .attr('ry', 6)
+          .attr("x", function(d) {
+                if (d < xy_array.length){
+                return xy_array[d][1]
+              } else {
+                var position = getDayPosition(d + old_day_1)
+                return xScale(position[0]) - rScale(width, xpad)
+              }
+          })
+          .attr("y", function(d) {
+                if (d < xy_array.length){
+                return xy_array[d][2]
+              } else {
+                var position = getDayPosition(d + old_day_1)
+                return yScale(position[1]) - rScale(width, xpad)
+              }
+          })
+          .attr('width', rScale(width,xpad) * 2)
+          .attr('height', rScale(width,xpad) *2)
+          .attr("id", function(d){return d})
+          .style("stroke-opacity", 0.8)
+          .style("stroke-width", 3)
+          .style("stroke", "rgb(191,191,191)")
+          .style("fill", "rgb(191,191,191)")
+          .style("fill-opacity", 0.1)
+          .on("mouseover", expandDay)
+          .on("mouseout", shrinkDay)
+
+        calendar_days.selectAll('text')
+            .data(days_range)
+            .enter()
+            .append('text')
+            .classed('day_num_labels', true)
+            .attr("id", function(d) {return "t" + d})
+            .attr("x", function(d) {
+                  if (d < xy_array.length){
+                  return parseFloat(xy_array[d][1]) + 15
+                } else {
+                  var position = getDayPosition(d + old_day_1)
+                  return xScale(position[0]) - rScale(width, xpad) + 15
+                }
+            })
+            .attr("y", function(d) {
+                  if (d < xy_array.length){
+                  return parseFloat(xy_array[d][2]) + 15
+                } else {
+                  var position = getDayPosition(d + old_day_1)
+                  return yScale(position[1]) - rScale(width, xpad) + 15
+                }
+            })
+            .text(function(d){return (d + 1).toString()})
+            .attr("font-family", "sans-serif")
+            .attr("font-size","10px")
+            .attr("text-anchor","end");
+
+        svg.selectAll('rect')
+            .data(days_range)
+            .transition()
+            .duration(1200)
+            .attr("x", function(d) {
+              var position = getDayPosition(d + day_1)
+              return xScale(position[0]) - rScale(width, xpad)
+            })
+            .attr("y", function(d) {
+              var position = getDayPosition(d + day_1)
+              return yScale(position[1]) - rScale(width, xpad)
+            })
+            .attr("position_x", function(d){
+                    var position = getDayPosition(d + day_1)
+                    console.log(d, position[0])
+                    return position[0]})
+            .attr("position_y", function(d){
+                    var position = getDayPosition(d + day_1)
+                    return position[1]})
+
+        svg.selectAll('.month_and_year')
+          .transition()
+          .duration(100)
+          .text(months[curr_month] + " " + curr_year)
+
+        svg.selectAll('.day_num_labels')
+            .data(days_range)
+            .transition()
+            .duration(1200)
+            .attr("x", function(d) {
+              var position = getDayPosition(d + day_1)
+              return xScale(position[0]) - rScale(width, xpad) + 15
+            })
+            .attr("y", function(d) {
+              var position = getDayPosition(d + day_1)
+              return yScale(position[1]) - rScale(width, xpad) + 15
+            })
+      }
+
+      var hours_list = ['9:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00']
+
+      function expandDay(){
+        var current_width = parseFloat(d3.select(this).attr('width'))
+        var current_height = parseFloat(d3.select(this).attr('height'))
+        var current_x = parseFloat(d3.select(this).attr('x'))
+        var new_width = current_width * 2
+        var id = parseFloat(d3.select(this).attr('id'))
+
+        var sel = d3.select(this)
+        sel.moveToFront();
+
+        d3.select("#t" + id).moveToFront();
+
+        d3.select(this)
+          .transition()
+          .duration(100)
+          .attr('width',  current_width * 2)
+          .attr('height', 500)
+          .attr('x', current_x - (parseFloat(new_width - current_width)/2))
+          .attr('y', yScale(0) - rScale(width, xpad))
+          .style("fill", "rgb(300,300,300)")
+          .style("fill-opacity", 1)
+
+        d3.selectAll("#t" + id)
+          .transition()
+          .duration(100)
+          .attr('x', current_x - (parseFloat(new_width - current_width)/2) + 15)
+          .attr('y', yScale(0) - rScale(width, xpad) + 15)
+
+        var hour_scale = d3.scaleLinear()
+                            .domain([0, hours_list.length])
+                            .range([0, 500])
+
+        var calendar_days = d3.select('.calendar_days')
+        calendar_days.selectAll("line")
+                  .data(hours_list)
+                  .enter()
+                  .append('line')
+                  .classed('hour_lines', true)
+                  .attr("x1",parseFloat(d3.select(this).attr('x')) - (parseFloat(new_width - current_width)/2))
+                  .attr("y1",function(d,i){
+                    return hour_scale(i) + yScale(0) - rScale(width, xpad)
+                  })
+                  .attr("x2",parseFloat(d3.select(this).attr('x')) - (parseFloat(new_width - current_width)/2) + current_width*2)
+                  .attr("y2",function(d,i){
+                    return hour_scale(i) + yScale(0) - rScale(width, xpad)
+                  })
+                  .attr('stroke','rgb(191,191,191)')
+      }
+
+      function shrinkDay(){
+        var current_width = parseFloat(d3.select(this).attr('width'))
+        var current_height = parseFloat(d3.select(this).attr('height'))
+        var current_x = parseFloat(d3.select(this).attr('x'))
+        var new_width = current_width * 2
+        var position_x = parseFloat(d3.select(this).attr('position_x'))
+        var position_y = parseFloat(d3.select(this).attr('position_y'))
+        var id = parseFloat(d3.select(this).attr('id'))
+
+        d3.select(this)
+          .transition()
+          .duration(100)
+          .attr('width', rScale(width,xpad) * 2)
+          .attr('height', rScale(width,xpad) * 2)
+          .attr('x', function(){
+            return xScale(position_x) - rScale(width, xpad)
+          })
+          .attr('y', function() {
+            return yScale(position_y) - rScale(width, xpad)
+          })
+          .style("fill", "rgb(191,191,191)")
+          .style("fill-opacity", 0.1)
+
+          d3.selectAll("#t" + id)
+            .transition()
+            .duration(100)
+            .attr('x', xScale(position_x) - rScale(width, xpad) + 15)
+            .attr('y', yScale(position_y) - rScale(width, xpad) + 15)
+
+          var calendar_days = d3.select('.calendar_days')
+
+          calendar_days.selectAll('line').remove("*")
+      }
+
+      // var taken_schedules = []
+      //
+      // var node_value = d3.select('#physician').node().value
+      //
+      // {% for events in physician_schedule %}
+      //   {% if events.user_id == node_value %}
+      //     taken_schedules.push(["{{events.start_time}}", "{{events.end_time}}"])
+      //   {% endif %}
+      // {% endfor %}
+      //
+      // d3.select("#physician").on("change", change_physician);
+      //
+      // function change_physician() {
+      //   var taken_schedules = []
+      //   var node_value = d3.select('#physician').node().value
+      //   console.log(node_value)
+      //   {% for events in physician_schedule %}
+      //     {% if events.user_id == node_value %}
+      //       taken_schedules.push(["{{events.start_time}}", "{{events.end_time}}"])
+      //     {% endif %}
+      //   {% endfor %}
+      //   console.log(taken_schedules)
+      // }
+    }
+    main(currentMonth, currentYear)
+    // window.addEventListener("resize", main(curr_month, curr_year));
+
+  </script>
+
+</body>
+{% endblock %}

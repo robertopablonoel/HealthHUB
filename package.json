@@ -1,0 +1,28 @@
+{
+  "name": "ehr",
+  "version": "1.0.0",
+  "description": "Application for Electronic Health Record System",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ElChackAttack/EHR.git"
+  },
+  "author": "Alexander Bogdanowicz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ElChackAttack/EHR/issues"
+  },
+  "homepage": "https://github.com/ElChackAttack/EHR#readme",
+  "dependencies": {
+    "dayspan-vuetify": "^0.4.0",
+    "moment": "^2.24.0",
+    "vue": "^2.6.10"
+  }
+}
