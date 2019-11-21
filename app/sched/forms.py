@@ -10,7 +10,7 @@ from ..models import User
 
 class PatientAppointmentForm(FlaskForm):
     physician = SelectField('Physician', validators = [Required()], coerce=int)
-    purpose = StringField('Purpose', validators = [Required()])
-    time_slot = DateTimeField('Time Slot', validators = [Required()])
+    purpose = SelectField('Purpose', validators = [Required()], coerce = int)
+    time_slot = SelectField('Time Slot', validators = [Required()], coerce=int)
     notes = TextField('Additional Information', validators = [Length(0,500)])
     submit = SubmitField('Book')

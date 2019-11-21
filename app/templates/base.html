@@ -5,6 +5,7 @@
 
 {% block head %}
 {{ super() }}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 {% if not current_user.is_authenticated %}
 <meta http-equiv="Refresh" content="0; url={{ url_for('auth.login') }}">
@@ -85,7 +86,7 @@
 {% endblock %}
 
 {% block content %}
-<canvas id="projector" style = "z-index: 1; position: absolute">Your browser does not support the Canvas element.</canvas>
+<!-- <canvas id="projector" style = "z-index: 1; position: absolute"></canvas> -->
 <div class="container">
     {% for message in get_flashed_messages() %}
     <div class="alert alert-warning">
@@ -101,7 +102,8 @@
 {% block scripts %}
 {{ super() }}
 <script src='https://code.createjs.com/easeljs-0.7.1.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js'></script><script  src="{{ url_for('static', filename= 'js/particles.js') }}"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js'></script>
+<script  src="{{ url_for('static', filename= 'js/particles.js') }}"></script>
 {{ moment.include_moment() }}
 {% endblock %}
 </div>
