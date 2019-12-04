@@ -12,13 +12,14 @@
 {% else %}
 {% endif %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename= 'css/main.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename= 'css/styles.css') }}">
 <link
   href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css"
   rel="stylesheet"  type='text/css'>
 
 {% endblock %}
 {% block body %}
-<div class="container-general"></div>
+
 
 
 {% block navbar %}
@@ -86,7 +87,6 @@
 {% endblock %}
 
 {% block content %}
-<!-- <canvas id="projector" style = "z-index: 1; position: absolute"></canvas> -->
 <div class="container">
     {% for message in get_flashed_messages() %}
     <div class="alert alert-warning">
@@ -103,7 +103,6 @@
 {{ super() }}
 <script src='https://code.createjs.com/easeljs-0.7.1.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js'></script>
-<script  src="{{ url_for('static', filename= 'js/particles.js') }}"></script>
 {{ moment.include_moment() }}
 {% endblock %}
 </div>
