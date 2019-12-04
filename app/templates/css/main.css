@@ -515,9 +515,9 @@ iframe {
 }
 
 .main-menu {
-  background:#a5a5a570;
+  background:#3b5998;
   border-left:3px  #00000070;
-  border-right:3px #a5a5a570;
+  border-right:3px #3b5998;
   position:absolute;
   top:0;
   bottom:0;
@@ -554,7 +554,7 @@ iframe {
   padding-top: 15px;
   padding-bottom: 15px;
   border-spacing:0px;
-  color:rgb(2, 2, 2);
+  color:rgb(255, 255, 255);
   font-family: arial;
   font-size: 16px;
   text-decoration:none;
@@ -654,7 +654,7 @@ html, body{
 	margin:0px;
   overflow: hidden;
   background: #191d1e; /* Old browsers */
-  background: linear-gradient( rgba(0, 0, 0, 0.731), rgba(0, 0, 0, 0.103) ), url('img/healthcare-background.jpg');
+  background: rgba(223, 227, 238, 0.952);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#191d1e', endColorstr='#283139',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 	background-attachment: fixed
 }
