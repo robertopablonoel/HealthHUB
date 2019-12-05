@@ -40,5 +40,8 @@ def create_app(config_name):
     from .roomres import roomres as roomres_blueprint
     app.register_blueprint(roomres_blueprint, url_prefix = '/roomres')
 
+    from .forum import forum as forum_blueprint
+    app.register_blueprint(forum_blueprint, url_prefix = '/forum')
+
 
     return app
