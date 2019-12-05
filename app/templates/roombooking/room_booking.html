@@ -85,31 +85,37 @@ var settings = {
                seatCss: 'seat',
                selectedSeatCss: 'selectedSeat',
                selectingSeatCss: 'selectingSeat',
+               str: []
            };
+
+var print_row = function (reservedSeat, allSeat, remaining, i) {
+    var seatNo, className;
+    
+    for (j = 0; j < settings.cols; j++) {
+        if (remaining > 0){
+            seatNo = allSeat[allSeat.length - remaining];
+            className = settings.seatCss + ' ' + settings.rowCssPrefix + i.toString() + ' ' + settings.colCssPrefix + j.toString();
+            if ($.isArray(reservedSeat) && $.inArray(seatNo, reservedSeat) != -1) {
+                className += ' ' + settings.selectedSeatCss;
+            }
+            settings.str.push('<li class="' + className + '"' +
+                    'style="top:' + (i * settings.seatHeight).toString() + 'px;left:' + (j * settings.seatWidth).toString() + 'px">' +
+                    '<span style="font-size: 13px" class = "badge badge-pill badge-primary center-block" title="' + seatNo + '">' + seatNo + '</span>' +
+                    '</li>');
+            remaining--;
+        }
+    }
+    return remaining;
+};
 var init = function (reservedSeat, allSeat) {
-                var str = [], seatNo, className;
-                var remaining = allSeat.length;
+            var remaining = allSeat.length;
                 for (i = 0; i < settings.rows; i++) {
-                    for (j = 0; j < settings.cols; j++) {
-
-                        if (remaining > 0){
-                          seatNo = allSeat[allSeat.length - remaining];
-                          className = settings.seatCss + ' ' + settings.rowCssPrefix + i.toString() + ' ' + settings.colCssPrefix + j.toString();
-                          if ($.isArray(reservedSeat) && $.inArray(seatNo, reservedSeat) != -1) {
-                              className += ' ' + settings.selectedSeatCss;
-                           }
-                          str.push('<li class="' + className + '"' +
-                                  'style="top:' + (i * settings.seatHeight).toString() + 'px;left:' + (j * settings.seatWidth).toString() + 'px">' +
-                                  '<span style="font-size: 13px" class = "badge badge-pill badge-primary center-block" title="' + seatNo + '">' + seatNo + '</span>' +
-                                  '</li>');
-                          remaining--;
-
-                        }
-                        
-                    }
+                    remaining = print_row(reservedSeat, allSeat, remaining, i);
                 }
-                $('#place').html(str.join(''));
+                $('#place').html(settings.str.join(''));
             };
+
+
 //case I: Show from starting
 //init();
 
