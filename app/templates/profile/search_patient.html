@@ -12,7 +12,11 @@
     </div>
 
     <script type="text/javascript">
+      console.log('-1')
+    </script>
+    <script type="text/javascript">
       console.log('0')
+      var selected_id = null
       $(function() {
         console.log('1')
           $('#autocomplete').autocomplete({
@@ -28,8 +32,12 @@
               minLength: 2,
               select: function(event, ui) {
                   console.log(ui.item.value);
+                  selected_id = ui.item.value;
+                  console.log(selected_id);
               }
           });
       })
       </script>
+
+    <a href="{{ url_for('profile.patient', user_id= selected_id) }}">Confirm Selection
 {% endblock %}
