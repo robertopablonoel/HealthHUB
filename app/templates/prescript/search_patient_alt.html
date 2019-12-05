@@ -1,0 +1,35 @@
+
+
+
+{% block page_content %}
+<link href="//code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"</script> -->
+    <div>
+        <input name="autocomplete" type="text" id="autocomplete" class="form-control input-lg"/>
+    </div>
+
+    <script type="text/javascript">
+      console.log('0')
+      $(function() {
+        console.log('1')
+          $('#autocomplete').autocomplete({
+              source:function(request, response) {
+                  $.getJSON("{{url_for('prescript.autocomplete')}}",{
+                      q: request.term,
+                       // in flask, "q" will be the argument to look for using request.args
+                  }, function(data) {
+                      console.log(data)
+                      response(data.matching_results); // matching_results from jsonify
+                  });
+              },
+              minLength: 2,
+              select: function(event, ui) {
+                  console.log(ui.item.value);
+              }
+          });
+      })
+      </script>
+{% endblock %}

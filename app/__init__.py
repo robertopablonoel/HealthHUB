@@ -40,5 +40,8 @@ def create_app(config_name):
     from .roomres import roomres as roomres_blueprint
     app.register_blueprint(roomres_blueprint, url_prefix = '/roomres')
 
+    from .prescript import prescript as prescript_blueprint
+    app.register_blueprint(prescript_blueprint, url_prefix = '/prescript')
+
 
     return app

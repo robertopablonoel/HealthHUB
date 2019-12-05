@@ -19,7 +19,6 @@
 {% block body %}
 <div class="container-general"></div>
 
-
 {% block navbar %}
 <nav class="main-menu navbar-expand-lg">
         <ul>
@@ -70,6 +69,16 @@
 
             </li>
 
+            <li class="has-subnav">
+                    <a href="{{ url_for('prescript.new_prescription') }}">
+                       <i class="fa fa-medkit fa-2x"></i>
+                        <span class="nav-text">
+                            Prescription
+                        </span>
+                    </a>
+
+            </li>
+
         </ul>
         <ul class="logout">
             <li>
@@ -85,7 +94,7 @@
 {% endblock %}
 
 {% block content %}
-<canvas id="projector" style = "z-index: 1; position: absolute">Your browser does not support the Canvas element.</canvas>
+<!-- <canvas id="projector" style = "z-index: 1; position: absolute">Your browser does not support the Canvas element.</canvas> -->
 <div class="container">
     {% for message in get_flashed_messages() %}
     <div class="alert alert-warning">
@@ -101,7 +110,9 @@
 {% block scripts %}
 {{ super() }}
 <script src='https://code.createjs.com/easeljs-0.7.1.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js'></script><script  src="{{ url_for('static', filename= 'js/particles.js') }}"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.0/TweenMax.min.js'>
+</script>
+<!-- <script  src="{{ url_for('static', filename= 'js/particles.js') }}"></script> -->
 {{ moment.include_moment() }}
 {% endblock %}
 </div>
