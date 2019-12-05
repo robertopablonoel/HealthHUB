@@ -12,12 +12,12 @@ import re
 @prescript.route('/new_prescription', methods = ['GET','POST'])
 @login_required
 def new_prescription():
-    """
     form = NewPrescriptionForm()
     if form.validate_on_submit():
         #search = request.args.get('search')
         #result = User.Query(user).filter(full_name.like('%' + search + '%')).all()
         prescription = Prescription(
+                    patient_id = session["Patient_ID"],
                     physican_id = current_user.user_id,
                     date_prescribed = datetime.utcnow(),
                     expire_date = form.expire_date.data,
@@ -28,8 +28,6 @@ def new_prescription():
         flash('New Prescription Created.')
         #Need to figure out form formatting for where to throw each patient
     return render_template('prescript/new_prescription.html', form = form)
-    """
-    return render_template('prescript/search_patient.html')
 
 @prescript.route('/view_prescriptions', methods = ['GET', 'POST'])
 @login_required

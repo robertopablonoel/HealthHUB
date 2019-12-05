@@ -1,5 +1,7 @@
-{% block content %}
+<!DOCTYPE html>
+{% block page_content %}
 
+<html>
 <div class="user-profile">
   <div class="page-header">
     <h2>User Profile</h2>
@@ -18,10 +20,8 @@
         <div class="panel-body">{{ patient.insurance_id }}</div>
         <div class="panel-heading">Email Address</div>
         <div class="panel-body">{{patient_user.email}}</div>
-      </div>
-{% endblock %}
-{% block content %}
-      {% if prescriptions is not None %}
+      </div></div></div>
+      {% if prescription %}
       <div class="panel panel-info">
         <div class="panel-heading">Prescriptions</div>
         {% for prescript in prescriptions %}
@@ -30,10 +30,15 @@
           <br> Expiration Date: {{prescript.expire_date}}
           </p></div>
         {% endfor %}
+      {% endif %}
+  {% endblock %}
+
+  {% block content %}
+      </div>
       <div>
         <ul>
-          <li><a href={{prescript/new_prescription}}>Create New Prescription</a>
+          <li><a href="{{url_for(../prescript/new_prescription)}}">Create New Prescription</a>
         </ul>
       </div>
-
-{ % endblock % }
+</html>
+{% endblock %}

@@ -29,8 +29,7 @@
 
                       var array = data.Response === "False" ? [] : $.map(data.matching_results, function(m){
                         return{
-                          label: m,
-                          id: m
+                          label: m
                         };
                       });
                       console.log("hero")
@@ -42,12 +41,19 @@
               select: function(event, ui) {
                   console.log("hereo")
                   console.log(ui.item.value);
-                  var selected_id = ui.item.id[1];
-                  console.log(selected_id);
+                  var selected_id = (ui.item.value[1]);
+                  $.ajax({
+                    type: 'POST',
+                    url: "{{url_for('profile.autocomplete')}}",
+                    data: JSON.stringify(selected_id),
+                    contentType: 'application/json',
+                });
               }
           });
       })
-      </script>
 
-    <a href="{{ url_for('profile.patient', user_id= selected_id) }}">Confirm Selection</a>
+
+      </script>
+      <a href="{{ url_for('profile.patient') }}">Confirm Selection</a>
+
 {% endblock %}
