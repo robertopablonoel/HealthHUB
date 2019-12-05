@@ -17,7 +17,7 @@
         console.log('1')
           $('#autocomplete').autocomplete({
               source:function(request, response) {
-                  $.getJSON("{{url_for('prescript.autocomplete')}}",{
+                  $.getJSON("{{url_for('profile.autocomplete')}}",{
                       q: request.term,
                        // in flask, "q" will be the argument to look for using request.args
                   }, function(data) {

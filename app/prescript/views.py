@@ -36,15 +36,3 @@ def new_prescription():
 def view_prescriptions():
     active_prescriptions = Prescription.Query(patient_id = current_user.user_id).all()
     return render_template('prescript/view_prescription.html', data = active_prescriptions)
-
-@prescript.route('/autocomplete', methods = ['GET'])
-@login_required
-def autocomplete():
-    search = request.args.get('q')
-    print("got the search it is :")
-    print(search)
-    if search == None:
-        search = ""
-    query = db.session.query(User.last_name, User.user_id).filter(User.last_name.like('%' + str(search) + '%'))
-    results = [i[0] for i in query.all()]
-    return jsonify(matching_results = results)

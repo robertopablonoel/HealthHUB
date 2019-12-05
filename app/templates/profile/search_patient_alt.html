@@ -21,17 +21,9 @@
                       q: request.term,
                        // in flask, "q" will be the argument to look for using request.args
                   }, function(data) {
-						// data is an array of objects and must be transformed for autocomplete to use
-						      var array = data.Response === "False" ? [] : $.map(data.Search, function(m) {
-							             return {
-                								last_name: m.Title,
-                								year: m.Year,
-                								icon: m.Poster === "N/A" ? null : m.Poster.replace(/_SX\d+\.jpg/, "_SX32.jpg"),
-                								url: "https://www.imdb.com/title/" + m.imdbID
-							};
-						});
-						response(array);
-					});
+                      console.log(data)
+                      response(data.matching_results); // matching_results from jsonify
+                  });
               },
               minLength: 2,
               select: function(event, ui) {
