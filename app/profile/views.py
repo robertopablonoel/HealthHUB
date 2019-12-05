@@ -9,7 +9,7 @@ from flask_jsonpify import jsonify
 import re
 
 
-@profile.route('/patient/<user_id>', methods = ['GET','POST'])
+@profile.route('/patient', methods = ['GET','POST'])
 @login_required
 def patient(user_id):
     print("yo yo you got ya boi")
@@ -27,10 +27,9 @@ def search():
 @login_required
 def autocomplete():
     search = request.args.get('q')
-    print("got the search it is :")
-    print(search)
     if search == None:
         search = ""
     query = db.session.query(User.last_name, User.user_id).filter(User.last_name.like('%' + str(search) + '%'))
-    results = [i[0] for i in query.all()]
+    results = [[i[0], i[1]] for i in query.all()]
+    print(results)
     return jsonify(matching_results = results)
