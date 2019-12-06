@@ -15,6 +15,7 @@ def make_shell_context():
 manager.add_command("shell", Shell(make_context=make_shell_context))
 manager.add_command('db', MigrateCommand)
 manager.add_command('rm_migra', Shell("rm -r 'migrations' "))
+# manager.add_command('Task', Task)
 
 
 @manager.command

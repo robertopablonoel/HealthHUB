@@ -1,6 +1,8 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}User Profile At a Glance{% endblock %}
 {% block page_content %}
-
+{{ super() }}
 <html>
 <div class="user-profile">
   <div class="page-header">
@@ -30,14 +32,12 @@
           <br> Expiration Date: {{prescript.expire_date}}
           </p></div>
         {% endfor %}
-      {% endif %}
-  {% endblock %}
-
-  {% block content %}
       </div>
+      {% endif %}
+
       <div>
         <ul>
-          <li><a href="{{ url_for('static', filename= 'prescript/new_prescription.html') }}">Create New Prescription</a>
+          <li><a href="{{ url_for('prescript.new_prescription') }}">Create New Prescription</a>
         </ul>
       </div>
 </html>
