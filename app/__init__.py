@@ -51,6 +51,9 @@ def create_app(config_name = config):
     from .forum import forum as forum_blueprint
     app.register_blueprint(forum_blueprint, url_prefix = '/forum')
 
+    from .profile import profile as profile_blueprint
+    app.register_blueprint(profile_blueprint, url_prefix = '/profile')
+
     from .upload import upload as upload_blueprint
     app.register_blueprint(upload_blueprint, url_prefix = '/upload')
 

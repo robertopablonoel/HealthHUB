@@ -1,13 +1,18 @@
-<<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
-    <form action="http://localhost:5000/uploader" method="POST" enctype="multipart/form-data">
-      <input type="file" name="file">
-      <input type="submit">
-    </form>
-  </body>
-</html>
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}HealthHub - Upload Files{% endblock %}
+{% block head %}
+{{ super() }}
+<!DOCTYPE html>
+{% endblock %}
+{% block content %}
+<div class = "col-md-3">
+</div>
+<div class = "col-md-3">
+  <form action="http://localhost:5000/upload/uploader" method="POST" enctype="multipart/form-data">
+    <input type="file" name="file">
+    <input type="submit">
+  </form>
+</div>
+{% endblock %}
