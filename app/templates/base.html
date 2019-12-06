@@ -11,11 +11,12 @@
 <meta http-equiv="Refresh" content="0; url={{ url_for('auth.login') }}">
 {% else %}
 {% endif %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename= 'css/main.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename= 'css/styles.css') }}">
 <link
   href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css"
   rel="stylesheet"  type='text/css'>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename= 'css/main.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename= 'css/styles.css') }}">
+
 
 {% endblock %}
 {% block body %}
@@ -27,7 +28,9 @@
         <ul>
             <li>
                 <a href="{{ url_for('main.index') }}">
-                    <i class="fa fa-home fa-2x"></i>
+                    <span class="nav-icon">
+                        <i class="fa fa-home fa-15x"></i>
+                    </span>
                     <span class="nav-text">
                         Home
                     </span>
@@ -36,16 +39,20 @@
             </li>
             <li class="has-subnav">
                 <a href="{{ url_for('sched.schedule') }}">
-                    <i class="fa fa-calendar fa-2x"></i>
+                    <span class="nav-icon">
+                        <i class="fa fa-calendar fa-15x"></i>
+                    </span>
                     <span class="nav-text">
-                        Schedule Appointment
+                        Book Appointment
                     </span>
                 </a>
 
             </li>
             <li class="has-subnav">
                 <a href="{{ url_for('roomres.reserve') }}">
-                   <i class="fa fa-hospital-o fa-2x"></i>
+                    <span class="nav-icon">
+                        <i class="fa fa-hospital-o fa-15x"></i>
+                    </span>
                     <span class="nav-text">
                         Reserve Room
                     </span>
@@ -54,7 +61,9 @@
             </li>
             <li class="has-subnav">
                 <a href="#">
-                   <i class="fa fa-folder-open fa-2x"></i>
+                    <span class="nav-icon">
+                        <i class="fa fa-folder-open fa-15x"></i>
+                    </span>
                     <span class="nav-text">
                         Files
                     </span>
@@ -63,8 +72,10 @@
             </li>
 
             <li class="has-subnav">
-                    <a href="#">
-                       <i class="fa fa-mail-forward fa-2x"></i>
+                    <a href="{{ url_for('forum.home') }}">
+                        <span class="nav-icon">
+                            <i class="fa fa-mail-forward fa-15x"></i>
+                        </span>
                         <span class="nav-text">
                             Forum
                         </span>
@@ -76,7 +87,9 @@
         <ul class="logout">
             <li>
                <a href="{{ url_for('auth.logout') }}">
-                     <i class="fa fa-power-off fa-2x"></i>
+                    <span class="nav-icon">
+                        <i class="fa fa-power-off fa-15x"></i>
+                    </span>
                     <span class="nav-text">
                         Logout
                     </span>

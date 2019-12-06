@@ -4,24 +4,104 @@
 {% block title %}HealthHub Home{% endblock %}
 
 {% block page_content %}
-<div class = "container outer">
-  <div class="container middle">
-    <div class="container col-md-6" id = "basic">
-        <div class="box">
-          1 of 2
-        </div>
-    </div>
-    <div class="container col-md-6" id = "basic">
-        <div class="box">
-          <div class="row">
+<div class = "outer">
+  <div class="middle">
+      <section class="grid">
+          <section class="one visible">
+            <h1>This Month's Newsletter</h1>
+            <section class = "text_inner">
+                Pablo Emilio Escobar Gaviria (/ˈɛskəbɑːr/; 1 December 1949 – 2 December 1993) was a Colombian drug lord, narcoterrorist, and politician who founded and was the sole leader of the Medellín Cartel. Dubbed "The King of Cocaine", Escobar is the wealthiest criminal in history, having amassed an estimated net worth of US$30 billion by the time of his death—equivalent to $58 billion as of 2018—while his drug cartel monopolized the cocaine trade into the United States in the 1980s and 1990s.[1][2]
 
-          </div>
+                Born in Rionegro and raised in Medellín, Escobar studied briefly at Universidad Autónoma Latinoamericana of Medellín, but left without graduating; he instead began engaging in criminal activity, selling illegal cigarettes and fake lottery tickets, as well as participating in motor vehicle theft. In the early 1970s, he began to work for various drug smugglers, often kidnapping and holding people for ransom.
+                
+                In 1976, Escobar founded the Medellín Cartel, which distributed powder cocaine, and established the first smuggling routes into the United States. Escobar's infiltration into the U.S. created exponential demand for cocaine, and by the 1980s, it was estimated Escobar led monthly shipments of 70 to 80 tons of cocaine into the country from Colombia. As a result, Escobar quickly became one of the richest people in the world,[3][4] but consistently battled rival cartels domestically and abroad, leading to massacres and the murders of police officers, judges, locals, and prominent politicians,[5] making Colombia the murder capital of the world.[6]
+                
+                In the 1982 parliamentary election, Escobar was elected as an alternate member of the Chamber of Representatives as part of the Liberal Alternative movement. Through this, he was responsible for community projects, such as the construction of houses and football fields, which gained him popularity among the locals of the towns that he frequented. However, Escobar was vilified by the Colombian and U.S. governments,[7] who routinely stifled his political ambitions and pushed for his arrest, with Escobar widely believed to have orchestrated the DAS Building bombing and Avianca Flight 203 bombings in retaliation.
+            </section>
+          </section>
+          <section class="two_top">
+              <div class="card">
+                  <div class="additional">
+                      <div class="user-card">
+                          <div class="points center">
+                              Primary Physician
+                          </div>
+                          <div class = "image-cropper center">
+                              <img src="{{ url_for('static', filename= 'css/img/doctor_profile_image.png') }}"
+                              class="img" />
+                          </div>
+                          <div class="more-info">
+                              <h1>Jane Doe</h1>
+                              <div class="coords">
+                                <span>Lenox Hill Hospital</span>
+                                <span>Joined January 2019</span>
+                              </div>
+                              <div class="coords">
+                                <span>General Practitioner</span>
+                                <span>NYC, New York, USA</span>
+                              </div>
+                              <div class="stats">
+                                <div>
+                                  <div class="title">Awards</div>
+                                  <i class="fa2 fa-trophy"></i>
+                                  <div class="value">2</div>
+                                </div>
+                                <div>
+                                  <div class="title">Matches</div>
+                                  <i class="fa2 fa-gamepad"></i>
+                                  <div class="value">27</div>
+                                </div>
+                                <div>
+                                  <div class="title">Pals</div>
+                                  <i class="fa2 fa-group"></i>
+                                  <div class="value">123</div>
+                                </div>
+                                <div>
+                                  <div class="title">Coffee</div>
+                                  <i class="fa2 fa-coffee"></i>
+                                  <div class="value infinity">∞</div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                      <div class = "general">
+                          <h1>Jane Doe</h1>
+                          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce a volutpat mauris, at molestie lacus. Nam vestibulum sodales odio ut pulvinar.</p>
+                      </div>
 
-          <div class="row">
+              </div>
 
-          </div>
-        </div>
-    </div>
+                  
+            
+            <!section class = "card_inner">
+              <!img src="{{ url_for('static', filename= 'css/img/doctor_profile_image.png') }}"
+                class="docpic" />
+            <!/section>
+          </section>
+          <section class="two_bottom pushed">
+              <div class="notice info"><p>This is a an info notice, it provides feedback of a neutral nature to the user.</p></div>
+
+              <div class="notice success"><p>This is a success notice, it provides feedback of a positive nature to the user.</p></div>
+
+              <div class="notice warning"><p>This is a warning notice, it provides feedback of a potentially negative nature to the user.</p></div>
+
+              <div class="notice error"><p>This is an error notice, it provides feedback of a negative nature to the user.</p></div>
+
+              <div class="notice error"><p>This is an error notice, it provides feedback of a negative nature to the user.</p></div>
+              <div class="notice error"><p>This is an error notice, it provides feedback of a negative nature to the user.</p></div>
+              <div class="notice error"><p>This is an error notice, it provides feedback of a negative nature to the user.</p></div>
+              <div class="notice error"><p>This is an error notice, it provides feedback of a negative nature to the user.</p></div>
+              <div class="notice error"><p>This is an error notice, it provides feedback of a negative nature to the user.</p></div>
+              <div class="notice error"><p>This is an error notice, it provides feedback of a negative nature to the user.</p></div>
+              <div class="notice error"><p>This is an error notice, it provides feedback of a negative nature to the user.</p></div>
+              <div class="notice error"><p>This is an error notice, it provides feedback of a negative nature to the user.</p></div>
+              <div class="notice error"><p>This is an error notice, it provides feedback of a negative nature to the user.</p></div>
+              <div class="notice error"><p>This is an error notice, it provides feedback of a negative nature to the user.</p></div>
+              <div class="notice error"><p>This is an error notice, it provides feedback of a negative nature to the user.</p></div>
+              <div class="notice error"><p>This is an error notice, it provides feedback of a negative nature to the user.</p></div>
+          </section>
+        </section>
   </div>
 </div>
 
