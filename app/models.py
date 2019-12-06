@@ -19,7 +19,6 @@ class User(UserMixin, db.Model):
     creation_date = db.Column(db.DateTime(), default = datetime.utcnow)
     first_name = db.Column(db.String(64), unique = False, nullable = False)
     last_name = db.Column(db.String(64), unique = False, nullable = False)
-    #full_name = db.Column(db.String(64), unqiue = False, nullable = False)
     physicians = db.relationship('Physician', backref = 'user', lazy = True, passive_deletes=True)
     patient = db.relationship('Patient', backref = 'user', lazy = True, passive_deletes=True)
     Nurse = db.relationship('Nurse', backref = 'user', lazy = True, passive_deletes=True)
@@ -127,7 +126,7 @@ class Task(db.Model):
         return job.meta.get('progress', 0) if job is not None else 100
 
 class Permission:
-    USER_PERMISSION = 0x01
+    PATIENT_PERMISSION = 0x01
     NURSE_PERMISSION = 0x02
     PHYSICIAN_PERMISSION = 0x04
     ADMINISTRATOR = 0x80
@@ -142,7 +141,7 @@ class Role(db.Model):
     @staticmethod
     def insert_roles():
         roles = {
-            'Patient' : (Permission.USER_PERMISSION, True),
+            'Patient' : (Permission.PATIENT_PERMISSION, True),
             'Physician' : (Permission.PHYSICIAN_PERMISSION,
                                 False),
             'Nurse' : (Permission.NURSE_PERMISSION,
@@ -220,7 +219,10 @@ class Prescription(db.Model):
     date_prescribed = db.Column(db.Date, nullable = False)
     expir_date = db.Column(db.Date, nullable = False)
     description = db.Column(db.Text, nullable = True)
+<<<<<<< HEAD
     #active = db.Column(db.Boolean, default = True)
+=======
+>>>>>>> f96da2fe79f1d16c76034a535a58c74d4c452378
 
 class Physician_schedule(db.Model):
     event_id = db.Column(db.Integer, primary_key = True)
