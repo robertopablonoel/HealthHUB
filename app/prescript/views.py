@@ -6,28 +6,33 @@ from ..models import Prescription, User
 from .. import db
 from . import prescript
 from flask_jsonpify import jsonify
+from flask import session
 import re
 
 
 @prescript.route('/new_prescription', methods = ['GET','POST'])
 @login_required
 def new_prescription():
+    print("form")
     form = NewPrescriptionForm()
     print(form)
+    print(form.validate_on_submit())
     if form.validate_on_submit():
         #search = request.args.get('search')
         #result = User.Query(user).filter(full_name.like('%' + search + '%')).all()
+        pi = session.get("Patient_ID", None)
         prescription = Prescription(
-                    patient_id = session["Patient_ID"],
-                    physican_id = current_user.user_id,
+                    patient_id = pi,
+                    physician_id = current_user.user_id,
                     date_prescribed = datetime.utcnow(),
-                    expire_date = form.expire_date.data,
+                    expir_date = form.expir_date.data,
                     description = form.description.data)
         db.session.add(prescription)
         print(prescription)
         db.session.commit()
         flash('New Prescription Created.')
-        session.pop("Patient_ID")
+        #session.pop("Patient_ID")
+        return redirect(url_for('main.index'))
         #Need to figure out form formatting for where to throw each patient
     return render_template('prescript/new_prescription.html', form = form)
 

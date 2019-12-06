@@ -36,11 +36,11 @@ class InlineSubmitField(BooleanField):
 
 
 class NewPrescriptionForm(FlaskForm):
-    expir_date = DateField('Expiration_Date', validators = [Required(), DateRange(date.today())])
-    description = StringField('Enter a description', validators = [None, Length(max=2000)])
+    expir_date = DateField('Expiration_Date', validators = [Required()])
+    description = StringField('Enter a description', validators = [Required(), Length(max=2000)])
     submit = InlineSubmitField('Confim Prescription')
     #When a form defines a method with the prefix validate_ followed by the name of a fiel0d,
-    #the method is invoked in addition to any regularly defined validators
-    def validate_patient(self, field):
-        if Prescription.query.filter_by(patient_id = field.data).first() == None:
+    # #the method is invoked in addition to any regularly defined validators
+    def validate_expir_date(self, field):
+        if not field.data > date.today():
             raise ValidationError('This Patient does not Exist')
