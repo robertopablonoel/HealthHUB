@@ -69,6 +69,7 @@ class User(UserMixin, db.Model):
         return self.role is not None and \
                 (self.role.permissions & permissions) == permissions
 
+
     def is_administrator(self):
         return self.can(Permission.ADMINISTER)
 
@@ -83,6 +84,11 @@ class AnonymousUser(AnonymousUserMixin):
     def is_administrator(self):
         return False
 
+class Permission:
+    USER_PERMISSION = 0x01
+    NURSE_PERMISSION = 0x02
+    PHYSICIAN_PERMISSION = 0x04
+    ADMINISTRATOR = 0x80
 
 class Role(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -94,15 +100,12 @@ class Role(db.Model):
     @staticmethod
     def insert_roles():
         roles = {
-            'Customer' : (Permission.BOOK_FLIGHTS, True),
-            'Booking_agent' : (Permission.BOOK_FLIGHTS |
-                                Permission.BOOK_FLIGHTS_FOR_OTHERS,
+            'Patient' : (Permission.USER_PERMISSION, True),
+            'Physician' : (Permission.PHYSICIAN_PERMISSION,
                                 False),
-            'Airline_staff' : (Permission.BOOK_FLIGHTS |
-                                Permission.BOOK_FLIGHTS_FOR_OTHERS |
-                                Permission.UPDATE_FLIGHTS,
+            'Nurse' : (Permission.NURSE_PERMISSION,
                                 False),
-            'Administrator' : (0xff, False)
+            'Administrator' : (0x80, False)
         }
         for r in roles:
             role = Role.query.filter_by(name = r).first()
@@ -112,11 +115,6 @@ class Role(db.Model):
             role.default = roles[r][1]
             db.session.add(role)
         db.session.commit()
-
-class Permission:
-    _USER_PERMISSION = 0x01
-    _NURSE_PERMISSION = 0x02
-    _PHYSICIAN_PERMISSION = 0x03
 
 class Patient(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id', ondelete = 'CASCADE'), primary_key = True)
@@ -154,6 +152,7 @@ class Hospital(db.Model):
     unique_id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(128), nullable = False)
     user = db.relationship('User', backref = 'hospital', lazy = True)
+    forums = db.relationship('Forum', backref = 'hospital', lazy = True)
 
 class Facility(db.Model):
     hospital_id = db.Column(db.Integer, db.ForeignKey('hospital.unique_id'), primary_key = True, unique = False, index = True)
@@ -187,3 +186,81 @@ class Physician_schedule(db.Model):
     end_time = db.Column(db.DateTime, nullable = False)
     event_type = db.Column(db.String(64), nullable = False)
     appointments = db.relationship("Appointment", backref = 'physician_schedule', lazy = True)
+
+class Forum(db.Model):
+    forum_id = db.Column(db.Integer, primary_key = True)
+    forum_name = db.Column(db.String(128), unique = True, nullable = False)
+    hospital_id = db.Column(db.Integer, db.ForeignKey('hospital.unique_id'))
+    description = db.Column(db.Text, nullable = True, unique = False)
+    public = db.Column(db.Boolean, default = False)
+    posts = db.relationship('Post', backref = "forum", lazy = True)
+    members = db.relationship('Forum_members', backref = 'forum', lazy = True)
+
+class Forum_members(db.Model):
+    forum_id = db.Column(db.Integer, db.ForeignKey('forum.forum_id'), primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key = True)
+    role_id = db.Column(db.Integer, db.ForeignKey('forum_role.id'), nullable = False)
+    anonymous = db.Column(db.Boolean, default = False, nullable = False)
+    approved = db.Column(db.Boolean, default = False, nullable = False)
+
+class ForumPermission:
+    USER_PERMISSION = 0x01
+    MODERATOR_PERMISSION = 0x02
+    ADMIN_PERMISSION = 0x04
+
+class Forum_role(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(64), unique = True)
+    default = db.Column(db.Boolean, default=False, index=True)
+    permissions = db.Column(db.Integer)
+    member = db.relationship('Forum_members', backref = 'forum_role', lazy = 'dynamic')
+
+    @staticmethod
+    def insert_roles():
+        roles = {
+            'User' : (ForumPermission.USER_PERMISSION, True),
+            'Moderator' : (ForumPermission.MODERATOR_PERMISSION,
+                                False),
+            'Admin' : (ForumPermission.ADMIN_PERMISSION,
+                                False)
+        }
+        for r in roles:
+            role = Forum_role.query.filter_by(name = r).first()
+            if role is None:
+                role = Forum_role(name=r)
+            role.permissions = roles[r][0]
+            role.default = roles[r][1]
+            db.session.add(role)
+        db.session.commit()
+
+class Post(db.Model):
+    post_id = db.Column(db.Integer, primary_key = True)
+    forum_id = db.Column(db.Integer,db.ForeignKey('forum.forum_id'), nullable = False)
+    date_posted = db.Column(db.DateTime(), nullable = False, unique = False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable = False)
+    content = db.Column(db.Text, nullable = False, unique = False)
+    likes = db.relationship('Likes', backref = 'post', lazy = True)
+    comments = db.relationship('Reaction', backref = 'post', lazy = True)
+
+class Likes(db.Model):
+    post_id = db.Column(db.Integer, db.ForeignKey('post.post_id'), primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key = True)
+    date_liked = db.Column(db.DateTime(), nullable = False, unique = False)
+
+class Reaction(db.Model):
+    reaction_id = db.Column(db.Integer, primary_key = True)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.post_id'), nullable = False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable = False)
+    comment = db.Column(db.Text, nullable = True, unique = False)
+    date_commented = db.Column(db.DateTime(), nullable = False, unique = False)
+
+class Top_forums(db.Model):
+    hospital_id = db.Column(db.Integer, db.ForeignKey('hospital.unique_id'), primary_key = True)
+    forum_id = db.Column(db.Integer, db.ForeignKey('forum.forum_id'), primary_key = True)
+    subscribers = db.Column(db.Integer, unique = False, nullable = False)
+
+class Top_posts(db.Model):
+    hospital_id = db.Column(db.Integer, db.ForeignKey('hospital.unique_id'), primary_key = True)
+    post_id = db.Column(db.Integer, db.ForeignKey('post.post_id'), primary_key = True)
+    forum_id = db.Column(db.Integer,db.ForeignKey('post.forum_id'), primary_key = True)
+    subscribers = db.Column(db.Integer, unique = False, nullable = False)
