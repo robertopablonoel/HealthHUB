@@ -57,4 +57,10 @@ def create_app(config_name = config):
     from .upload import upload as upload_blueprint
     app.register_blueprint(upload_blueprint, url_prefix = '/upload')
 
+    from .profile import profile as profile_blueprint
+    app.register_blueprint(profile_blueprint, url_prefix = '/profile')
+
+    from .prescript import prescript as prescript_blueprint
+    app.register_blueprint(prescript_blueprint, url_prefix = '/prescript')
+
     return app
