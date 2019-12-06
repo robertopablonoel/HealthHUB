@@ -23,6 +23,7 @@ class User(UserMixin, db.Model):
     physicians = db.relationship('Physician', backref = 'user', lazy = True, passive_deletes=True)
     patient = db.relationship('Patient', backref = 'user', lazy = True, passive_deletes=True)
     Nurse = db.relationship('Nurse', backref = 'user', lazy = True, passive_deletes=True)
+    tasks = db.relationship('Task', backref = 'user', lazy = 'dynamic')
     hospital_id = db.Column(db.Integer, db.ForeignKey('hospital.unique_id'))
 
     def get_id(self):
@@ -78,12 +79,52 @@ class User(UserMixin, db.Model):
         self.last_seen = datetime.utcnow()
         db.session.add(self)
 
+    def launch_task(self, name, description, *args, **kwargs):
+        rq_job = current_app.task_queue.enqueue('app.tasks.' + name, self.user_id,
+                                                *args, **kwargs)
+        task_res = Task.query.filter(Task.name == name).first()
+        if not task_res:
+            task = Task(id=rq_job.get_id(), name=name, description=description,
+                        user=self, time_requested = datetime.utcnow())
+            db.session.add(task)
+            return task
+        else:
+            task_res.time_requested = datetime.utcnow()
+            db.session.add(task_res)
+            return task_res
+
+    def get_tasks_in_progress(self):
+        return Task.query.filter_by(user=self, complete=False).all()
+
+    def get_task_in_progress(self, name):
+        return Task.query.filter_by(name=name, user=self,
+                                    complete=False).first()
+
 class AnonymousUser(AnonymousUserMixin):
     def can(self, permissions):
         return False
 
     def is_administrator(self):
         return False
+
+class Task(db.Model):
+    id = db.Column(db.String(36), primary_key=True)
+    name = db.Column(db.String(128), index=True)
+    description = db.Column(db.String(128))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
+    complete = db.Column(db.Boolean, default=False)
+    time_requested = db.Column(db.DateTime())
+
+    def get_rq_job(self):
+        try:
+            rq_job = rq.job.Job.fetch(self.id, connection=current_app.redis)
+        except (redis.exceptions.RedisError, rq.exceptions.NoSuchJobError):
+            return None
+        return rq_job
+
+    def get_progress(self):
+        job = self.get_rq_job()
+        return job.meta.get('progress', 0) if job is not None else 100
 
 class Permission:
     USER_PERMISSION = 0x01
@@ -262,7 +303,5 @@ class Top_forums(db.Model):
     subscribers = db.Column(db.Integer, unique = False, nullable = False)
 
 class Top_posts(db.Model):
-    hospital_id = db.Column(db.Integer, db.ForeignKey('hospital.unique_id'), primary_key = True)
     post_id = db.Column(db.Integer, db.ForeignKey('post.post_id'), primary_key = True)
     forum_id = db.Column(db.Integer,db.ForeignKey('post.forum_id'), primary_key = True)
-    subscribers = db.Column(db.Integer, unique = False, nullable = False)
