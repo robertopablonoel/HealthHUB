@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}Create New Prescriptions{% endblock %}
+{% block head %}
+{{ super() }}
+<style type="text/css">
+</style>
+<div class="page-header">
+  <div style="text-align: center;">
+  <h1>Create New Prescription</h1>
+<div class="container">
+     {{ wtf.form_field(form.expir_date, class='form-control', placeholder='Enter date') }}
+     {{ wtf.form_field(form.description, class='form-control', placeholder='Enter A description ') }}
+   <p><input type=submit class='btn btn-warning btn-block'>
+  </div>
+
+{% endblock %}

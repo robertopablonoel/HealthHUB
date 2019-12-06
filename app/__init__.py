@@ -51,6 +51,12 @@ def create_app(config_name):
     from .forum import forum as forum_blueprint
     app.register_blueprint(forum_blueprint, url_prefix = '/forum')
 
+    from .prescript import prescript as prescript_blueprint
+    app.register_blueprint(prescript_blueprint, url_prefix = '/prescript')
+
+    from .profile import profile as profile_blueprint
+    app.register_blueprint(profile_blueprint, url_prefix = '/profile')
+
 
     return app
 

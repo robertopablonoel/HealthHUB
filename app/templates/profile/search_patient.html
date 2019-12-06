@@ -1,0 +1,59 @@
+
+
+
+{% block page_content %}
+<link href="//code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"</script> -->
+    <div>
+        <input name="autocomplete" type="text" id="autocomplete" class="form-control input-lg"/>
+    </div>
+
+    <script type="text/javascript">
+      console.log('-1')
+    </script>
+    <script type="text/javascript">
+      console.log('0')
+      var selected_id = null
+      $(function() {
+        console.log('1')
+          $('#autocomplete').autocomplete({
+              source:function(request, response) {
+                  $.getJSON("{{url_for('profile.autocomplete')}}",{
+                      q: request.term,
+                       // in flask, "q" will be the argument to look for using request.args
+                  }, function(data) {
+                      console.log(data)
+
+                      var array = data.Response === "False" ? [] : $.map(data.matching_results, function(m){
+                        return{
+                          label: m
+                        };
+                      });
+                      console.log("hero")
+                      console.log(array)
+                      response(array); // matching_results from jsonify
+                  });
+              },
+              minLength: 2,
+              select: function(event, ui) {
+                  console.log("hereo")
+                  console.log(ui.item.value);
+                  var selected_id = (ui.item.value[1]);
+                  $.ajax({
+                    type: 'POST',
+                    url: "{{url_for('profile.autocomplete')}}",
+                    data: JSON.stringify(selected_id),
+                    contentType: 'application/json',
+                });
+              }
+          });
+      })
+
+
+      </script>
+      <a href="{{ url_for('profile.patient') }}">Confirm Selection</a>
+
+{% endblock %}

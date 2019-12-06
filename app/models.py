@@ -19,6 +19,7 @@ class User(UserMixin, db.Model):
     creation_date = db.Column(db.DateTime(), default = datetime.utcnow)
     first_name = db.Column(db.String(64), unique = False, nullable = False)
     last_name = db.Column(db.String(64), unique = False, nullable = False)
+    #full_name = db.Column(db.String(64), unqiue = False, nullable = False)
     physicians = db.relationship('Physician', backref = 'user', lazy = True, passive_deletes=True)
     patient = db.relationship('Patient', backref = 'user', lazy = True, passive_deletes=True)
     Nurse = db.relationship('Nurse', backref = 'user', lazy = True, passive_deletes=True)
@@ -178,6 +179,7 @@ class Prescription(db.Model):
     date_prescribed = db.Column(db.Date, nullable = False)
     expir_date = db.Column(db.Date, nullable = False)
     description = db.Column(db.Text, nullable = True)
+    active = db.Column(db.Boolean, default = True)
 
 class Physician_schedule(db.Model):
     event_id = db.Column(db.Integer, primary_key = True)
