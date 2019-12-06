@@ -1,0 +1,8 @@
+HOW TO START SERVER:
+1. set DEV_DATABASE_URL=mysql://root:root@localhost:3306/ehr
+2. python manage.py shell
+3. from manage import db
+4. db.create_all()
+5. quit()
+6. python manage.py runserver
+
