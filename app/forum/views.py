@@ -45,15 +45,3 @@ def update_posts():
 @forum.route('/home', methods = ['GET', 'POST'])
 def home():
     return render_template('forum/home.html')
-
-@forum.route('/whatever', methods = ['GET','POST'])
-@login_required
-# @permission_required('')
-def whatever():
-    current_user.hospital_id
-    #Subquery to get all forums that user is a part of
-    user_forums = Forum_members.query.filter(Forum_members.user_id == current_user.user_id).subquery()
-    reactions = Post.query.join(Likes, (Post.post_id == Likes.post_id)).join(Reaction, (Post.post_id == Reaction.post_id)).subquery()
-
-    print(reactions)
-    return
