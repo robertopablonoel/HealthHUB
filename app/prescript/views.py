@@ -13,6 +13,7 @@ import re
 @login_required
 def new_prescription():
     form = NewPrescriptionForm()
+    print(form)
     if form.validate_on_submit():
         #search = request.args.get('search')
         #result = User.Query(user).filter(full_name.like('%' + search + '%')).all()
@@ -26,6 +27,7 @@ def new_prescription():
         print(prescription)
         db.session.commit()
         flash('New Prescription Created.')
+        session.pop("Patient_ID")
         #Need to figure out form formatting for where to throw each patient
     return render_template('prescript/new_prescription.html', form = form)
 

@@ -1,7 +1,5 @@
-
-
-
-{% block page_content %}
+{% block title %}Patient Search{% endblock %}
+{% block content %}
 <link href="//code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -54,6 +52,6 @@
 
 
       </script>
-      <a href="{{ url_for('static', filename = 'profile/patient.html') }}">Confirm Selection</a>
+      <a href="{{ url_for('profile.patient') }}">Confirm Selection</a>
 
 {% endblock %}
