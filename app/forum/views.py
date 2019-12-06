@@ -11,7 +11,6 @@ from dateutil.relativedelta import relativedelta
 import re
 from flask import Flask
 
-<<<<<<< HEAD
 @forum.route('/forums',  methods = ['GET','POST'])
 @login_required
 def forums():
@@ -42,7 +41,6 @@ def update_posts():
         current_user.launch_task(name = 'update_posts', description = 'Updating Top Posts')
         print('adding_task')
     db.session.commit()
-=======
 @forum.route('/home', methods = ['GET', 'POST'])
 def home():
     return render_template("/forum/forum_home.html")
@@ -51,11 +49,7 @@ def home():
 # @permission_required(Permission.ADMINISTRATOR)
 def get_top_tables():
     scheduler.add_job(func=update_tables, trigger = 'interval',seconds=8, id="1")
->>>>>>> 00dc6361c5b5dcbb17a25bcf0604623a46dd052f
 
-@forum.route('/home', methods = ['GET', 'POST'])
-def home():
-    return render_template('forum/home.html')
 
 @forum.route('/whatever', methods = ['GET','POST'])
 @login_required
