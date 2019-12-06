@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+{% block navbar %}
+{{ super() }}
+<nav class="top_nav">
+        <div class="home">
+        <a href="#" class="navLinks">
+            <i class="fa3 fa-home"></i>
+        </a>
+        </div>
+        <div class="search_box">
+                <div class = "search_wrap">
+                        <input type="text" class="textbox" placeholder="Search">
+                        <input title="Search" value="" type="submit" class="button">
+                </form>
+        </div>
+        <div class="profile">
+</nav>
+{% endblock %}
