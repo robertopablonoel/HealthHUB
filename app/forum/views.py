@@ -11,6 +11,9 @@ import re
 from flask_apscheduler import APScheduler
 from flask import Flask
 
+@forum.route('/home', methods = ['GET', 'POST'])
+def home():
+    return render_template("/forum/forum_home.html")
 @forum.route('/get_top_tables', methods = ['GET', 'POST'])
 # @login_required
 # @permission_required(Permission.ADMINISTRATOR)
