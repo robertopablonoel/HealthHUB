@@ -13,7 +13,6 @@ import re
 @profile.route('/patient', methods = ['GET','POST'])
 @login_required
 def patient():
-    print("yo yo you got ya bo")
     user_id = session["Patient_ID"]
     patient_user = User.query.filter_by(user_id = user_id).first_or_404()
     patient = Patient.query.filter_by(user_id = user_id).first_or_404()
