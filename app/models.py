@@ -242,6 +242,7 @@ class Forum(db.Model):
 
 class Forum_profile(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key = True)
+    username = db.Column(db.String(128), unique = True, nullable = False)
     bio = db.Column(db.Text, nullable = True, unique = False)
     # avatar = db.Column(db.String(128), unique = False, nullable = True)# screen_name = db.Column()
 
@@ -311,3 +312,4 @@ class Top_forums(db.Model):
 class Top_posts(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('post.post_id'), primary_key = True)
     forum_id = db.Column(db.Integer,db.ForeignKey('post.forum_id'), primary_key = True)
+    forum_name = db.Column(db.String(128), db.ForeignKey('forum.forum_name'), unique = False, nullable = False)

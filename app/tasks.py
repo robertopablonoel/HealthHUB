@@ -39,17 +39,20 @@ def update_forum(id):
 def update_posts(id):
     print('updating_posts')
     try:
-        top_likes = Post.query.join(Likes, (Post.post_id == Likes.post_id)) \
-                                .with_entities(Post.post_id, Post.forum_id, db.func.count(Likes.user_id)) \
-                                .group_by(Post.post_id, Post.forum_id).order_by(db.func.count(Likes.user_id).desc()).limit(25).all()
-        top_comments = Post.query.join(Reaction, (Post.post_id == Reaction.post_id)) \
-                                .with_entities(Post.post_id, Post.forum_id, db.func.count(Reaction.reaction_id)) \
-                                .group_by(Post.post_id, Post.forum_id).order_by(db.func.count(Reaction.reaction_id).desc()).limit(25).all()
+        top_likes = Post.query.join(Likes, (Post.post_id == Likes.post_id)).join(Forum, (Post.forum_id == Forum.forum_id)) \
+                                .with_entities(Post.post_id, Post.forum_id, Forum.forum_name, db.func.count(Likes.user_id)) \
+                                .group_by(Post.post_id, Post.forum_id, Forum.forum_name).order_by(db.func.count(Likes.user_id).desc()).limit(25).all()
+        top_comments = Post.query.join(Reaction, (Post.post_id == Reaction.post_id)).join(Forum, (Post.forum_id == Forum.forum_id)) \
+                                .with_entities(Post.post_id, Post.forum_id, Forum.forum_name, db.func.count(Reaction.reaction_id)) \
+                                .group_by(Post.post_id, Post.forum_id, Forum.forum_name).order_by(db.func.count(Reaction.reaction_id).desc()).limit(25).all()
+        print(top_likes)
+        print(top_comments)
         Top_posts.query.delete()
         top_likes = top_likes + [i for i in top_comments if i not in top_likes]
         for i in range(len(top_likes)):
             update_table = Top_posts(post_id = top_likes[i][0],
-                                        forum_id = top_likes[i][1])
+                                        forum_id = top_likes[i][1],
+                                        forum_name = top_likes[i][2])
             db.session.add(update_table)
         db.session.commit()
     except:

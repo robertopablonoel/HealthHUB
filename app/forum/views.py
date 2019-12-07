@@ -16,10 +16,12 @@ from flask import Flask
 def home():
     update_forum()
     update_posts()
-    top_forums = Top_forums.query.join(Forum, (Top_forums.forum_id == Forum.forum_id)).all()
-    top_posts = Top_posts.query.join(Post, (Top_posts.post_id == Post.post_id)).all()
-    forum_pro = Forum_profile.quer.filter(Forum_profile.user_id == current_user.user_id)
-    return render_template('forum/home.html', top_forums = top_forums, top_posts = top_posts, forum_pro = forum_pro)
+    top_f = Top_forums.query.join(Forum, (Top_forums.forum_id == Forum.forum_id)).filter(Top_forums.forum_id == Forum.forum_id).all()
+    top_p = db.session.query(Top_posts, Post).join(Post, Top_posts.post_id == Post.post_id).all()
+    # print([i for i, j in top_p])
+    forum_pro = Forum_profile.query.filter(Forum_profile.user_id == current_user.user_id)
+    user_forums = db.session.query(Forum_members, Forum).join(Forum, Forum_members.forum_id == Forum.forum_id).filter(Forum_members.user_id == current_user.user_id).all()
+    return render_template('forum/home.html', top_f = top_f, top_p = top_p, forum_pro = forum_pro, user_forums = user_forums)
 
 def update_forum():
     update_f_task = Task.query.filter(Task.name == "update_forum").first()
@@ -54,10 +56,10 @@ def profile():
     posted_posts = Post.query.filter(Post.user_id == current_user.user_id).order_by(Post.date_posted.desc()).all()
     liked_posts = Likes.query.join(Post, (Likes.post_id == Post.post_id)).filter(Likes.user_id == current_user.user_id) \
                                 .order_by(Likes.date_liked.desc()).all()
-    reaction_posts = Reaction.query.join(Post, (Reaction.post_id == Post.post_id)).filter(Reaction.user_id == current_user.user_id)
+    reaction_posts = Reaction.query.join(Post, (Reaction.post_id == Post.post_id)).filter(Reaction.user_id == current_user.user_id) \
                                     .order_by(Reaction.date_commented.desc()).all()
     user_attributes = User.query.filter(User.user_id == current_user.user_id).first()
-    forum_pro = Forum_profile.quer.filter(Forum_profile.user_id == current_user.user_id)
+    forum_pro = Forum_profile.query.filter(Forum_profile.user_id == current_user.user_id)
     #In order to access profile, you need to href for images, which will be a static path
     if request.method == "Post":
         if request.form.get('new_bio'):
@@ -71,14 +73,14 @@ def profile():
     return render_template('forum/profile.html', posted_posts = posted_posts, liked_posts = liked_posts, reaction_posts = reaction_posts, user_attributes = user_attributes, forum_pro = forum_pro)
 
 def profile_upload(req, user_id):
-    UPLOAD_FOLDER = "app/upload/files_uploaded/"
+    UPLOAD_FOLDER = "app/templates/files_uploaded/"
     USER_FOLDER = "profile/{}/".format(user_id)
-        print("Request Files", request.files)
+    print("Request Files", request.files)
     f = req.files['file']
     try:
-        f.save(os.path.join(UPLOAD_FOLDER, USER_FOLDER, secure_filename(f.filename)))
+        f.save(os.path.join(UPLOAD_FOLDER, USER_FOLDER, secure_filename("icon.png")))
     except FileNotFoundError:
         print("Encountered a FileNotFoundError, creating a file >>> ", USER_FOLDER)
         os.mkdir(os.path.join(UPLOAD_FOLDER, USER_FOLDER))
-        f.save(os.path.join(UPLOAD_FOLDER, USER_FOLDER, secure_filename(f.filename)))
+        f.save(os.path.join(UPLOAD_FOLDER, USER_FOLDER, secure_filename("icon.png")))
     files=os.listdir(os.path.join(UPLOAD_FOLDER, USER_FOLDER))

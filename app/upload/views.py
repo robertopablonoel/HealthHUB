@@ -15,8 +15,8 @@ import re
 from flask import Flask
 # Upload files routing
 
-UPLOAD_FOLDER = "app/upload/files_uploaded/"
-USER_FOLDER = "user_folder/"
+UPLOAD_FOLDER = "app/templates/files_uploaded/"
+USER_FOLDER = "files/"
 @upload.route("/uploads", methods=['GET','POST'])
 @login_required
 def uploads():

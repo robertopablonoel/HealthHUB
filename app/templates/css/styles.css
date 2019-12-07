@@ -1011,14 +1011,14 @@ input[type="file"] {
 }
 
 .post{
-	height: 15%;
+	height: 35%;
 	width: 99%;
 	border-bottom-color: grey;
 	border-bottom-width: 2px;
 	border-top-color: grey;
 	border-top-width: 2px;
 	display:grid;
-	grid-template-columns: 5% 7% 89%;
+	grid-template-columns: 5% 15% 81%;
 	grid-template-rows: 30% 70%;
 	margin-bottom:2px;
 	color: black;
@@ -1034,7 +1034,7 @@ input[type="file"] {
 	border-bottom-width: 1px;
 	border-bottom-color: grey;
 	display: grid;
-		grid-template-columns: 15% 80%;
+		grid-template-columns: 100%;
 	grid-template-rows: 100%;
 }
 
@@ -1044,11 +1044,13 @@ input[type="file"] {
 	grid-row-start: 1;
 	grid-row-end: 1;
 	text-align: left;
+	display: flex;
+	align-items: center;
 }
 
 .post_title{
-	grid-column-start: 2;
-	grid-column-end: 2;
+	grid-column-start: 1;
+	grid-column-end: 1;
 	grid-row-start: 1;
 	grid-row-end: 1;
 	text-align: left;
@@ -1082,13 +1084,12 @@ input[type="file"] {
 	grid-row-start: 2;
 	grid-row-end: 3;
 	display: flex;
-	align-items: center;
 }
 
 .post_frame{
 	position: relative;
-	height: 100%;
-	width: 70px;		/* desired width */
+	height: 80%;
+	width: 100%;		/* desired width */
 	overflow: hidden;
 	border-color: black;
 	border-width: 1px;
@@ -1107,8 +1108,8 @@ input[type="file"] {
   border: 1px solid grey;
 }
 .post_img{
-	height: 110%;
-	width: 75px;
+	height: 100%;
+	width: 100%;
 }
 
 .post_like{
