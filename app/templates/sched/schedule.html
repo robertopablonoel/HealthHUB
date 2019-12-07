@@ -32,6 +32,9 @@
     color: white;
     text-align: center;
   }
+  .fl_left{
+    float:right;
+  }
 
   i.fa {
     text-align: center;
@@ -74,6 +77,14 @@
     position: relative;
 
   }
+
+  .schedule_grid{
+    height: 2400px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 9% 13% 13% 13% 13% 13% 13% 13%;
+    grid-template-rows: repeat(96, 25px);
+  }
   /* #weekdays {
     border-bottom: 10px rgba(10, 10, 10, 1) !important;
   } */
@@ -87,7 +98,16 @@
 <body>
   <div id = "appointment" class = "container-fluid">
     <div id = "pad" class = "row"></div>
+    <div id = "form-container" class = "fl_left">
+      <div class = "row appointment-label text-center">
+        <h3>Appointment Form</h3>
+      </div>
+      <div id = "form" onchange="update_physician()">
+          {{ wtf.quick_form(form) }}
+      </div>
+  </div>
     <div id = "calendar" class = "col-md-9">
+
       <div id = "header" class = "row">
         <div id = "empty" class = "col-md-1"></div>
         <div id = "prev_button" class = "col-md-3">
@@ -116,31 +136,32 @@
         </div>
       </div>
       <div id = "scheduling-blocks" class = "container border-top">
-        <div id = "time" class = "col-md-1">
-          <div id = "hourly" class = "row" v-for="id in hour_of_day">
-            {a id a}
-          </div>
-        </div>
-          <div id = "calendar-table" class = "col-md-11">
-            <div class = "col weekday" id = "weekday" v-for="item in days_of_week"
-                  v-bind:key="item.id"
-                  v-bind:item="item"
-                  v-on:click = "createDiv"
-                  >
+        <div class = "schedule_grid">
+          <div id = "time" class = "col-md-1">
+            <div id = "hourly" class = "row" v-for="id in hour_of_day">
+              {a id a}
             </div>
           </div>
+            <div id = "calendar-table" class = "col-md-11">
+              <div class = "col weekday" id = "weekday" v-for="item in days_of_week"
+                    v-bind:key="item.id"
+                    v-bind:item="item"
+                    v-on:click = "createDiv"
+                    >
+              </div>
+            </div>
+          <div id="appt-blocks" class = >
+
+          </div>
         </div>
       </div>
-    <div id = "form-container" class = "col-md-3">
-      <div class = "row appointment-label text-center">
-        <h3>Appointment Form</h3>
-      </div>
-      <div id = "form">
-          {{ wtf.quick_form(form) }}
-      </div>
-  </div>
+
 
   <script type="text/javascript">
+    // Choosing the current physician
+    var node_value = document.getElementById('physician').value
+    console.log(node_value)
+
 
     // Each column will have a function that works on click
     //Step 1: create background + date finder (range, setter)
@@ -160,7 +181,7 @@
       return days_sub
     }
 
-    console.log(days_in_week())
+    <!-- console.log(days_in_week()) -->
 
     var moment_days = [...Array(7)]
     //Start day should be 0, then when it itterates, see day of week and end
@@ -247,9 +268,10 @@
       delimiters: ['{a','a}']
     })
 
-    var node_value = document.getElementById('physician').value
-    console.log(node_value)
-
+    function update_physician() {
+      var node_value = document.getElementById('physician').value
+      console.log(node_value)
+    }
     function update() {
       var taken_schedules = Array(0)
       {% for events in physician_schedule %}
@@ -265,7 +287,7 @@
       var curr_year = moment().format("YYYY")
       var curr_day = moment().format("DD")
       var now_time = moment(curr_year + "-" + curr_month + "-" + curr_day + " " + "07:00:00", "YYYY-MM-DD HH:mm:ss")
-      console.log(now_time.add(1, "days").format("YYYY-MM-DD HH:mm:ss"))
+      // console.log(now_time.add(1, "days").format("YYYY-MM-DD HH:mm:ss"))
       var quit = parseFloat(moment().endOf("month").format("D"))
       for(i = 0; i < quit; i++) {
         if (i != 0){
@@ -275,7 +297,7 @@
       }
         for(j=0; j < 22 ; j++){
           now_updated = now_updated.add(30,'minutes')
-          console.log(now_updated.format("YYYY-MM-DD HH:mm:ss"))
+          <!-- console.log(now_updated.format("YYYY-MM-DD HH:mm:ss")) -->
           moment_array.push(now_updated.format("YYYY-MM-DD HH:mm:ss"))
         }
       }
@@ -288,7 +310,7 @@
         // console.log(moment_array[i])
         if (taken_schedules.indexOf(moment_array[i]) == -1)  {
           new_array.push(moment_array[i])
-          console.log(moment_array[i])
+          <!-- console.log(moment_array[i]) -->
         }
       }
       var selected = document.getElementById('time_slot')
@@ -304,9 +326,7 @@
       }
     }
 
-    document.getElementById("physician").addEventListener("change", update)
-
-
+    console.log("This is the current selected physician >>> " + node_value)
   </script>
 
 </body>
