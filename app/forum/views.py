@@ -107,9 +107,9 @@ def page(forum_name):
                             content = text)
             db.session.add(new_post)
             db.session.commit()
+            flash('Post Submitted')
             return render_template('forum/page.html', curr_forum = curr_forum, forum_members = forum_members, forum_posts = forum_posts, subscribed = subscribed)
         else:
-            flash('Invalid Post')
             return render_template('forum/page.html', curr_forum = curr_forum, forum_members = forum_members, forum_posts = forum_posts, subscribed = subscribed)
         if request.method == "POST":
             if request.form['subscribe_button'] == 'subscribe':
