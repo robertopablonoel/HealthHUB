@@ -223,7 +223,6 @@ class Prescription(db.Model):
     notify = db.Column(db.Boolean, default = True)
 
 
-
 class Physician_schedule(db.Model):
     event_id = db.Column(db.Integer, primary_key = True)
     physician_id = db.Column(db.Integer, db.ForeignKey('physician.user_id'), nullable = False)

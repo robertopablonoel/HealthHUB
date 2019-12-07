@@ -18,7 +18,6 @@ def home():
     update_posts()
     top_f = Top_forums.query.join(Forum, (Top_forums.forum_id == Forum.forum_id)).filter(Top_forums.forum_id == Forum.forum_id).all()
     top_p = db.session.query(Top_posts, Post, Forum_profile).join(Post, Top_posts.post_id == Post.post_id).join(Forum_profile, Post.user_id == Forum_profile.user_id).all()
-    print(top_p)
     forum_pro = Forum_profile.query.filter(Forum_profile.user_id == current_user.user_id)
     user_forums = db.session.query(Forum_members, Forum).join(Forum, Forum_members.forum_id == Forum.forum_id).filter(Forum_members.user_id == current_user.user_id).all()
     return render_template('forum/home.html', top_f = top_f, top_p = top_p, forum_pro = forum_pro, user_forums = user_forums)
@@ -84,3 +83,19 @@ def profile_upload(req, user_id):
         os.mkdir(os.path.join(UPLOAD_FOLDER, USER_FOLDER))
         f.save(os.path.join(UPLOAD_FOLDER, USER_FOLDER, secure_filename("icon.png")))
     files=os.listdir(os.path.join(UPLOAD_FOLDER, USER_FOLDER))
+
+@forum.route('/page/<forum_name>', methods = ['GET', 'POST'])
+def page(forum_name):
+    curr_forum = Forum.query.filter(Forum.forum_name == forum_name).first()
+    if request.method == "POST":
+        if request.form.get('new_post'):
+            pass
+    if curr_forum:
+        forum_members = Forum_members.query.filter(Forum_members.forum_id == curr_forum.forum_id).all()
+        forum_posts = db.session.query(Post, Likes, Reaction).join(Likes, (Post.post_id == Likes.post_id)).join(Reaction, (Post.post_id == Reaction.post_id)).filter(Post.forum_id == curr_forum.forum_id).all()
+        print(forum_posts)
+        return render_template('forum/page.html', curr_forum = curr_forum, forum_members = forum_members, forum_posts = forum_posts)
+    else:
+        return redirect(url_for('forum.home'))
+
+#Post functionality for posting
