@@ -85,7 +85,7 @@ def profile_upload(req, user_id):
         f.save(os.path.join(UPLOAD_FOLDER, USER_FOLDER, secure_filename("icon.png")))
     files=os.listdir(os.path.join(UPLOAD_FOLDER, USER_FOLDER))
 
-@forum.route('/page/<forum_name>', methods = ['GET', 'POST'])
+@forum.route('/hh/<forum_name>', methods = ['GET', 'POST'])
 def page(forum_name):
     curr_forum = Forum.query.filter(Forum.forum_name == forum_name).first()
     if request.method == "POST":

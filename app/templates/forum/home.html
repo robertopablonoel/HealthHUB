@@ -9,15 +9,11 @@
         <section class="forum_grid">
             <section class="whitebox b1">
               <ul class = "post_container horizontal">
-                <li class = "b1_forum">1</li>
-                <li class = "b1_forum">2</li>
-                <li class = "b1_forum">3</li>
-                <li class = "b1_forum">4</li>
-                <li class = "b1_forum">5</li>
-                <li class = "b1_forum">6</li>
-                <li class = "b1_forum">7</li>
-                <li class = "b1_forum">8</li>
-                <li class = "b1_forum">9</li>
+                {% for members, forums in user_forums %}
+                  <li class = "b1_forum">
+                    <a href="{{ url_for('forum.page', forum_name=forums.forum_name)}}"><h4>hh/{{ forums.forum_name }}</h4></a>
+                  </li>
+                {% endfor %}
               </ul>
 
             </section>
@@ -26,11 +22,10 @@
             <section class="whitebox b2">
               <ul class = "post_container pushed">
               {% for top_post, post, profile in top_p %}
-
                   <li class = "post">
                     <div class = "post_title_area">
                       <div class = "post_title">
-                      <a href="{{ url_for('forum.page', forum_name=top_post.forum_name)}}"><h1>/{{ top_post.forum_name }}</h1></a>
+                      <a href="{{ url_for('forum.page', forum_name=top_post.forum_name)}}"><h1>hh/{{ top_post.forum_name }}</h1></a>
                       </div>
                     </div>
                       <div class = "post_content">
@@ -50,7 +45,7 @@
                         </div>
                       </div>
                   </li>
-                  {% endfor %}
+                {% endfor %}
                 </ul>
 
             {% endif %}
@@ -63,12 +58,13 @@
             </section>
             <section class="whitebox b4">
               <div class = "forum_container">
-                <div class = "top_ forums_title">
+                <div class = "top_forums_title">
                 </div>
                 <div class = "top_forums_content pushed">
                   {% for top, forum in top_f %}
-                  <div class = "top_forum_row">
-                  </div>
+                  <li class = "top_forum_row numbered">
+                    <a href="{{ url_for('forum.page', forum_name=forum.forum_name)}}"><h1>hh/{{ forum.forum_name }}</h1></a>
+                  </li>
                   {% endfor %}
                 </div>
               </div>
