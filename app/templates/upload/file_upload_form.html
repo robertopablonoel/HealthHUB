@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}HealthHub - Upload Files{% endblock %}
+{% block head %}
+{{ super() }}
+<!DOCTYPE html>
+{% endblock %}
+{% block content %}
+  <form action="http://localhost:5000/upload/uploader" method="POST" enctype="multipart/form-data">
+    <input type="file" name="file">
+    <input type="submit">
+  </form>
+{% endblock %}

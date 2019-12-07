@@ -11,14 +11,14 @@ from dateutil.relativedelta import relativedelta
 import re
 from flask import Flask
 
-@forum.route('/forums',  methods = ['GET','POST'])
+@forum.route('/home',  methods = ['GET','POST'])
 @login_required
-def forums():
+def home():
     update_forum()
     update_posts()
     top_forums = Top_forums.query.join(Forum, (Top_forums.forum_id == Forum.forum_id)).all()
     top_posts = Top_posts.query.join(Post, (Top_posts.post_id == Post.post_id)).all()
-    return render_template('forum/forum.html', top_forums = top_forums, top_posts = top_posts)
+    return render_template('forum/home.html', top_forums = top_forums, top_posts = top_posts)
 
 def update_forum():
     update_f_task = Task.query.filter(Task.name == "update_forum").first()
@@ -42,6 +42,6 @@ def update_posts():
         print('adding_task')
     db.session.commit()
 
-@forum.route('/home', methods = ['GET', 'POST'])
-def home():
-    return render_template('forum/home.html')
+@forum.route('/forums', methods = ['GET', 'POST'])
+def forums():
+    return 

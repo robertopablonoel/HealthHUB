@@ -1,13 +1,27 @@
-<<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-  </head>
-  <body>
-    <form action="http://localhost:5000/uploader" method="POST" enctype="multipart/form-data">
-      <input type="file" name="file">
-      <input type="submit">
-    </form>
-  </body>
-</html>
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}HealthHub - Upload Files{% endblock %}
+{% block head %}
+{{ super() }}
+<!DOCTYPE html>
+{% endblock %}
+{% block content %}
+<div class = "outer center">
+  <div class = "general_container whitebox">
+    <div class = "fm_grid">
+      <div class = "fm_top">
+        <form action="http://localhost:5000/upload/uploader" method="POST" enctype="multipart/form-data">
+          <input type="file" name="file" class= "fm_button">
+          <input type="submit" name = "upload"class= "fm_button">
+        </form>
+        </div>
+      <div class = "fm_bottom pushed">
+        {% for file in files %}
+        <li class = "file_li"> {{file}} <input type="submit" value = "view" name = "view" class= "view_button"> </li>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
