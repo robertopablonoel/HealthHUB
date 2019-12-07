@@ -219,14 +219,8 @@ class Prescription(db.Model):
     date_prescribed = db.Column(db.Date, nullable = False)
     expir_date = db.Column(db.Date, nullable = False)
     description = db.Column(db.Text, nullable = True)
-<<<<<<< HEAD
     active = db.Column(db.Boolean, default = True)
     notify = db.Column(db.Boolean, default = True)
-
-=======
-
-    #active = db.Column(db.Boolean, default = True)
->>>>>>> refs/remotes/origin/master
 
 
 class Physician_schedule(db.Model):
