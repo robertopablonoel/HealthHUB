@@ -15,13 +15,17 @@ import re
 from flask import Flask
 # Upload files routing
 
-UPLOAD_FOLDER = "app/upload/files_uploaded/"
-USER_FOLDER = "user_folder/"
+UPLOAD_FOLDER = "app/templates/files_uploaded/"
+USER_FOLDER = "files/"
 @upload.route("/uploads", methods=['GET','POST'])
+@login_required
 def uploads():
-    return render_template("upload/file_upload.html")
+    files=os.listdir(os.path.join(UPLOAD_FOLDER, USER_FOLDER))
+    print(files)
+    return render_template("upload/file_upload.html", files=files)
 
 @upload.route("/uploader", methods=['GET','POST'])
+@login_required
 def uploader():
     print('arrived')
     if request.method == "POST":
@@ -36,8 +40,10 @@ def uploader():
         # print(os.getcwd())
         # print(os.path.join(UPLOAD_FOLDER, USER_FOLDER))
         # f.save(os.path.join(UPLOAD_FOLDER,USER_FOLDER,secure_filename(f.filename)))
-        return('File uploaded successfully')
+        files=os.listdir(os.path.join(UPLOAD_FOLDER, USER_FOLDER))
+        return render_template("upload/file_upload.html", files=files)
 
 @upload.route("/file_viewer")
+@login_required
 def view_file():
     return render_template("upload/file_viewer.html")

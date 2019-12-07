@@ -28,6 +28,9 @@ def schedule():
         db.session.add(event)
         db.session.commit()
         return redirect(url_for("main.index"))
+    print("Form >>> ", form, '\n')
+    print("Phyician schedule >>> ", physician_schedule, '\n')
+    print("Permissions >>> ", Permission, '\n')
     return render_template('sched/schedule.html', form = form, physician_schedule = physician_schedule, permissions = Permission)
 
 #Here comes the scheduling code...

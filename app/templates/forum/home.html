@@ -8,16 +8,54 @@
     <div class="middle">
         <section class="forum_grid">
             <section class="whitebox b1">
+              <ul class = "post_container horizontal">
+                <li class = "b1_forum">1</li>
+                <li class = "b1_forum">2</li>
+                <li class = "b1_forum">3</li>
+                <li class = "b1_forum">4</li>
+                <li class = "b1_forum">5</li>
+                <li class = "b1_forum">6</li>
+                <li class = "b1_forum">7</li>
+                <li class = "b1_forum">8</li>
+                <li class = "b1_forum">9</li>
+              </ul>
+
 
             </section>
+            {% if current_user.is_authenticated %}
+
             <section class="whitebox b2">
-                
+              <ul class = "post_container pushed">
+              {% for top_post, post, profile in top_p %}
+
+                  <li class = "post">
+                    <div class = "post_title_area">
+                      <div class = "post_title">
+                      <h1>/{{top_post.forum_name}}</h1>
+                      </div>
+                    </div>
+                      <div class = "post_content">
+                        <div class = "post_content_box pushed2">
+                          <p>{{ post.content }}</p>
+                        </div>
+                      </div>
+                      <div class = "post_like"></div>
+                      <div class = "post_poster">
+                        <div class = "post_frame">
+                          <img src="{{ url_for('static', filename= 'files_uploaded/profile/' + (current_user.user_id)|string + '/icon.png') }}" class="post_img" />
+                        <\div>
+                      <\div>
+                  </li>
+                  {% endfor %}
+                </ul>
+
+            {% endif %}
             </section>
             <section class="whitebox b3">
-                
+
             </section>
             <section class="whitebox b4">
-            
+
             </section>
 
 
