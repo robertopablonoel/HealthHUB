@@ -426,8 +426,9 @@
 	grid-row-start: 3;
 	grid-row-end: 3;
 	display: grid;
-	grid-template-columns: 80% 20%;
+	grid-template-columns: 80% 10% 10%;
 	grid-template-rows: 70% 30%;
+	padding:1%;
 }
 
 .extend2{
@@ -1229,7 +1230,7 @@ input[type="file"] {
 
 .post_field{
 	grid-column-start: 1;
-	grid-column-end: 3;
+	grid-column-end: 4;
 	grid-row-start: 1;
 	grid-row-end: 1;
 	color: black;
@@ -1239,10 +1240,60 @@ input[type="file"] {
 {
     height: 100%;
 		width: 100%;
-    font-size:14pt;
-		padding: 5px;
+    font-size:10pt;
+		padding: 10px;
+		resize: none;
 }
 
-#username{
-	float:
+#charNum{
+	grid-column-start: 2;
+	grid-column-end: 3;
+	grid-row-start: 1;
+	grid-row-end: 1;
+	color: black;
+}
+
+.post_submit {
+	grid-column-start: 2;
+	grid-column-end: 2;
+	grid-row-start: 2;
+	grid-row-end: 2;
+	box-shadow:inset 0px 1px 0px 0px #bbdaf7;
+	background:linear-gradient(to bottom, #79bbff 5%, #378de5 100%);
+	background-color:#79bbff;
+	border-radius:6px;
+	border:1px solid #84bbf3;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #528ecc;
+}
+.post_submit:hover {
+	background:linear-gradient(to bottom, #378de5 5%, #79bbff 100%);
+	background-color:#378de5;
+}
+.post_submit:active {
+	position:relative;
+	top:1px;
+}
+.post-form{
+	grid-column-start: 1;
+	grid-column-end: 1;
+	grid-row-start: 3;
+	grid-row-end: 3;
+	display: grid;
+	grid-template-columns: 90% 10%;
+	grid-template-rows: 70% 30%;
+	padding:1%;
+}
+
+.control-label {
+	display: none;
+}
+
+.alert{
+	z-index: 500;
 }

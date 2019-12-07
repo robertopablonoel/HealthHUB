@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, IntegerField, TextField#,DateField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, IntegerField, TextField, TextAreaField#,DateField
 from wtforms.validators import Required, Email, Length, Regexp, EqualTo, NumberRange
 from wtforms import ValidationError
 from wtforms.fields.html5 import DateField
@@ -11,5 +11,5 @@ from wtforms.widgets.core import html_params
 from wtforms.widgets import HTMLString
 
 class PostForm(FlaskForm):
-    text = TextField('Post', validators = [Required(), Length(10,180)])
+    text = TextAreaField('Post', validators = [Required(), Length(10,250)])
     submit = SubmitField('Post')

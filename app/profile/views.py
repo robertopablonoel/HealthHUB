@@ -9,36 +9,50 @@ from flask_jsonpify import jsonify
 from flask import session
 import re
 
-
-@profile.route('/patient', methods = ['GET','POST'])
+@profile.route('/set_search')
 @login_required
-def patient():
-    if Patient.query.filter_by(user_id = current_user.user_id).first() == True:
-        user_id = current_user.user_id
-        patient_user = current_user
-    else:
-        user_id = session["Patient_ID"]
-        patient_user = User.query.filter_by(user_id = user_id).first_or_404()
-    patient = Patient.query.filter_by(user_id = user_id).first_or_404()
-    prescription = Prescription.query.filter_by(patient_id = user_id).all()
-    if request.form.get('active'):
-        prescription_id = int(request.form['active'][:-1])
-        target_prescript = Prescription.query.filter_by(prescription_id = prescription_id)
-        print(target_prescript)
-        target_prescript.active = int(request.form['active'][-1])
-        print(target_prescript)
-        db.session.commit()
-        flash("Update Succesful")
-        return redirect(url_for('profile.patient'))
-    if request.form.get('notify'):
-        print('ding this is a Notify')
-
-    return render_template('profile/patient.html', patient_user = patient_user, patient = patient, prescription = prescription)
+def set_search():
+    if session.get("Patient_ID") != None:
+        session.pop("Patient_ID")
+    return redirect(url_for('profile.search'))
 
 @profile.route('/search', methods = ['GET', 'POST'])
 @login_required
 def search():
-    return render_template('profile/search_patient.html')
+    print(session.get("Patient_ID"))
+    if session.get("Patient_ID") == None:
+        return render_template('profile/search_patient.html')
+    user_id = session.get("Patient_ID")
+    patient_user = User.query.filter_by(user_id = user_id).first_or_404()
+    patient = Patient.query.filter_by(user_id = user_id).first_or_404()
+    prescription = Prescription.query.filter_by(patient_id = user_id).all()
+
+    if request.form.get('active'):
+        prescription_id = int(request.form['active'][:-1])
+        status = int(request.form['active'][-1])
+        target_prescript = Prescription.query.filter_by(prescription_id = prescription_id).first()
+        target_prescript.active = int(request.form['active'][-1])
+        db.session.commit()
+        flash("Update Succesful")
+        session["Patient_ID"] = user_id
+        print("this")
+        print(session.get("Patient_ID"))
+        print("one")
+        return redirect(url_for('profile.search'))
+
+    if request.form.get('notify'):
+        prescription_id = int(request.form['notify'][:-1])
+        status = int(request.form['notify'][-1])
+        target_prescript = Prescription.query.filter_by(prescription_id = prescription_id).first()
+        print(status)
+        target_prescript.notify = int(request.form['notify'][-1])
+        db.session.commit()
+        flash("Update Succesful")
+        session["Patient_ID"] = user_id
+        return redirect(url_for('profile.search'))
+    return render_template('profile/search_patient_alt.html', patient_user = patient_user, patient = patient, prescription = prescription)
+
+
 
 #<a href="{{ url_for('profile.patient', user_id=selected_id) }}">Confirm Selection</a>
 @profile.route('/autocomplete', methods = ['GET', 'POST'])
@@ -56,3 +70,21 @@ def autocomplete():
         session["Patient_ID"] = int(request.get_json())
         print(session["Patient_ID"])
         return render_template('profile/search_patient.html')
+
+@profile.route("/patient")
+@login_required
+def patient():
+    user_id = current_user.user_id
+    patient_user = User.query.filter_by(user_id = user_id).first_or_404()
+    patient = Patient.query.filter_by(user_id = user_id).first_or_404()
+    prescription = Prescription.query.filter_by(patient_id = user_id).all()
+    if request.form.get('notify'):
+        prescription_id = int(request.form['notify'][:-1])
+        status = int(request.form['notify'][-1])
+        target_prescript = Prescription.query.filter_by(prescription_id = prescription_id).first()
+        print(status)
+        target_prescript.notify = int(request.form['notify'][-1])
+        db.session.commit()
+        flash("Update Succesful")
+        return redirect(url_for('profile.patient'))
+    return render_template('profile/patient.html', patient_user = patient_user, patient = patient, prescription = prescription)
