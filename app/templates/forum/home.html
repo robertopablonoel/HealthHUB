@@ -26,7 +26,7 @@
 
             <section class="whitebox b2">
               <ul class = "post_container pushed">
-              {% for top_post, post in top_p %}
+              {% for top_post, post, profile in top_p %}
 
                   <li class = "post">
                     <div class = "post_title_area">
@@ -41,10 +41,15 @@
                       </div>
                       <div class = "post_like"></div>
                       <div class = "post_poster">
-                        <div class = "post_frame">
-                          <img src="{{ url_for('static', filename= 'files_uploaded/profile/' + (current_user.user_id)|string + '/icon.png') }}" class="post_img" />
-                        <\div>
-                      <\div>
+                        <div class = "post_top">
+                          <div class = "post_frame">
+                            <img src="{{ url_for('static', filename= 'files_uploaded/profile/' + (current_user.user_id)|string + '/icon.png') }}" class="post_img" />
+                          </div>
+                        </div>
+                        <div class = "post_bottom">
+                          <h3>{{profile.username}}</h3>
+                        </div>
+                      </div>
                   </li>
                   {% endfor %}
                 </ul>
@@ -52,12 +57,32 @@
             {% endif %}
             </section>
             <section class="whitebox b3">
-
+              <div class = "profile_container">
+              </div>
 
             </section>
             <section class="whitebox b4">
               <div class = "forum_container">
                 <div class = "top_forums_title">
+                </div>
+                <div class = "top_forums_content pushed">
+                  <div class = "top_forum_row">
+                  </div>
+                  <div class = "top_forum_row">
+                  </div>
+                  <div class = "top_forum_row">
+                  </div>
+                  <div class = "top_forum_row">
+                  </div>
+                  <div class = "top_forum_row">
+                  </div>
+                  <div class = "top_forum_row">
+                  </div>
+
+                  <div class = "top_forum_row">
+                  </div>
+                  <div class = "top_forum_row">
+                  </div>
                 </div>
               </div>
 
