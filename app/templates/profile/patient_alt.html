@@ -26,11 +26,22 @@
         <div class="panel-heading">Email Address</div>
         <div class="panel-body">{{patient_user.email}}</div>
       </div></div></div>
-{% if prescription %}
+      {% if prescription %}
       <div class="panel panel-info">
         <div class="panel-heading">Prescriptions</div>
         {<div class = "container">
   <div class = "formwrapper">
+    <h2>Book Your Departure Flight</h2>
+    <form method = "POST" action = "{{url_for('profile.patient')}}">
+      <div class = "row">
+        <div class = "col-md-5">
+          <div class="form-field">{{ form.active.label }} {{ form.active }}
+          </div>
+          <div class="form-field">{{ form.notify.label }} {{ form.notify }}
+        </div>
+          {{ form.submit }}
+        </div>
+      </div>
   <div class = "row">
     <div class = "col-md-12">
       <table class = "table">
@@ -42,50 +53,19 @@
             <th scope="col">Expiration Date</th>
             <th scope="col">Description</th>
             <th scope="col">Active</th>
-            <th scope="col">Notify</th>
+            <th scope="col">Notify/th>
           </tr>
         </thead>
         <tbody>
           {% for script in prescription %}
-            <tr class="clickable-row" data-href="{{url_for('profile.patient')}}">
+            <tr class="clickable-row" data-href="{{ url_for('profile.modify_prescript', prescription_id = script.prescription_id)}}">
               <td>{{script.prescription_id}}</td>
               <td>{{script.physician_id}}</td>
-              <td>{{script.date_prescribed}}</td>
+              <td>{{script.start_date}}</td>
               <td>{{script.expir_date}}</td>
               <td>{{script.description[:30]}}...</td>
-              <td>
-
-                <form action="{{ url_for('profile.patient') }}" method="post">
-                  <div class="form-group">
-                    <select class="form-control" id="active" name="active">
-                      <option value={{script.prescription_id}}0>NO</option>
-                      <option value={{script.prescription_id}}1>YES</option>
-                    </select>
-                  </div>
-                    <div class="form-control">
-                  <button class="btn btn-default" type="submit">Submit!</button>
-                    </div>
-                </form>
-
-              </td>
-              <td>{% if script.notify == 0 %}
-                <form name="active" method="post">
-                  <select>
-                    <option value=0>NO</option>
-                    <option value=1>YES</option>
-                  </select>
-                  <submit type="submit" name ="active"/>
-                </form>
-                  {% else %}
-                  <form name="notify" method="post">
-                    <select>
-                      <option value=1>YES</option>
-                      <option value=0>NO</option>
-                    </select>
-                    <submit type="submit" value ="UPDATE"/>
-                  </form>
-                  {% endif %}
-              </td>
+              <td>{{script.Active}}</td>
+              <td>{{script.Notify}}</td>
             </tr>
           {% endfor %}
         <tbody>
@@ -93,8 +73,17 @@
     </div>
   </div>
 </div>
-</div>
-{% endif %}
+<script type="text/javascript">
+
+  jQuery(document).ready(function($) {
+    $(".clickable-row").click(function() {
+      window.location = $(this).data("href")
+    })
+  })
+
+</script>
+      </div>
+      {% endif %}
 
       <div>
         <ul>
