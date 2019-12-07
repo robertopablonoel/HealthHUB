@@ -240,6 +240,11 @@ class Forum(db.Model):
     posts = db.relationship('Post', backref = "forum", lazy = True)
     members = db.relationship('Forum_members', backref = 'forum', lazy = True)
 
+class Forum_profile(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key = True)
+    bio = db.Column(db.Text, nullable = True, unique = False)
+    # avatar = db.Column(db.String(128), unique = False, nullable = True)# screen_name = db.Column()
+
 class Forum_members(db.Model):
     forum_id = db.Column(db.Integer, db.ForeignKey('forum.forum_id'), primary_key = True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key = True)
