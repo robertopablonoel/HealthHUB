@@ -302,7 +302,7 @@
   }
 
 .forum_grid{
-	grid-template-rows: 3% 10% 42% 42%;
+	grid-template-rows: 3% 10% 41% 41%;
 	display: grid;
 	vertical-align: middle;
 	position: absolute;
@@ -321,7 +321,7 @@
 }
 
 .forum_grid2{
-	grid-template-rows: 3% 10% 15% 34.5% 34.5%;
+	grid-template-rows: 3% 10% 15% 17% 17% 30%;
 	display: grid;
 	vertical-align: middle;
 	position: absolute;
@@ -412,6 +412,30 @@
 	grid-template-columns: repeat(8, 12.5%);
 }
 
+.forum_profile_container{
+	display:grid;
+	height: 100%;
+	width: 100%;
+	grid-template-rows: repeat(10, 10%);
+	grid-template-columns: repeat(8, 12.5%);
+}
+
+.forum_prof_top{
+	grid-column-start: 1;
+	grid-column-end: 9;
+	grid-row-start: 1;
+	grid-row-end: 4;
+}
+
+.forum_prof_top::after{
+	display: block;
+  position: relative;
+  
+  margin-top: -150px;
+  height: 150px;
+  width: 100%;
+  content: '';
+}
 
 .b4{
 	grid-column-start: 2;
@@ -433,15 +457,16 @@
 
 .extend2{
 	grid-row-start: 4;
-	grid-row-end: 6;
+	grid-row-end: 7;
 }
 
 .extend3{
-	grid-row-end: 4;
+	grid-row-end: 5;
 }
 
 .extend4{
-	grid-row-end: 6;
+	grid-row-start: 5;
+	grid-row-end: 7;
 }
 .whitebox{
 	width: 100%;
@@ -1047,14 +1072,14 @@ input[type="file"] {
 }
 
 .post{
-	height: 35%;
+	height: 130px;
 	width: 99%;
 	border-bottom-color: grey;
 	border-bottom-width: 2px;
 	border-top-color: grey;
 	border-top-width: 2px;
 	display:grid;
-	grid-template-columns: 5% 15% 81%;
+	grid-template-columns: 3% 10% 88%;
 	grid-template-rows: 20% 80%;
 	margin-bottom:2px;
 	color: black;
@@ -1138,6 +1163,8 @@ input[type="file"] {
 	grid-column-end: 1;
 	grid-row-start: 2;
 	grid-row-end: 2;
+	overflow: hidden;
+	background:linear-gradient(to bottom, #79bbff 5%, #378de5 100%);
 }
 
 .post_frame{
@@ -1226,6 +1253,12 @@ input[type="file"] {
 	opacity: 0.5;
 	max-width:200%;
   height:auto;
+}
+
+.xmas_img{
+	top: 40%;
+	width:100%;
+  height:100%;
 }
 
 .post_field{
