@@ -219,7 +219,9 @@ class Prescription(db.Model):
     date_prescribed = db.Column(db.Date, nullable = False)
     expir_date = db.Column(db.Date, nullable = False)
     description = db.Column(db.Text, nullable = True)
-    #active = db.Column(db.Boolean, default = True)
+    active = db.Column(db.Boolean, default = True)
+    notify = db.Column(db.Boolean, default = True)
+
 
 class Physician_schedule(db.Model):
     event_id = db.Column(db.Integer, primary_key = True)

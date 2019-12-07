@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}User Profile At a Glance{% endblock %}
+{% block page_content %}
+{{ super() }}
+<html>
+<<style media="screen">
+
+</style>
+<div class="user-profile">
+  <div class="page-header">
+    <h2>User Profile</h2>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="panel panel-primary">
+        <div class="panel-heading">First Name:</div>
+        <div class="panel-body">{{ patient_user.first_name }}</div>
+        <div class="panel-heading">Last Name:</div>
+        <div class="panel-body">{{ patient_user.last_name }}</div>
+        <div class="panel-heading">Date of Birth:</div>
+        <div class="panel-body">{{ patient.date_of_birth }}</div>
+        <div class="panel-heading">insurance ID:</div>
+        <div class="panel-body">{{ patient.insurance_id }}</div>
+        <div class="panel-heading">Email Address</div>
+        <div class="panel-body">{{patient_user.email}}</div>
+      </div></div></div>
+      {% if prescription %}
+      <div class="panel panel-info">
+        <div class="panel-heading">Prescriptions</div>
+        {% for prescript in prescription %}
+          <div><p><b>Prescription ID:</b> {{prescript.prescription_id}}
+                  <b>Date Prescribed:</b> {{prescript.date_prescribed}}
+                  <b>Expiration Date:</b> {{prescript.expir_date}}
+                  <b>Active:</b> {% if prescript.active == 1 %} Yes {% else %} No {% endif %}
+                  <b>Desript:</b> {% if prescript.description | length > 30 %} {{prescript.description[0:30]}}...
+                                  {% else %} {{prescript.description}} {% endif %}
+
+                                  
+          </p></div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <div>
+        <ul>
+          <li><a href="{{ url_for('prescript.new_prescription') }}">Create New Prescription</a>
+        </ul>
+      </div>
+</html>
+{% endblock %}
