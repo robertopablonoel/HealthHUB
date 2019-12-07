@@ -101,17 +101,18 @@ def page(forum_name):
                                 .group_by(Post.post_id).order_by(Post.date_posted.desc()).all()
                                 # .all()
         subscribed = get_subscribed(forum_members)
-        if form.validate_on_submit():
-            try:
-                add_post(form.text.data, curr_forum)
-                flash('Post Submitted')
-                return redirect(url_for('forum.page', forum_name = forum_name))
-            except:
-                flash('Post Failed to Submit')
-                return redirect(url_for('forum.page', forum_name = forum_name))
-        else:
-            return render_template('forum/page.html', form = form, curr_forum = curr_forum, forum_members = forum_members, forum_posts = forum_posts, subscribed = subscribed)
         if request.method == "POST":
+            if ("Post" in request.form) & form.validate_on_submit():
+                try:
+                    add_post(form.text.data, curr_forum)
+                    flash('Post Submitted')
+                    return redirect(url_for('forum.page', forum_name = forum_name))
+                except:
+                    flash('Post Failed to Submit')
+                    return redirect(url_for('forum.page', forum_name = forum_name))
+            else:
+                return render_template('forum/page.html', form = form, curr_forum = curr_forum, forum_members = forum_members, forum_posts = forum_posts, subscribed = subscribed)
+
             if request.form['subscribe_button'] == 'subscribe':
                 subscribed = add_subscription(curr_forum)
                 flash('You have successfully subscribed')
@@ -122,6 +123,8 @@ def page(forum_name):
                 subscribed = False
                 flash('You have been successfully unsubscribed')
                 return redirect(url_for('forum.home'))
+        else:
+            return render_template('forum/page.html', form = form, curr_forum = curr_forum, forum_members = forum_members, forum_posts = forum_posts, subscribed = subscribed)
     else:
         flash('Invalid Forum Route')
         return redirect(url_for('forum.home'))
