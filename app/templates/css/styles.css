@@ -1121,3 +1121,19 @@ input[type="file"] {
 	background:linear-gradient(to bottom, #f9f9f9 5%, #e9e9e9 100%);
 	background-color:#f9f9f9;
 }
+
+.forum_container{
+	display:grid;
+	height: 100%;
+	width: 100%;
+	grid-template-columns: 100%;
+	grid-template-rows: 15% 85%;
+}
+
+.top_forums_title{
+	grid-column-start: 1;
+	grid-column-end: 1;
+	grid-row-start: 1;
+	grid-row-end: 1;
+	background: linear-gradient(to bottom, #4690e7 5%, #3b5998 100%);
+}
