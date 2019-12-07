@@ -100,34 +100,20 @@ def page(forum_name):
                                 .with_entities(Post.forum_id, Post.post_id, Post.content, Forum_profile.username, db.func.count(Likes.user_id)) \
                                 .group_by(Post.post_id).order_by(Post.date_posted.desc()).all()
                                 # .all()
-        print(curr_forum.forum_id)
-        # print(forum_posts.all())
-        if current_user.user_id in [i.user_id for i in forum_members]:
-            subscribed = True
-        else:
-            subscribed = False
+        subscribed = get_subscribed(forum_members)
         if form.validate_on_submit():
-            text = form.text.data
-            # text = request.form.get('new_post')
-            new_post = Post(forum_id = curr_forum.forum_id,
-                            date_posted = datetime.now(),
-                            user_id = current_user.user_id,
-                            content = text)
-            db.session.add(new_post)
-            db.session.commit()
-            flash('Post Submitted')
-            return redirect(url_for('forum.page', forum_name = forum_name))
+            try:
+                add_post(form.text.data, curr_forum)
+                flash('Post Submitted')
+                return redirect(url_for('forum.page', forum_name = forum_name))
+            except:
+                flash('Post Failed to Submit')
+                return redirect(url_for('forum.page', forum_name = forum_name))
         else:
-            # flash('Invalid Post')
             return render_template('forum/page.html', form = form, curr_forum = curr_forum, forum_members = forum_members, forum_posts = forum_posts, subscribed = subscribed)
         if request.method == "POST":
             if request.form['subscribe_button'] == 'subscribe':
-                subscription = Forum_members(forum_id = curr_forum.forum_id,
-                                            user_id = current_user.user_id,
-                                            role_id = Role.query.filter_by(default = True).first())
-                db.session.add(subscription)
-                db.session.commit()
-                subscribed = True
+                subscribed = add_subscription(curr_forum)
                 flash('You have successfully subscribed')
                 return render_template('forum/page.html', form = form, curr_forum = curr_forum, forum_members = forum_members, forum_posts = forum_posts, subscribed = subscribed)
             elif request.form['subscribe_button'] == 'unsubscribe':
@@ -135,7 +121,73 @@ def page(forum_name):
                 db.session.commit()
                 subscribed = False
                 flash('You have been successfully unsubscribed')
-                return render_template('forum/page.html', form = form, curr_forum = curr_forum, forum_members = forum_members, forum_posts = forum_posts, subscribed = subscribed)
+                return redirect(url_for('forum.home'))
     else:
         flash('Invalid Forum Route')
         return redirect(url_for('forum.home'))
+
+def get_subscribed(forum_members):
+    if current_user.user_id in [i.user_id for i in forum_members]:
+        return True
+    else:
+        return False
+
+def add_post(text, curr_forum):
+    new_post = Post(forum_id = curr_forum.forum_id,
+                    date_posted = datetime.now(),
+                    user_id = current_user.user_id,
+                    content = text)
+    db.session.add(new_post)
+    db.session.commit()
+
+def add_subscription(curr_forum):
+    subscription = Forum_members(forum_id = curr_forum.forum_id,
+                                user_id = current_user.user_id,
+                                role_id = Role.query.filter_by(default = True).first())
+    db.session.add(subscription)
+    db.session.commit()
+    return True
+
+@forum.route('/hh/<forum_name>/<post_id>', methods = ["GET", "POST"])
+def page_post(forum_name, post_id):
+    curr_forum = Forum.query.filter(Forum.forum_name == forum_name).first()
+    curr_post = Post.query.filter(Post.post_id == post_id).first()
+    count_likes = Likes.query.filter(Likes.post_id == post_id) \
+                            .with_entities(Likes.post_id, db.func.count(Likes.user_id)) \
+                            .group_by(Likes.post_id).first()
+    form = PostForm()
+    if curr_forum & curr_post:
+        forum_members = Forum_members.query.filter(Forum_members.forum_id == curr_forum.forum_id).all()
+        subscribed = get_subscribed(forum_members)
+        if form.validate_on_submit():
+            try:
+                add_comment(form.text.data, curr_post)
+                flash('Post Submitted')
+                return redirect(url_for('forum.page', forum_name = forum_name))
+            except:
+                flash('Post Failed to Submit')
+                return redirect(url_for('forum.page', forum_name = forum_name))
+        else:
+            return render_template('forum/page.html', form = form, curr_forum = curr_forum, forum_members = forum_members, forum_posts = forum_posts, subscribed = subscribed)
+        if request.method == "POST":
+            if request.form['subscribe_button'] == 'subscribe':
+                subscribed = add_subscription(curr_forum)
+                flash('You have successfully subscribed')
+                return render_template('forum/page.html', form = form, curr_forum = curr_forum, forum_members = forum_members, forum_posts = forum_posts, subscribed = subscribed)
+            elif request.form['subscribe_button'] == 'unsubscribe':
+                Forum_members.query.filter((Forum_members.forum_id == curr_forum) & (Forum_members.user_id == current_user.user_id)).delete()
+                db.session.commit()
+                subscribed = False
+                flash('You have been successfully unsubscribed')
+                return redirect(url_for('forum.home'))
+    else:
+        flash('Invalid Forum Route')
+        return redirect(url_for('forum.home'))
+
+def add_comment(text, curr_post):
+    new_comment = Reaction(post_id = curr_post.post_id,
+                    user_id = current_user.user_id,
+                    comment = text,
+                    date_commented = datetime.now())
+    db.session.add(new_comment)
+    db.session.commit()
