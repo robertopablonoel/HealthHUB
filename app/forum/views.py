@@ -1,13 +1,14 @@
 from flask import render_template, redirect, request, url_for, flash, current_app
 from . import forum
 from flask_login import login_user, login_required, logout_user, current_user
-from ..models import Permission, Patient, User, Hospital, Forum, Forum_members, ForumPermission, Post, Likes, Reaction, Top_forums, Top_posts, Task, Forum_profile
+from ..models import Permission, Patient, User, Hospital, Forum, Forum_members, ForumPermission, Post, Likes, Reaction, Top_forums, Top_posts, Task, Forum_profile, Forum_role
 from ..email import send_email
 from .. import db
 from ..decorators import permission_required
 from datetime import date
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from .forms import PostForm
 import re
 from flask import Flask
 
@@ -88,15 +89,44 @@ def profile_upload(req, user_id):
 @forum.route('/hh/<forum_name>', methods = ['GET', 'POST'])
 def page(forum_name):
     curr_forum = Forum.query.filter(Forum.forum_name == forum_name).first()
-    if request.method == "POST":
-        if request.form.get('new_post'):
-            pass
+    form = PostForm()
     if curr_forum:
         forum_members = Forum_members.query.filter(Forum_members.forum_id == curr_forum.forum_id).all()
         forum_posts = db.session.query(Post, Likes, Reaction).join(Likes, (Post.post_id == Likes.post_id)).join(Reaction, (Post.post_id == Reaction.post_id)).filter(Post.forum_id == curr_forum.forum_id).all()
         print(forum_posts)
-        return render_template('forum/page.html', curr_forum = curr_forum, forum_members = forum_members, forum_posts = forum_posts)
+        if current_user.user_id in [i.user_id for i in forum_members]:
+            subscribed = True
+        else:
+            subscribed = False
+        if form.validate_on_submit():
+            text = form.text.data
+            # text = request.form.get('new_post')
+            new_post = Post(forum_id = curr_forum.forum_id,
+                            date_posted = datetime.now(),
+                            user_id = current_user.user_id,
+                            content = text)
+            db.session.add(new_post)
+            db.session.commit()
+            return render_template('forum/page.html', curr_forum = curr_forum, forum_members = forum_members, forum_posts = forum_posts, subscribed = subscribed)
+        else:
+            flash('Invalid Post')
+            return render_template('forum/page.html', curr_forum = curr_forum, forum_members = forum_members, forum_posts = forum_posts, subscribed = subscribed)
+        if request.method == "POST":
+            if request.form['subscribe_button'] == 'subscribe':
+                subscription = Forum_members(forum_id = curr_forum.forum_id,
+                                            user_id = current_user.user_id,
+                                            role_id = Role.query.filter_by(default = True).first())
+                db.session.add(subscription)
+                db.session.commit()
+                subscribed = True
+                flash('You have successfully subscribed')
+                return render_template('forum/page.html', curr_forum = curr_forum, forum_members = forum_members, forum_posts = forum_posts, subscribed = subscribed)
+            elif request.form['subscribe_button'] == 'unsubscribe':
+                Forum_members.query.filter((Forum_members.forum_id == curr_forum) & (Forum_members.user_id == current_user.user_id)).delete()
+                db.session.commit()
+                subscribed = False
+                flash('You have been successfully unsubscribed')
+                return render_template('forum/page.html', curr_forum = curr_forum, forum_members = forum_members, forum_posts = forum_posts, subscribed = subscribed)
     else:
+        flash('Invalid Forum Route')
         return redirect(url_for('forum.home'))
-
-#Post functionality for posting
