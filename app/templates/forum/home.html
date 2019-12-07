@@ -26,11 +26,10 @@
             <section class="whitebox b2">
               <ul class = "post_container pushed">
               {% for top_post, post, profile in top_p %}
-
                   <li class = "post">
                     <div class = "post_title_area">
                       <div class = "post_title">
-                      <a href="{{ url_for('forum.page', forum_name=top_post.forum_name)}}"><h1>/{{ top_post.forum_name }}</h1></a>
+                      <a href="{{ url_for('forum.page', forum_name=top_post.forum_name)}}"><h1>hh/{{ top_post.forum_name }}</h1></a>
                       </div>
                     </div>
                       <div class = "post_content">
@@ -50,7 +49,7 @@
                         </div>
                       </div>
                   </li>
-                  {% endfor %}
+                {% endfor %}
                 </ul>
 
             {% endif %}
@@ -65,7 +64,6 @@
               <div class = "forum_container">
                 <div class = "top_forums_title">
                 </div>
-                {% for top_forum, forum in top_f %}
                 <div class = "top_forums_content pushed">
                   <div class = "top_forum_row">
                   </div>
