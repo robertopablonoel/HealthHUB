@@ -54,5 +54,122 @@
 
 
       </script>
-      <a href="{{ url_for('profile.patient_master') }}">Confirm Selection</a>
+      <a href="{{ url_for('profile.search') }}">Confirm Selection</a>
+
+      <style media="screen">
+        .table-striped {
+          display: block;
+          width: 100%;
+          overflow-y: auto;
+          max-height: 300px;
+        }
+      </style>
+      <head>
+      <div class="user-profile">
+        <div class="page-header">
+          <h2>User Profile</h2>
+        </div>
+            <div class="panel panel-primary">
+              <div class="panel-heading">First Name:</div>
+              <div class="panel-body">{{ patient_user.first_name }}</div>
+              <div class="panel-heading">Last Name:</div>
+              <div class="panel-body">{{ patient_user.last_name }}</div>
+              <div class="panel-heading">Date of Birth:</div>
+              <div class="panel-body">{{ patient.date_of_birth }}</div>
+              <div class="panel-heading">insurance ID:</div>
+              <div class="panel-body">{{ patient.insurance_id }}</div>
+              <div class="panel-heading">Email Address</div>
+              <div class="panel-body">{{patient_user.email}}</div>
+            </div></div>
+      </head>
+      <div>
+        <ul>
+          <li><a href="{{ url_for('prescript.new_prescription') }}">Create New Prescription</a>
+        </ul>
+      </div>
+      {% if prescription %}
+      <body>
+        <div class="table-striped">
+          <table class = "table">
+              <thead>
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Physician ID</th>
+                  <th scope="col">Start Date</th>
+                  <th scope="col">Expiration Date</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Active</th>
+                  <th scope="col">Notify</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for script in prescription %}
+                  <tr class="clickable-row" data-href="{{url_for('profile.search')}}">
+                    <td>{{script.prescription_id}}</td>
+                    <td>{{script.physician_id}}</td>
+                    <td>{{script.date_prescribed}}</td>
+                    <td>{{script.expir_date}}</td>
+                    <td>{{script.description[:30]}}...</td>
+                    <td>
+                      {% if script.active %}
+                    <form action="{{ url_for('profile.search') }}" method="post">
+                      <div class="form-group">
+                        <select class="form-control" id="active" name="active">
+                          <option value={{script.prescription_id}}1>YES</option>
+                          <option value={{script.prescription_id}}0>NO</option>
+                        </select>
+                      </div>
+                        <div class="submit">
+                      <button class="btn btn-default" type="submit">Update</button>
+                        </div>
+                    </form>
+                    {% else %}
+                    <form action="{{ url_for('profile.search') }}" method="post">
+                      <div class="form-group">
+                        <select class="form-control" id="active" name="active">
+                          <option value={{script.prescription_id}}0>NO</option>
+                          <option value={{script.prescription_id}}1>YES</option>
+                        </select>
+                      </div>
+                        <div class="submit">
+                      <button class="btn btn-default" type="submit">Update</button>
+                        </div>
+                    </form>
+                    {% endif %}
+                    </td>
+                    <td>
+                    {% if script.notify %}
+                    <form action="{{ url_for('profile.search') }}" method="post">
+                      <div class="form-group">
+                        <select class="form-control" id="notify" name="notify">
+                          <option value={{script.prescription_id}}1>YES</option>
+                          <option value={{script.prescription_id}}0>NO</option>
+
+                        </select>
+                      </div>
+                        <div class="submit">
+                      <button class="btn btn-default" type="submit">Update</button>
+                        </div>
+                    </form>
+                    {% else %}
+                    <form action="{{ url_for('profile.search') }}" method="post">
+                      <div class="form-group">
+                        <select class="form-control" id="notify" name="notify">
+                          <option value={{script.prescription_id}}0>NO</option>
+                          <option value={{script.prescription_id}}1>YES</option>
+                        </select>
+                      </div>
+                        <div class="submit">
+                      <button class="btn btn-default" type="submit">Update</button>
+                        </div>
+                    </form>
+                    {% endif %}
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+      </body>
+  {% endif %}
 {% endblock %}

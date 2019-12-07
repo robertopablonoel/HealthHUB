@@ -41,12 +41,8 @@ def new_prescription():
 def view_prescriptions():
     active_prescriptions = Prescription.Query(patient_id = current_user.user_id).all()
     return render_template('prescript/view_prescription.html', data = active_prescriptions)
-<<<<<<< HEAD
-
 
 @prescript.route('/search_pre', methods = ['GET', 'POST'])
 @login_required
 def modify_prescrpt():
     x =1
-=======
->>>>>>> fc1569933ce54d2eb360e6bfc7a9f8114a88845e
