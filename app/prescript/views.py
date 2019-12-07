@@ -41,9 +41,3 @@ def new_prescription():
 def view_prescriptions():
     active_prescriptions = Prescription.Query(patient_id = current_user.user_id).all()
     return render_template('prescript/view_prescription.html', data = active_prescriptions)
-
-
-@prescript.route('/modify_prescrpt', methods = ['GET', 'POST'])
-@login_required
-def modify_prescrpt():
-    x = 1

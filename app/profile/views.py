@@ -56,24 +56,3 @@ def autocomplete():
         session["Patient_ID"] = int(request.get_json())
         print(session["Patient_ID"])
         return render_template('profile/search_patient.html')
-
-
-
-@profile.route('/modify_prescript/<prescription_id>', methods = ['GET', 'POST'])
-@login_required
-def modify_prescript(prescription_id):
-    form = ModifyPrescriptionForm()
-    target_prescript = Prescription.query.filter_by(prescription_id = prescription_id)
-    #form.active.default = target_prescript.active
-    #form.notification.default = target_prescript.notify
-    if form:
-        print(target_prescript)
-        copy = target_prescript
-        target_prescript.active = form.active.data
-        target_prescript.notify = form.notify.data
-        if copy != target_prescript:
-            print("Updated:", target_prescript)
-            db.session.commit()
-            flash("Prescription Updated Sucessfully")
-
-    return render_template('profile/modify_prescript.html', form = form )

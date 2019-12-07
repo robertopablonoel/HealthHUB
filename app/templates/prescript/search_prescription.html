@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}User Profile At a Glance{% endblock %}
+{% block page_content %}
+{{ super() }}
+<html>
+<<style media="screen">
+
+</style>
+<div class="Prescription Search">
+  <div class="page-header">
+    <h2>Search for a Prescription</h2>
+  </div>
+
+
+
+
+
+<div>
+  <ul>
+    <li><a href="{{ url_for('profile.patient_user') }}">Go to back to Profile Page</a>
+  </ul>
+</div>
+</html>
+{% endblock %}
