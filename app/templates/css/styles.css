@@ -430,7 +430,6 @@
 .forum_prof_top::after{
 	display: block;
   position: relative;
-  
   margin-top: -150px;
   height: 150px;
   width: 100%;
@@ -1329,4 +1328,11 @@ input[type="file"] {
 
 .alert{
 	z-index: 500;
+}
+
+.sub{
+	grid-column-start: 3;
+	grid-column-end: 7;
+	grid-row-start: 9;
+	grid-row-end: 9;
 }
