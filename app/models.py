@@ -251,7 +251,7 @@ class Forum_members(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), primary_key = True)
     role_id = db.Column(db.Integer, db.ForeignKey('forum_role.id'), nullable = False)
     anonymous = db.Column(db.Boolean, default = False, nullable = False)
-    approved = db.Column(db.Boolean, default = False, nullable = False)
+    approved = db.Column(db.Boolean, default = True, nullable = False)
 
 class ForumPermission:
     USER_PERMISSION = 0x01
