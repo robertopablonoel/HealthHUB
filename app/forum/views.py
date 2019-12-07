@@ -92,8 +92,16 @@ def page(forum_name):
     form = PostForm()
     if curr_forum:
         forum_members = Forum_members.query.filter(Forum_members.forum_id == curr_forum.forum_id).all()
-        forum_posts = db.session.query(Post, Likes, Reaction).join(Likes, (Post.post_id == Likes.post_id)).join(Reaction, (Post.post_id == Reaction.post_id)).filter(Post.forum_id == curr_forum.forum_id).all()
-        print(forum_posts)
+        # Sub_query = Likes.query.with_entities((Likes.post_id), db.func.count(Likes.user_id)).group_by(Likes.post_id).subquery()
+        forum_posts = db.session.query(Post, Likes, Forum_profile) \
+                                .filter(Post.forum_id == curr_forum.forum_id) \
+                                .outerjoin(Likes, (Post.post_id == Likes.post_id)) \
+                                .join(Forum_profile, (Forum_profile.user_id == Post.user_id)) \
+                                .with_entities(Post.forum_id, Post.post_id, Post.content, Forum_profile.username, db.func.count(Likes.user_id)) \
+                                .group_by(Post.post_id).order_by(Post.date_posted.desc()).all()
+                                # .all()
+        print(curr_forum.forum_id)
+        # print(forum_posts.all())
         if current_user.user_id in [i.user_id for i in forum_members]:
             subscribed = True
         else:
@@ -107,10 +115,11 @@ def page(forum_name):
                             content = text)
             db.session.add(new_post)
             db.session.commit()
-            return render_template('forum/page.html', curr_forum = curr_forum, forum_members = forum_members, forum_posts = forum_posts, subscribed = subscribed)
+            flash('Post Submitted')
+            return redirect(url_for('forum.page', forum_name = forum_name))
         else:
-            flash('Invalid Post')
-            return render_template('forum/page.html', curr_forum = curr_forum, forum_members = forum_members, forum_posts = forum_posts, subscribed = subscribed)
+            # flash('Invalid Post')
+            return render_template('forum/page.html', form = form, curr_forum = curr_forum, forum_members = forum_members, forum_posts = forum_posts, subscribed = subscribed)
         if request.method == "POST":
             if request.form['subscribe_button'] == 'subscribe':
                 subscription = Forum_members(forum_id = curr_forum.forum_id,
@@ -120,13 +129,13 @@ def page(forum_name):
                 db.session.commit()
                 subscribed = True
                 flash('You have successfully subscribed')
-                return render_template('forum/page.html', curr_forum = curr_forum, forum_members = forum_members, forum_posts = forum_posts, subscribed = subscribed)
+                return render_template('forum/page.html', form = form, curr_forum = curr_forum, forum_members = forum_members, forum_posts = forum_posts, subscribed = subscribed)
             elif request.form['subscribe_button'] == 'unsubscribe':
                 Forum_members.query.filter((Forum_members.forum_id == curr_forum) & (Forum_members.user_id == current_user.user_id)).delete()
                 db.session.commit()
                 subscribed = False
                 flash('You have been successfully unsubscribed')
-                return render_template('forum/page.html', curr_forum = curr_forum, forum_members = forum_members, forum_posts = forum_posts, subscribed = subscribed)
+                return render_template('forum/page.html', form = form, curr_forum = curr_forum, forum_members = forum_members, forum_posts = forum_posts, subscribed = subscribed)
     else:
         flash('Invalid Forum Route')
         return redirect(url_for('forum.home'))
