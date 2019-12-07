@@ -46,3 +46,4 @@ def view_prescriptions():
 @prescript.route('/search_pre', methods = ['GET', 'POST'])
 @login_required
 def modify_prescrpt():
+    x =1
