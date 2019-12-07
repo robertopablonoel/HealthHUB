@@ -5,7 +5,6 @@
 
 {% block head %}
 {{ super() }}
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 {% if not current_user.is_authenticated %}
@@ -60,7 +59,7 @@
 
             </li>
             <li class="has-subnav">
-                <a href="{{ url_for('upload.uploads') }}">
+                <a href="#">
                     <span class="nav-icon">
                         <i class="fa fa-folder-open fa-15x"></i>
                     </span>
@@ -82,6 +81,7 @@
                     </a>
 
             </li>
+            {% if current_app.permission.PHYSICIAN_PERMISSION == True or current_app.permission.NURSE_PERMISSION == TRUE %}
             <li class="has-subnav">
                     <a href="{{ url_for('profile.search') }}">
                         <span class="nav-icon">
@@ -93,12 +93,19 @@
                     </a>
 
             </li>
-<<<<<<< HEAD
-=======
+            {% else % }
+            <li class="has-subnav">
+                    <a href="{{ url_for('profile.patient') }}">
+                        <span class="nav-icon">
+                        <i class="fa fa-user" fa-2x" ></i>
+                        </span>
+                        <span class="nav-text">
+                            View Profile
+                        </span>
+                    </a>
 
-
-
->>>>>>> refs/remotes/origin/master
+            </li>
+            {% endif %}
         </ul>
         <ul class="logout">
             <li>
