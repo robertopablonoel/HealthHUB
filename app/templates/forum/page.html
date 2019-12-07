@@ -1,0 +1,73 @@
+{% extends "forum/forum_base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}HealthHub Home{% endblock %}
+
+{% block page_content %}
+<div class = "outer forum">
+    <div class="middle">
+        <section class="forum_grid2">
+            <section class="whitebox b1">
+              <ul class = "post_container christmas">
+                <img src="{{ url_for('static', filename= 'css/img/christmas.jpg') }}" class="christmas_img" />
+              </ul>
+
+            </section>
+            {% if current_user.is_authenticated %}
+
+            <section class="extend2 whitebox b2">
+              <ul class = "post_container pushed">
+              {% for top_post, post, profile in top_p %}
+                  <li class = "post">
+                    <div class = "post_title_area">
+                      <div class = "post_title">
+                      <a href="{{ url_for('forum.page', forum_name=top_post.forum_name)}}"><h1>hh/{{ top_post.forum_name }}</h1></a>
+                      </div>
+                    </div>
+                      <div class = "post_content">
+                        <div class = "post_content_box pushed2">
+                          <p>{{ post.content }}</p>
+                        </div>
+                      </div>
+                      <div class = "post_like"></div>
+                      <div class = "post_poster">
+                        <div class = "post_top">
+                          <div class = "post_frame">
+                            <img src="{{ url_for('static', filename= 'files_uploaded/profile/' + (current_user.user_id)|string + '/icon.png') }}" class="post_img" />
+                          </div>
+                        </div>
+                        <div class = "post_bottom">
+                          <h3>{{profile.username}}</h3>
+                        </div>
+                      </div>
+                  </li>
+                {% endfor %}
+                </ul>
+
+            {% endif %}
+            </section>
+            <section class="extend3 whitebox b3">
+              <div class = "profile_container">
+                <div class = "profile_pic">
+                </div>
+              </div>
+
+            </section>
+            <section class="extend4 whitebox b4">
+
+            </section>
+
+            <section class="whitebox b5">
+              <textarea rows = "5" cols = "60" type="text" id="textboxid" class="textbox post_field pushed2" placeholder="text"></textarea>
+
+
+
+            </section>
+
+
+        </section>
+    </div>
+</div>
+
+
+{% endblock %}
