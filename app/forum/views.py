@@ -52,10 +52,10 @@ def update_posts():
 def profile():
     #Returns recent comments, recent posts, recent likes, bio_link,
     posted_posts = Post.query.filter(Post.user_id == current_user.user_id).order_by(Post.date_posted.desc()).all()
-    liked_posts = Likes.query.join(Post, (Likes.post_id == Post.post_id)).filter(Likes.user_id == current_user.user_id) \
-                                .order_by(Likes.date_liked.desc()).all()
-    reaction_posts = Reaction.query.join(Post, (Reaction.post_id == Post.post_id)).filter(Reaction.user_id == current_user.user_id)
-                                    .order_by(Reaction.date_commented.desc()).all()
+    liked_posts = Likes.query.join(Post, (Likes.post_id == Post.post_id)).filter(Likes.user_id == current_user.user_id)\
+    .order_by(Likes.date_liked.desc()).all()
+    reaction_posts = Reaction.query.join(Post, (Reaction.post_id == Post.post_id)).filter(Reaction.user_id == current_user.user_id)\
+    .order_by(Reaction.date_commented.desc()).all()
     user_attributes = User.query.filter(User.user_id == current_user.user_id).first()
     forum_pro = Forum_profile.quer.filter(Forum_profile.user_id == current_user.user_id)
     #In order to access profile, you need to href for images, which will be a static path
@@ -73,7 +73,7 @@ def profile():
 def profile_upload(req, user_id):
     UPLOAD_FOLDER = "app/upload/files_uploaded/"
     USER_FOLDER = "profile/{}/".format(user_id)
-        print("Request Files", request.files)
+    print("Request Files", request.files)
     f = req.files['file']
     try:
         f.save(os.path.join(UPLOAD_FOLDER, USER_FOLDER, secure_filename(f.filename)))
