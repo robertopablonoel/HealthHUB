@@ -6,20 +6,16 @@
 {% block page_content %}
 <div class = "outer forum">
     <div class="middle">
-        <section class="forum_grid">
+        <section class="forum_grid2">
             <section class="whitebox b1">
-              <ul class = "post_container horizontal">
-                {% for members, forums in user_forums %}
-                  <li class = "b1_forum">
-                    <a href="{{ url_for('forum.page', forum_name=forums.forum_name)}}"><h4>hh/{{ forums.forum_name }}</h4></a>
-                  </li>
-                {% endfor %}
+              <ul class = "post_container christmas">
+                <img src="{{ url_for('static', filename= 'css/img/christmas.jpg') }}" class="christmas_img" />
               </ul>
 
             </section>
             {% if current_user.is_authenticated %}
 
-            <section class="whitebox b2">
+            <section class="extend2 whitebox b2">
               <ul class = "post_container pushed">
               {% for top_post, post, profile in top_p %}
                   <li class = "post">
@@ -50,25 +46,21 @@
 
             {% endif %}
             </section>
-            <section class="whitebox b3">
+            <section class="extend3 whitebox b3">
               <div class = "profile_container">
                 <div class = "profile_pic">
                 </div>
               </div>
 
             </section>
-            <section class="whitebox b4">
-              <div class = "forum_container">
-                <div class = "top_forums_title">
-                </div>
-                <div class = "top_forums_content pushed">
-                  {% for top, forum in top_f %}
-                  <li class = "top_forum_row numbered">
-                    <a href="{{ url_for('forum.page', forum_name=forum.forum_name)}}"><h1>hh/{{ forum.forum_name }}</h1></a>
-                  </li>
-                  {% endfor %}
-                </div>
-              </div>
+            <section class="extend4 whitebox b4">
+
+            </section>
+
+            <section class="whitebox b5">
+              <textarea rows = "5" cols = "60" type="text" id="textboxid" class="textbox post_field pushed2" placeholder="text"></textarea>
+
+
 
             </section>
 
