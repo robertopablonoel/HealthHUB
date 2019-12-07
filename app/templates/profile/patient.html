@@ -30,11 +30,6 @@
         <div class="panel-body">{{patient_user.email}}</div>
       </div></div>
 </head>
-<div>
-  <ul>
-    <li><a href="{{ url_for('prescript.new_prescription') }}">Create New Prescription</a>
-  </ul>
-</div>
 {% if prescription %}
 <body>
   <div class="table-striped">
@@ -58,33 +53,7 @@
               <td>{{script.date_prescribed}}</td>
               <td>{{script.expir_date}}</td>
               <td>{{script.description[:30]}}...</td>
-              <td>
-                {% if script.active %}
-              <form action="{{ url_for('profile.patient_master') }}" method="post">
-                <div class="form-group">
-                  <select class="form-control" id="active" name="active">
-                    <option value={{script.prescription_id}}1>YES</option>
-                    <option value={{script.prescription_id}}0>NO</option>
-                  </select>
-                </div>
-                  <div class="submit">
-                <button class="btn btn-default" type="submit">Update</button>
-                  </div>
-              </form>
-              {% else %}
-              <form action="{{ url_for('profile.patient_master') }}" method="post">
-                <div class="form-group">
-                  <select class="form-control" id="active" name="active">
-                    <option value={{script.prescription_id}}0>NO</option>
-                    <option value={{script.prescription_id}}1>YES</option>
-                  </select>
-                </div>
-                  <div class="submit">
-                <button class="btn btn-default" type="submit">Update</button>
-                  </div>
-              </form>
-              {% endif %}
-              </td>
+              <td>{{script.active}}</td>
               <td>
               {% if script.notify %}
               <form action="{{ url_for('profile.patient_master') }}" method="post">

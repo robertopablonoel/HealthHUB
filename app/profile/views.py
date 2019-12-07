@@ -70,3 +70,21 @@ def autocomplete():
         session["Patient_ID"] = int(request.get_json())
         print(session["Patient_ID"])
         return render_template('profile/search_patient.html')
+
+@profile.route("/patient")
+@login_required
+def patient():
+    user_id = current_user.user_id
+    patient_user = User.query.filter_by(user_id = user_id).first_or_404()
+    patient = Patient.query.filter_by(user_id = user_id).first_or_404()
+    prescription = Prescription.query.filter_by(patient_id = user_id).all()
+    if request.form.get('notify'):
+        prescription_id = int(request.form['notify'][:-1])
+        status = int(request.form['notify'][-1])
+        target_prescript = Prescription.query.filter_by(prescription_id = prescription_id).first()
+        print(status)
+        target_prescript.notify = int(request.form['notify'][-1])
+        db.session.commit()
+        flash("Update Succesful")
+        return redirect(url_for('profile.patient'))
+    return render_template('profile/patient.html', patient_user = patient_user, patient = patient, prescription = prescription)
