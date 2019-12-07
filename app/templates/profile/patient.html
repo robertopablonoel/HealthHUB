@@ -5,15 +5,18 @@
 {{ super() }}
 <html>
 <style media="screen">
+  .table-striped {
+    display: block;
+    width: 100%;
+    overflow-y: auto;
+    max-height: 300px;
+  }
 </style>
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/prescription_scroll.css')}}"
+<head>
 <div class="user-profile">
   <div class="page-header">
     <h2>User Profile</h2>
   </div>
-
-  <div class="row">
-    <div class="col-sm-6">
       <div class="panel panel-primary">
         <div class="panel-heading">First Name:</div>
         <div class="panel-body">{{ patient_user.first_name }}</div>
@@ -25,24 +28,12 @@
         <div class="panel-body">{{ patient.insurance_id }}</div>
         <div class="panel-heading">Email Address</div>
         <div class="panel-body">{{patient_user.email}}</div>
-      </div></div></div>
-
-
-      <div>
-        <ul>
-          <li><a href="{{ url_for('prescript.new_prescription') }}">Create New Prescription</a>
-        </ul>
-      </div>
-
-
+      </div></div>
+</head>
 {% if prescription %}
-  <div class="panel panel-info">
-  <div class="panel-heading">Prescriptions</div>
-  {<div class = "container">
-  <div class = "formwrapper">
-  <div class = "row">
-    <div class = "col-md-12">
-      <table class = "table">
+<body>
+  <div class="table-striped">
+    <table class = "table">
         <thead>
           <tr>
             <th scope="col">ID</th>
@@ -56,59 +47,47 @@
         </thead>
         <tbody>
           {% for script in prescription %}
-            <tr class="clickable-row" data-href="{{url_for('profile.patient')}}">
+            <tr class="clickable-row" data-href="{{url_for('profile.patient_master')}}">
               <td>{{script.prescription_id}}</td>
               <td>{{script.physician_id}}</td>
               <td>{{script.date_prescribed}}</td>
               <td>{{script.expir_date}}</td>
               <td>{{script.description[:30]}}...</td>
+              <td>{{script.active}}</td>
               <td>
+              {% if script.notify %}
+              <form action="{{ url_for('profile.patient_master') }}" method="post">
+                <div class="form-group">
+                  <select class="form-control" id="notify" name="notify">
+                    <option value={{script.prescription_id}}1>YES</option>
+                    <option value={{script.prescription_id}}0>NO</option>
 
-                <form action="{{ url_for('profile.patient') }}" method="post">
-                  <div class="form-group">
-                    <select class="form-control" id="active" name="active">
-                      <option value={{script.prescription_id}}0>NO</option>
-                      <option value={{script.prescription_id}}1>YES</option>
-                    </select>
-                  </div>
-                    <div class="form-control">
-                  <button class="btn btn-default" type="submit">Submit!</button>
-                    </div>
-                </form>
-
-              </td>
-              <td>{% if script.notify == 0 %}
-                <form name="active" method="post">
-                  <select>
-                    <option value=0>NO</option>
-                    <option value=1>YES</option>
                   </select>
-                  <submit type="submit" name ="active"/>
-                </form>
-                  {% else %}
-                  <form name="notify" method="post">
-                    <select>
-                      <option value=1>YES</option>
-                      <option value=0>NO</option>
-                    </select>
-                    <submit type="submit" value ="UPDATE"/>
-                  </form>
-                  {% endif %}
+                </div>
+                  <div class="submit">
+                <button class="btn btn-default" type="submit">Update</button>
+                  </div>
+              </form>
+              {% else %}
+              <form action="{{ url_for('profile.patient_master') }}" method="post">
+                <div class="form-group">
+                  <select class="form-control" id="notify" name="notify">
+                    <option value={{script.prescription_id}}0>NO</option>
+                    <option value={{script.prescription_id}}1>YES</option>
+                  </select>
+                </div>
+                  <div class="submit">
+                <button class="btn btn-default" type="submit">Update</button>
+                  </div>
+              </form>
+              {% endif %}
               </td>
             </tr>
           {% endfor %}
-        <tbody>
+        </tbody>
       </table>
     </div>
-  </div>
-</div>
-</div>
+</body>
 {% endif %}
-
-      <div>
-        <ul>
-          <li><a href="{{ url_for('prescript.new_prescription') }}">Create New Prescription</a>
-        </ul>
-      </div>
 </html>
 {% endblock %}
