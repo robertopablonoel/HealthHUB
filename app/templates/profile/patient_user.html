@@ -4,9 +4,9 @@
 {% block page_content %}
 {{ super() }}
 <html>
-<style media="screen">
+<<style media="screen">
+
 </style>
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/prescription_scroll.css')}}"
 <div class="user-profile">
   <div class="page-header">
     <h2>User Profile</h2>
@@ -16,7 +16,7 @@
     <div class="col-sm-6">
       <div class="panel panel-primary">
         <div class="panel-heading">First Name:</div>
-        <div class="panel-body">{{ patient_user.first_name }}</div>
+        <div class="panel-body">{{ current_user.first_name }}</div>
         <div class="panel-heading">Last Name:</div>
         <div class="panel-body">{{ patient_user.last_name }}</div>
         <div class="panel-heading">Date of Birth:</div>
@@ -27,18 +27,10 @@
         <div class="panel-body">{{patient_user.email}}</div>
       </div></div></div>
 
-
-      <div>
-        <ul>
-          <li><a href="{{ url_for('prescript.new_prescription') }}">Create New Prescription</a>
-        </ul>
-      </div>
-
-
 {% if prescription %}
-  <div class="panel panel-info">
-  <div class="panel-heading">Prescriptions</div>
-  {<div class = "container">
+      <div class="panel panel-info">
+        <div class="panel-heading">Prescriptions</div>
+        {<div class = "container">
   <div class = "formwrapper">
   <div class = "row">
     <div class = "col-md-12">

@@ -43,7 +43,6 @@ def view_prescriptions():
     return render_template('prescript/view_prescription.html', data = active_prescriptions)
 
 
-@prescript.route('/modify_prescrpt', methods = ['GET', 'POST'])
+@prescript.route('/search_pre', methods = ['GET', 'POST'])
 @login_required
 def modify_prescrpt():
-    x = 1
