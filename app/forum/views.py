@@ -97,7 +97,7 @@ def page(forum_name):
                                 .filter(Post.forum_id == curr_forum.forum_id) \
                                 .outerjoin(Likes, (Post.post_id == Likes.post_id)) \
                                 .join(Forum_profile, (Forum_profile.user_id == Post.user_id)) \
-                                .with_entities(Post.forum_id, Post.post_id, Post.content, Forum_profile.username, db.func.count(Likes.user_id)) \
+                                .with_entities(Post.forum_id, Post.post_id, Post.content, Forum_profile.username, db.func.count(Likes.user_id).label("count_likes")) \
                                 .group_by(Post.post_id).order_by(Post.date_posted.desc()).all()
                                 # .all()
         subscribed = get_subscribed(forum_members)
@@ -145,9 +145,9 @@ def add_post(text, curr_forum):
     db.session.commit()
 
 def add_subscription(curr_forum):
-    subscription = Forum_members(forum_id = curr_forum,
+    subscription = Forum_members(forum_id = curr_forum.forum_id,
                                 user_id = current_user.user_id,
-                                role_id = Forum_role.query.filter_by(default = True).first())
+                                role_id = Forum_role.query.filter_by(default = True).first().id)
     db.session.add(subscription)
     db.session.commit()
     return True

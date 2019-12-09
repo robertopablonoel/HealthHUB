@@ -52,7 +52,10 @@
             </section>
             <section class="whitebox b3">
               <div class = "profile_container">
-                <div class = "profile_pic">
+                <div class = "profile_pic_container">
+                  <div class = "user_frame">
+                    <img src="{{ url_for('static', filename= 'files_uploaded/profile/' + (current_user.user_id)|string + '/icon.png') }}" class="post_img" />
+                  </div>
                 </div>
               </div>
 
