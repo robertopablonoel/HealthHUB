@@ -20,6 +20,15 @@ def home():
     top_f = db.session.query(Top_forums, Forum).join(Forum, (Top_forums.forum_id == Forum.forum_id)).filter(Top_forums.forum_id == Forum.forum_id).order_by(Top_forums.subscribers.desc()).limit(8).all()
     print(top_f)
     top_p = db.session.query(Top_posts, Post, Forum_profile).join(Post, Top_posts.post_id == Post.post_id).join(Forum_profile, Post.user_id == Forum_profile.user_id).order_by(Post.date_posted.desc()).all()
+    top_p = db.session.query(Top_posts, Post, Likes, Forum_profile) \
+                            .join(Post, Top_posts.post_id == Post.post_id) \
+                            .outerjoin(Likes, (Post.post_id == Likes.post_id)) \
+                            .join(Forum_profile, (Forum_profile.user_id == Post.user_id)) \
+                            .with_entities(Post.forum_id, Post.post_id, Post.content, Forum_profile.username,Top_posts.forum_name, db.func.count(Likes.user_id).label("count_likes")) \
+                            .group_by(Post.post_id, Top_posts.forum_name).order_by(Post.date_posted.desc()).all()
+
+
+
     forum_pro = Forum_profile.query.filter(Forum_profile.user_id == current_user.user_id)
     user_forums = db.session.query(Forum_members, Forum).join(Forum, Forum_members.forum_id == Forum.forum_id).filter(Forum_members.user_id == current_user.user_id).all()
     return render_template('forum/home.html', top_f = top_f, top_p = top_p, forum_pro = forum_pro, user_forums = user_forums)
@@ -111,6 +120,10 @@ def page(forum_name):
                 subscribed = False
                 flash('You have been successfully unsubscribed.')
                 return redirect(url_for('forum.home'))
+            elif request.values.get('like') == "like":
+                print('like')
+            elif request.values.get('like') == "unlike":
+                print("unlike")
         if form.validate_on_submit():
             try:
                 add_post(form.text.data, curr_forum)
@@ -150,15 +163,30 @@ def add_subscription(curr_forum):
 @forum.route('/hh/<forum_name>/<post_id>', methods = ["GET", "POST"])
 def page_post(forum_name, post_id):
     curr_forum = Forum.query.filter(Forum.forum_name == forum_name).first()
-    curr_post = Post.query.filter(Post.post_id == post_id).first()
+    curr_post = db.session.query(Post, Forum_profile).filter(Post.post_id == post_id).join(Forum_profile, (Forum_profile.user_id == Post.user_id)).first()
     curr_comments = Reaction.query.filter(Reaction.post_id == post_id).order_by(Reaction.date_commented.asc())
     count_likes = Likes.query.filter(Likes.post_id == post_id) \
                             .with_entities(Likes.post_id, db.func.count(Likes.user_id)) \
-                            .group_by(Likes.post_id).first()
+                            .group_by(Likes.post_id).first()[1]
     form = PostForm()
-    if curr_forum & curr_post:
+    if curr_forum and curr_post:
         forum_members = Forum_members.query.filter(Forum_members.forum_id == curr_forum.forum_id).all()
         subscribed = get_subscribed(forum_members)
+        if request.method == "POST":
+            print([i for i in request.form.keys()])
+            print(request.form['submit'])
+            if request.values.get('submit') == 'subscribe':
+                print('subscribe')
+                subscribed = add_subscription(curr_forum)
+                flash('You have successfully subscribed.')
+                return render_template('forum/page.html', form = form, curr_forum = curr_forum, forum_members = forum_members, forum_posts = forum_posts, subscribed = subscribed)
+            elif request.values.get('submit') == 'unsubscribe':
+                print('unsubscribe')
+                Forum_members.query.filter((Forum_members.forum_id == curr_forum.forum_id) & (Forum_members.user_id == current_user.user_id)).delete()
+                db.session.commit()
+                subscribed = False
+                flash('You have been successfully unsubscribed.')
+                return redirect(url_for('forum.home'))
         if form.validate_on_submit():
             try:
                 add_comment(form.text.data, curr_post)
@@ -169,17 +197,6 @@ def page_post(forum_name, post_id):
                 return redirect(url_for('forum.page_post', forum_name = forum_name, post_id = post_id))
         else:
             return render_template('forum/page_post.html', form = form, curr_forum = curr_forum, curr_post = curr_post, curr_comments = curr_comments, count_likes = count_likes, forum_members = forum_members, subscribed = subscribed)
-        if request.method == "POST":
-            if request.form['subscribe_button'] == 'subscribe':
-                subscribed = add_subscription(curr_forum)
-                flash('You have successfully subscribed')
-                return render_template('forum/page_post.html', form = form, curr_forum = curr_forum, curr_post = curr_post, curr_comments = curr_comments, count_likes = count_likes, forum_members = forum_members, subscribed = subscribed)
-            elif request.form['subscribe_button'] == 'unsubscribe':
-                Forum_members.query.filter((Forum_members.forum_id == curr_forum) & (Forum_members.user_id == current_user.user_id)).delete()
-                db.session.commit()
-                subscribed = False
-                flash('You have been successfully unsubscribed')
-                return redirect(url_for('forum.home'))
     else:
         flash('Invalid Forum Route')
         return redirect(url_for('forum.home'))

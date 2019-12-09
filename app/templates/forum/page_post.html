@@ -17,7 +17,6 @@
 
             <section class="extend2 whitebox b2">
               <ul class = "post_container pushed">
-                {% for post in forum_posts %}
                     <li class = "post">
                       <div class = "post_title_area">
                         <div class = "post_title">
@@ -26,19 +25,23 @@
                       </div>
                         <div class = "post_content">
                           <div class = "post_content_box pushed2">
-                            <p>{{ post[2] }}</p>
+                            <p>{{ curr_post[0].content }}</p>
                           </div>
                         </div>
                         <div class = "post_like">
                           <div class = "reply_btn">
-                            <a href = "#" class="fa fa-reply" style="font-size: 1.5rem;"></a>
+                            <a href = "#" class="fa fa-reply" style="color: #378de5; font-size: 1.5rem;"></a>
                           </div>
                           <div class = "like_btn">
-                            <a href = "#" class="fa fa-thumbs-up" style="font-size: 1.5rem;"></a>
+                            {% if current_user.liked(curr_post[0].post_id) %}
+                            <input value = "&#xf164" type = "submit" class="fa fa-thumbs-up fa-input" style="background-color: transparent; border-color: transparent; color: #378de5; font-size: 1.5rem;">
+                            {% else %}
+                            <input value = "&#xf164" type = "submit" class="fa fa-thumbs-up fa-input" style="background-color: transparent; border-color: transparent; color: #666666; font-size: 1.5rem;">
+                            {% endif %}
                           </div>
                           <div class = "like_num">
                             <div>
-                            <p4>{{post[4]}}</p4>
+                            <p4>{{count_likes}}</p4>
                             </div>
                           </div>
                         </div>
@@ -49,11 +52,18 @@
                             </div>
                           </div>
                           <div class = "post_bottom">
-                            <p3>{{post[3]}}</p3>
+                            <p3>{{ curr_post[1].username }}</p3>
                           </div>
                         </div>
                     </li>
-                  {% endfor %}
+
+
+
+                    <li class = "comment_bawx">
+                      <div class = "post_like"></div>
+                    </li>
+
+
                 </ul>
 
             {% endif %}
