@@ -35,9 +35,18 @@
                           </div>
                           <div class = "like_btn">
                             {% if current_user.liked(post[1]) %}
-                            <a href = "#" class="fa fa-thumbs-up" style="color: #378de5; font-size: 1.5rem;"></a>
+                            <form action="{{ url_for('forum.page', forum_name=curr_forum.forum_name) }}" method="POST" enctype="multipart/form-data">
+                              <input class="fa fa-thumbs-up" style="color: #378de5; font-size: 1.5rem;" id="like" name="like">
+                                <a href = "#" class="fa fa-thumbs-up" style="color: #378de5; font-size: 1.5rem;"></a>
+                              </input>
+                            </form>
+                            <!-- <a href = "#" class="fa fa-thumbs-up" style="color: #378de5; font-size: 1.5rem;"></a> -->
                             {% else %}
-                            <a href = "#" class="fa fa-thumbs-up" style="font-size: 1.5rem;"></a>
+                            <form action="{{ url_for('forum.page', forum_name=curr_forum.forum_name) }}" method="POST" enctype="multipart/form-data">
+                              <input class="fa fa-thumbs-up" style="font-size: 1.5rem;" id="like" name="like">
+                            </input>
+                            </form>
+                            <!-- <a href = "#" class="fa fa-thumbs-up" style="font-size: 1.5rem;"></a> -->
                             {% endif %}
                           </div>
                           <div class = "like_num">

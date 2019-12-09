@@ -120,6 +120,10 @@ def page(forum_name):
                 subscribed = False
                 flash('You have been successfully unsubscribed.')
                 return redirect(url_for('forum.home'))
+            elif request.values.get('like') == "like":
+                print('like')
+            elif request.values.get('like') == "unlike":
+                print("unlike")
         if form.validate_on_submit():
             try:
                 add_post(form.text.data, curr_forum)
