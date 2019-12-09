@@ -33,22 +33,39 @@ def uploads():
 @login_required
 def uploader():
     print('arrived')
+    file_exists = False
     UPLOAD_FOLDER = "app/templates/files_uploaded/"
     USER_FOLDER = str(current_user.user_id)
     if request.method == "POST":
         print("Request Files", request.files)
         f = request.files['file']
+
+        file = secure_filename(f.filename)
         try:
-            f.save(os.path.join(UPLOAD_FOLDER, USER_FOLDER, secure_filename(f.filename)))
+            files = os.listdir(os.path.join(UPLOAD_FOLDER, USER_FOLDER))
+            if file in files:
+                raise FileExistsError("File Already Exists, the file will not be saved")
+            else:
+                f.save(os.path.join(UPLOAD_FOLDER, USER_FOLDER, file))
+                return redirect(url_for("upload.uploader"))
+        except FileExistsError:
+            file_exists = True
         except FileNotFoundError:
-            print("Encountered a FileNotFoundError, creating a file >>> ", USER_FOLDER)
-            os.mkdir(os.path.join(UPLOAD_FOLDER, USER_FOLDER))
-            f.save(os.path.join(UPLOAD_FOLDER, USER_FOLDER, secure_filename(f.filename)))
+             os.mkdir(os.path.join(UPLOAD_FOLDER,USER_FOLDER))
+             f.save(os.path.join(UPLOAD_FOLDER, USER_FOLDER, file))
+             return redirect(url_for("upload.uploader"))
+    files = os.listdir(os.path.join(UPLOAD_FOLDER, USER_FOLDER))
+        #try:
+        #    f.save(os.path.join(UPLOAD_FOLDER, USER_FOLDER, secure_filename(f.filename)))
+        #except FileNotFoundError:
+    #        print("Encountered a FileNotFoundError, creating a file >>> ", USER_FOLDER)
+        #    os.mkdir(os.path.join(UPLOAD_FOLDER, USER_FOLDER))
+    #        f.save(os.path.join(UPLOAD_FOLDER, USER_FOLDER, secure_filename(f.filename)))
         # print(os.getcwd())
         # print(os.path.join(UPLOAD_FOLDER, USER_FOLDER))
         # f.save(os.path.join(UPLOAD_FOLDER,USER_FOLDER,secure_filename(f.filename)))
-        files=os.listdir(os.path.join(UPLOAD_FOLDER, USER_FOLDER))
-        return render_template("upload/file_upload.html", files=files)
+        #files=os.listdir(os.path.join(UPLOAD_FOLDER, USER_FOLDER))
+    return render_template("upload/file_upload.html", files=files, file_exists = file_exists)
 
 @upload.route("/file_viewer")
 @login_required

@@ -10,6 +10,7 @@
         <input name="autocomplete" type="text" id="autocomplete" class="form-control input-lg"/>
     </div>
     <!-- <div class = -->
+    <div>
     <script type="text/javascript">
       console.log('-1')
     </script>
@@ -55,14 +56,23 @@
 
       </script>
       <a href="{{ url_for('profile.search') }}">Confirm Selection</a>
-
+      </div>
       <style media="screen">
         .table-striped {
           display: block;
           width: 100%;
           overflow-y: auto;
           max-height: 300px;
+          overflow: hidden;
+          width: 65%;
+          margin: auto;
         }
+        .user-profile {
+          float: left;
+          margin: auto;
+
+        }
+
       </style>
       <head>
       <div class="user-profile">
@@ -82,14 +92,21 @@
               <div class="panel-body">{{patient_user.email}}</div>
             </div></div>
       </head>
-      <div>
+      <!-- Going to leave this new prescription href in case it breaks anything I haven't considered. Consult Jack -->
+      <!-- <div>
         <ul>
           <li><a href="{{ url_for('prescript.new_prescription') }}">Create New Prescription</a>
         </ul>
-      </div>
+      </div> -->
       {% if prescription %}
       <body>
         <div class="table-striped">
+          <!-- Moved the New Prescription from above in order to keep it inline with table -->
+          <div>
+            <ul>
+              <li><a href="{{ url_for('prescript.new_prescription') }}">Create New Prescription</a>
+            </ul>
+          </div>
           <table class = "table">
               <thead>
                 <tr>
