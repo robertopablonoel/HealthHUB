@@ -47,7 +47,7 @@
         </thead>
         <tbody>
           {% for script in prescription %}
-            <tr class="clickable-row" data-href="{{url_for('profile.patient_master')}}">
+            <tr class="clickable-row" data-href="{{url_for('profile.patient')}}">
               <td>{{script.prescription_id}}</td>
               <td>{{script.physician_id}}</td>
               <td>{{script.date_prescribed}}</td>
@@ -56,7 +56,7 @@
               <td>{{script.active}}</td>
               <td>
               {% if script.notify %}
-              <form action="{{ url_for('profile.patient_master') }}" method="post">
+              <form action="{{ url_for('profile.patient') }}" method="post">
                 <div class="form-group">
                   <select class="form-control" id="notify" name="notify">
                     <option value={{script.prescription_id}}1>YES</option>
@@ -69,7 +69,7 @@
                   </div>
               </form>
               {% else %}
-              <form action="{{ url_for('profile.patient_master') }}" method="post">
+              <form action="{{ url_for('profile.patient') }}" method="post">
                 <div class="form-group">
                   <select class="form-control" id="notify" name="notify">
                     <option value={{script.prescription_id}}0>NO</option>

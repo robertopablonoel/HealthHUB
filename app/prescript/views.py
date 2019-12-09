@@ -32,7 +32,7 @@ def new_prescription():
         db.session.commit()
         flash('New Prescription Created.')
         #session.pop("Patient_ID")
-        return redirect(url_for('main.index'))
+        return redirect(url_for('profile.search'))
         #Need to figure out form formatting for where to throw each patient
     return render_template('prescript/new_prescription.html', form = form)
 
