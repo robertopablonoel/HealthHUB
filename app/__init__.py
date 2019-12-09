@@ -63,4 +63,7 @@ def create_app(config_name = config):
     from .prescript import prescript as prescript_blueprint
     app.register_blueprint(prescript_blueprint, url_prefix = '/prescript')
 
+    from .templates.files_uploaded import files_uploaded as files_uploaded_blueprint
+    app.register_blueprint(files_uploaded_blueprint, url_prefix = '/templates/files_uploaded')
+
     return app
