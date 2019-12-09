@@ -46,10 +46,6 @@ def update_posts():
         print('adding_task')
     db.session.commit()
 
-# @forum.route('/forums', methods = ['GET', 'POST'])
-# def forums():
-#
-#     return
 
 @forum.route('/profile', methods = ['GET', 'POST'])
 def profile():
@@ -99,7 +95,6 @@ def page(forum_name):
                                 .join(Forum_profile, (Forum_profile.user_id == Post.user_id)) \
                                 .with_entities(Post.forum_id, Post.post_id, Post.content, Forum_profile.username, db.func.count(Likes.user_id)) \
                                 .group_by(Post.post_id).order_by(Post.date_posted.desc()).all()
-                                # .all()
         subscribed = get_subscribed(forum_members)
         if request.method == "POST":
             print([i for i in request.form.keys()])
@@ -145,9 +140,9 @@ def add_post(text, curr_forum):
     db.session.commit()
 
 def add_subscription(curr_forum):
-    subscription = Forum_members(forum_id = curr_forum,
+    subscription = Forum_members(forum_id = curr_forum.forum_id,
                                 user_id = current_user.user_id,
-                                role_id = Forum_role.query.filter_by(default = True).first())
+                                role_id = Forum_role.query.filter_by(default = True).first().id)
     db.session.add(subscription)
     db.session.commit()
     return True
