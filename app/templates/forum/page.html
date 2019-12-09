@@ -17,39 +17,43 @@
 
             <section class="extend2 whitebox b2">
               <ul class = "post_container pushed">
-              {% for top_post, post, profile in top_p %}
-                  <li class = "post">
-                    <div class = "post_title_area">
-                      <div class = "post_title">
-                      <a href="{{ url_for('forum.page', forum_name=top_post.forum_name)}}"><h1>hh/{{ top_post.forum_name }}</h1></a>
-                      </div>
-                    </div>
-                      <div class = "post_content">
-                        <div class = "post_content_box pushed2">
-                          <p>{{ post.content }}</p>
+                {% for post in forum_posts %}
+                    <li class = "post">
+                      <div class = "post_title_area">
+                        <div class = "post_title">
+
                         </div>
                       </div>
-                      <div class = "post_like"></div>
-                      <div class = "post_poster">
-                        <div class = "post_top">
-                          <div class = "post_frame">
-                            <img src="{{ url_for('static', filename= 'files_uploaded/profile/' + (current_user.user_id)|string + '/icon.png') }}" class="post_img" />
+                        <div class = "post_content">
+                          <div class = "post_content_box pushed2">
+                            <p>{{ post[2] }}</p>
                           </div>
                         </div>
-                        <div class = "post_bottom">
-                          <h3>{{profile.username}}</h3>
+                        <div class = "post_like"></div>
+                        <div class = "post_poster">
+                          <div class = "post_top">
+                            <div class = "post_frame">
+                              <img src="{{ url_for('static', filename= 'files_uploaded/profile/' + (current_user.user_id)|string + '/icon.png') }}" class="post_img" />
+                            </div>
+                          </div>
+                          <div class = "post_bottom">
+                            <p3>{{post[3]}}</p3>
+                          </div>
                         </div>
-                      </div>
-                  </li>
-                {% endfor %}
+                    </li>
+                  {% endfor %}
                 </ul>
 
             {% endif %}
             </section>
             <section class="extend3 whitebox b3">
-              <div class = "profile_container">
-                <div class = "profile_pic">
+              <div class = "forum_profile_container">
+                <div class = "forum_prof_top christmas">
+                  <img src="{{ url_for('static', filename= 'css/img/christmas_balls.png') }}" class="xmas_img" />
                 </div>
+                <form action="{{ url_for('forum.page', forum_name=curr_forum.forum_name) }}" method="POST" enctype="multipart/form-data">
+                  <input class="post_submit sub" id="submit" name="submit" type="submit" value="{{ 'unsubscribe' if subscribed else 'subscribe' }}"> </input>
+                </form>
               </div>
 
             </section>
@@ -57,17 +61,27 @@
 
             </section>
 
-            <section class="whitebox b5">
-              <textarea rows = "5" cols = "60" type="text" id="textboxid" class="textbox post_field pushed2" placeholder="text"></textarea>
 
-
-
-            </section>
+              <form class="whitebox post-form" method = "post" role = "form">
+      					{{ form.hidden_tag() }}
+                {{ wtf.form_field(form.text, rows = "5", cols = "60", type="text", id="textboxid", onkeyup="countChar(this)", class="textbox post_field pushed2", placeholder="Write a post...", maxlength="250") }}
+                <div id="charNum">250/250</div>
+                {{ form.submit(type="submit", value="Post", class = "post_submit") }}
+      				</form>
 
 
         </section>
     </div>
 </div>
-
+<script>
+  function countChar(val) {
+        var len = val.value.length;
+        if (len >= 500) {
+          val.value = val.value.substring(0, 500);
+        } else {
+          $('#charNum').text((250 - len).toString() + "/250");
+        }
+      };
+</script>
 
 {% endblock %}
