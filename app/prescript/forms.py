@@ -43,4 +43,4 @@ class NewPrescriptionForm(FlaskForm):
     # #the method is invoked in addition to any regularly defined validators
     def validate_expir_date(self, field):
         if not field.data > date.today():
-            raise ValidationError('This Patient does not Exist')
+            raise ValidationError('Expiration Date Must be Later Than Today')

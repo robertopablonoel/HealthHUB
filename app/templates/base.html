@@ -82,6 +82,7 @@
                     </a>
 
             </li>
+            {% if current_user.role_id != 5 %}
             <li class="has-subnav">
                     <a href="{{ url_for('profile.set_search') }}">
                         <span class="nav-icon">
@@ -92,7 +93,7 @@
                         </span>
                     </a>
             </li>
-
+            {% endif %}
             <li class="has-subnav">
                     <a href="{{ url_for('profile.patient') }}">
                         <span class="nav-icon">

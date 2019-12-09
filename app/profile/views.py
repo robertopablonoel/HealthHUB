@@ -62,13 +62,14 @@ def autocomplete():
         search = request.args.get('q')
         if search == None:
             search = ""
-        query = db.session.query(User.last_name, User.user_id).filter(User.last_name.like('%' + str(search) + '%'))
-        results = [[i[0], i[1]] for i in query.all()]
+        query = db.session.query(User.first_name, User.last_name, User.user_id).filter_by(hospital_id = current_user.hospital_id).filter(User.last_name.like('%' + str(search) + '%'))
+        results = [[i[0] + " " + i[1], i[2]] for i in query.all()]
         print(results)
         return jsonify(matching_results = results)
     else:
         session["Patient_ID"] = int(request.get_json())
         print(session["Patient_ID"])
+        print("YO DUMBASS HERE")
         return render_template('profile/search_patient.html')
 
 @profile.route("/patient")
