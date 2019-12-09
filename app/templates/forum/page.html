@@ -31,14 +31,18 @@
                         </div>
                         <div class = "post_like">
                           <div class = "reply_btn">
-                            <a href = "#" class="fa fa-reply" style="font-size: 1.5rem;"></a>
+                            <a href = "{{ url_for('forum.page_post', forum_name = curr_forum.forum_name ,post_id = post[1]) }}" class="fa fa-reply" style="font-size: 1.5rem;"></a>
                           </div>
                           <div class = "like_btn">
+                            {% if current_user.liked(post[1]) %}
                             <a href = "#" class="fa fa-thumbs-up" style="color: #378de5; font-size: 1.5rem;"></a>
+                            {% else %}
+                            <a href = "#" class="fa fa-thumbs-up" style="font-size: 1.5rem;"></a>
+                            {% endif %}
                           </div>
                           <div class = "like_num">
                             <div>
-                            <p4>{{post[4]}}</p4>
+                            <p4>{{ post[4] }}</p4>
                             </div>
                           </div>
                         </div>
