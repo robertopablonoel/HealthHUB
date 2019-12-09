@@ -1498,19 +1498,55 @@ input[type="file"] {
 	height: 60px;
 	width: 100%;
 	border-bottom-color: grey;
-	border-style: dashed;
-	border-bottom-width: 1px;
-	border-top-color: grey;
-	border-top-width: 1px;
-	border-left-width: 0px;
-	border-right-width: 0px;
 	display:grid;
-	background: rgb(194, 227, 255);
-	grid-template-columns: 3% 12% 85%;
+	grid-template-columns: 3% 10% 87%;
 	grid-template-rows: 100%;
 	color: black;
 }
 
-.fa-input {
-  font-family: FontAwesome, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+.reply_icon{
+	grid-column: 2;
+	display: grid;
+	grid-template-rows: repeat(12, 1fr);
+	grid-template-columns: 100%;
+
+}
+
+.reply_name{
+	grid-row: 5/9;
+	background: rgb(194, 227, 255);
+	border-radius: 20px;
+	padding-top:1px;
+	color: black;
+}
+.bubble-container{
+	grid-column: 3;
+	display: flex;
+	justify-content: center;
+  align-items: center;
+}
+.speech-bubble {
+
+	position: relative;
+	background: #ededd3;
+	border-radius: .4em;
+	height: 80%;
+	width: 90%;
+	float: left
+	padding: 1%;
+
+}
+
+.speech-bubble:after {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border: 12px solid transparent;
+	border-right-color: #ededd3;
+	border-left: 0;
+	margin-top: -12px;
+	margin-left: -12px;
 }
