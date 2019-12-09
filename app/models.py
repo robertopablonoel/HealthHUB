@@ -70,6 +70,8 @@ class User(UserMixin, db.Model):
         return self.role is not None and \
                 (self.role.permissions & permissions) == permissions
 
+    def liked(self, posts):
+        return True if Likes.query.filter((Likes.post_id == posts) & (Likes.user_id == self.user_id)).first() else False
 
     def is_administrator(self):
         return self.can(Permission.ADMINISTER)
