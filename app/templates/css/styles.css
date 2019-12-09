@@ -1493,3 +1493,24 @@ input[type="file"] {
 	height:45px;
 	width:45px;
 }
+
+.comment_bawx{
+	height: 60px;
+	width: 100%;
+	border-bottom-color: grey;
+	border-style: dashed;
+	border-bottom-width: 1px;
+	border-top-color: grey;
+	border-top-width: 1px;
+	border-left-width: 0px;
+	border-right-width: 0px;
+	display:grid;
+	background: rgb(194, 227, 255);
+	grid-template-columns: 3% 12% 85%;
+	grid-template-rows: 100%;
+	color: black;
+}
+
+.fa-input {
+  font-family: FontAwesome, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
