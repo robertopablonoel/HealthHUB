@@ -59,7 +59,8 @@ def autocomplete():
         search = request.args.get('q')
         if search == None:
             search = ""
-        #query = db.session.query(User.first_name, User.last_name, User.user_id).filter_by(hospital_id = current_user.hospital_id, User.role_id == 5).filter(User.last_name.like('%' + str(search) + '%'))
+        #.filter_by(role_id = Role.query(Role.id).filter_by(name = "Patient"))
+        query = db.session.query(User.first_name, User.last_name, User.user_id).filter_by(hospital_id = current_user.hospital_id).filter(User.last_name.like('%' + str(search) + '%'))
         results = [[i[0] + " " + i[1], i[2]] for i in query.all()]
         return jsonify(matching_results = results)
     else:

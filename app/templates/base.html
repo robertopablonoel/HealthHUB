@@ -37,28 +37,7 @@
                 </a>
 
             </li>
-            <li class="has-subnav">
-                <a href="{{ url_for('sched.schedule') }}">
-                    <span class="nav-icon">
-                        <i class="fa fa-calendar fa-15x"></i>
-                    </span>
-                    <span class="nav-text">
-                        Book Appointment
-                    </span>
-                </a>
 
-            </li>
-            <li class="has-subnav">
-                <a href="{{ url_for('roomres.reserve') }}">
-                    <span class="nav-icon">
-                        <i class="fa fa-hospital-o fa-15x"></i>
-                    </span>
-                    <span class="nav-text">
-                        Reserve Room
-                    </span>
-                </a>
-
-            </li>
             <li class="has-subnav">
                 <a href="{{ url_for('upload.uploads') }}">
                     <span class="nav-icon">
@@ -84,6 +63,28 @@
             </li>
             {% if current_user.role_id != 5 %}
             <li class="has-subnav">
+                <a href="{{ url_for('sched.schedule') }}">
+                    <span class="nav-icon">
+                        <i class="fa fa-calendar fa-15x"></i>
+                    </span>
+                    <span class="nav-text">
+                        Book Appointment
+                    </span>
+                </a>
+
+            </li>
+            <li class="has-subnav">
+                <a href="{{ url_for('roomres.reserve') }}">
+                    <span class="nav-icon">
+                        <i class="fa fa-hospital-o fa-15x"></i>
+                    </span>
+                    <span class="nav-text">
+                        Reserve Room
+                    </span>
+                </a>
+
+            </li>
+            <li class="has-subnav">
                     <a href="{{ url_for('profile.set_search') }}">
                         <span class="nav-icon">
                         <i class="fa fa-search-plus fa-2x" ></i>
@@ -94,6 +95,7 @@
                     </a>
             </li>
             {% endif %}
+            {% if current_user.role_id == 5 %}
             <li class="has-subnav">
                     <a href="{{ url_for('profile.patient') }}">
                         <span class="nav-icon">
@@ -104,6 +106,7 @@
                         </span>
                     </a>
             </li>
+            {% endif %}
 
         </ul>
         <ul class="logout">
