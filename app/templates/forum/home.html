@@ -21,19 +21,36 @@
 
             <section class="whitebox b2">
               <ul class = "post_container pushed">
-              {% for top_post, post, profile in top_p %}
+              {% for top_post in top_p %}
                   <li class = "post">
                     <div class = "post_title_area">
                       <div class = "post_title">
-                      <a href="{{ url_for('forum.page', forum_name=top_post.forum_name)}}"><h3>hh/{{ top_post.forum_name }}</h3></a>
+                      <a href="{{ url_for('forum.page', forum_name=top_post[4])}}"><h3>hh/{{ top_post[4] }}</h3></a>
                       </div>
                     </div>
                       <div class = "post_content">
                         <div class = "post_content_box pushed2">
-                          <p>{{ post.content }}</p>
+                          <p>{{ top_post[2] }}</p>
                         </div>
                       </div>
-                      <div class = "post_like"></div>
+                      <div class = "post_like">
+                        <div class = "reply_btn">
+                          <a href = "{{ url_for('forum.page_post', forum_name = top_post[4] ,post_id = top_post[1]) }}" class="fa fa-reply" style="font-size: 1.5rem;"></a>
+                        </div>
+                        <div class = "like_btn">
+                          {% if current_user.liked(top_post[1]) %}
+                          <a href = "#" class="fa fa-thumbs-up" style="color: #378de5; font-size: 1.5rem;"></a>
+                          {% else %}
+                          <a href = "#" class="fa fa-thumbs-up" style="font-size: 1.5rem;"></a>
+                          {% endif %}
+                        </div>
+                        <div class = "like_num">
+                          <div>
+                          <p4>{{top_post[5]}}</p4>
+                          </div>
+                        </div>
+                      </div>
+
                       <div class = "post_poster">
                         <div class = "post_top">
                           <div class = "post_frame">
@@ -41,7 +58,7 @@
                           </div>
                         </div>
                         <div class = "post_bottom">
-                          <h3>{{profile.username}}</h3>
+                          <h3>{{top_post[3]}}</h3>
                         </div>
                       </div>
                   </li>
@@ -52,7 +69,10 @@
             </section>
             <section class="whitebox b3">
               <div class = "profile_container">
-                <div class = "profile_pic">
+                <div class = "profile_pic_container">
+                  <div class = "user_frame">
+                    <img src="{{ url_for('static', filename= 'files_uploaded/profile/' + (current_user.user_id)|string + '/icon.png') }}" class="post_img" />
+                  </div>
                 </div>
               </div>
 
