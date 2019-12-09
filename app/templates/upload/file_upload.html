@@ -11,17 +11,24 @@
   <div class = "general_container whitebox">
     <div class = "fm_grid">
       <div class = "fm_top">
-        <form action="http://localhost:5000/upload/uploader" method="POST" enctype="multipart/form-data">
+        <form action='{{ url_for("upload.uploader") }}' method="POST" enctype="multipart/form-data">
           <input type="file" name="file" class= "fm_button">
           <input type="submit" name = "upload"class= "fm_button">
         </form>
         </div>
       <div class = "fm_bottom pushed">
         {% for file in files %}
-        <li class = "file_li"> {{file}} <input type="submit" value = "view" name = "view" class= "view_button"> </li>
+        <li class = "file_li"> {{file}}
+          <form action="{{ url_for('files_uploaded.view_pdf', pdf_name=file)}}" method="POST" class="view_button">
+           <input type="submit" value = "view" name = "view" class= "">
+         </form>
+        </li>
         {% endfor %}
       </div>
     </div>
   </div>
 </div>
+<script type="text/javascript">
+
+</script>
 {% endblock %}
