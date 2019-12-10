@@ -120,9 +120,15 @@
   transition-delay: 0.6s;
 }
 
+
+.container{
+  margin-left: auto;
+  width: 100%;
+  overflow: hidden;
+}
 .cal-device {
   width: 54vh;
-  height: 96vh;
+  height: 50vh;
   background: white;
 }
 .cal-device > .cal-header {
@@ -502,6 +508,7 @@
   flex-basis: calc(80% - 54vh);
   font-size: 2.5714285714vh;
   font-weight: 300;
+  margin-left: 50%;
 }
 .meta p, .meta a {
   color: rgba(255, 255, 255, 0.7);
