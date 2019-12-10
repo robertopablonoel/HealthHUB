@@ -70,12 +70,12 @@
             <section class="whitebox b3">
               <div class = "profile_container">
                 <div class = "profile_name_container">
-                  Spaghetti Boy
+                  <b>{{ forum_pro.username }}</b>
                 </div>
                 <div class = "profile_bio_container">
                   <div class = "profile_bio">
                     <div>
-                    Manatees (family Trichechidae, genus Trichechus) are large, fully aquatic, mostly herbivorous marine mammals sometimes known as sea cows. There are three accepted living species of Trichechidae, representing three of the four living species in the order Sirenia: the Amazonian manatee (Trichechus inunguis), the West Indian manatee (Trichechus manatus), and the West African manatee (Trichechus senegalensis). They measure up to 4.0 metres (13.1 ft) long, weigh as much as 590 kilograms (1,300 lb),[2] and have paddle-like flippers. The etymology of the name is dubious, with connections having been made to Latin "manus" (hand), and to a word sometimes cited as "manati" used by the Taíno, a pre-Columbian people of the Caribbean, meaning "breast".[3] Manatees are occasionally called sea cows, as they are slow plant-eaters, peaceful and similar to cows on land. They often graze on water plants in tropical seas.[4]
+                    {{ forum_pro.bio }}
                     </div>
                   </div>
                 </div>
@@ -93,7 +93,8 @@
             </section>
             <section class="whitebox b4">
               <div class = "forum_container">
-                <div class = "top_forums_title">
+                <div class = "top_forums_title" style = "font-size:30px">
+                  Top Forums
                 </div>
                 <div class = "top_forums_content pushed">
                   {% for top, forum in top_f %}
