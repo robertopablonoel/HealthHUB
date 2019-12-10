@@ -1,0 +1,46 @@
+{% extends "forum/forum_base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}HealthHub Home{% endblock %}
+
+{% block page_content %}
+<div class = "outer forum">
+    <div class="middle">
+      <!-- <form class="form-style-9"> -->
+          <ul>
+            <form class="form-style-9" method = "POST" role = "form">
+              {{ form.hidden_tag() }}
+                <!-- <li> -->
+                  <!-- <input type="text" name="field1" class="field-style field-split align-left" placeholder="Forum Name" /> -->
+                  {{ wtf.form_field(form.title, rows = "1", cols = "60", type="textual", id="other", class="textbox post_field pushed2", placeholder="Forum name...", maxlength="250") }}
+                <!-- </li> -->
+                <!-- <li> -->
+                  <!-- <textarea name="field5" class="field-style" placeholder="Description"></textarea> -->
+                  {{ wtf.form_field(form.text, rows = "5", cols = "60", type="text", id="textboxid", onkeyup="countChar(this)", class="textbox post_field pushed2", placeholder="Write a description...", maxlength="250") }}
+                  <div id="charNum">250/250</div>
+                <!-- </li> -->
+                <!-- <li> -->
+                  {{ wtf.form_field(form.visibility, type="select", id="selectfield") }}
+                <!-- </li> -->
+                <!-- <li> -->
+                  <!-- <input type="submit" value="Create" /> -->
+                  {{ form.submit(type="submit", value="Create", class = "post_submit") }}
+                <!-- </li> -->
+      				</form>
+          </ul>
+    <!-- </form> -->
+    </div>
+</div>
+<script>
+  function countChar(val) {
+        var len = val.value.length;
+        if (len >= 500) {
+          val.value = val.value.substring(0, 500);
+        } else {
+          $('#charNum').text((250 - len).toString() + "/250");
+        }
+      };
+</script>
+
+
+{% endblock %}

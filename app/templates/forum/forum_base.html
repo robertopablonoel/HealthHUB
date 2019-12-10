@@ -15,8 +15,12 @@
                 <div class = "search_wrap">
                         <input type="text" class="textbox" placeholder="Search">
                         <input title="Search" value="" type="submit" class="button">
-                </form>
+                </div>
         </div>
-        <div class="profile">
+        <div class = "create_forum_container">
+          <a href="{{ url_for('forum.create') }}">
+            <input class="create_forum_button" id="submit" name="submit" type="submit" value="Create Forum">
+          </a>
+        </div>
 </nav>
 {% endblock %}
