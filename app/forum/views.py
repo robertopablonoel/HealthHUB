@@ -34,7 +34,7 @@ def home():
             unlike(request.values.get('unlike'))
             flash("unliked :(")
             return redirect(url_for('forum.home'))
-    forum_pro = Forum_profile.query.filter(Forum_profile.user_id == current_user.user_id)
+    forum_pro = Forum_profile.query.filter(Forum_profile.user_id == current_user.user_id).first()
     user_forums = db.session.query(Forum_members, Forum).join(Forum, Forum_members.forum_id == Forum.forum_id).filter(Forum_members.user_id == current_user.user_id).all()
     return render_template('forum/home.html', top_f = top_f, top_p = top_p, forum_pro = forum_pro, user_forums = user_forums)
 
@@ -243,3 +243,7 @@ def add_comment(text, curr_post):
                     date_commented = datetime.now())
     db.session.add(new_comment)
     db.session.commit()
+
+@forum.route('/create', methods = ["GET", "POST"])
+def create():
+    return render_template('forum/create.html')

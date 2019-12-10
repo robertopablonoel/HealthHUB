@@ -1,0 +1,26 @@
+{% extends "forum/forum_base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}HealthHub Home{% endblock %}
+
+{% block page_content %}
+<div class = "outer forum">
+    <div class="middle">
+      <form class="form-style-9">
+          <ul>
+                <li>
+                  <input type="text" name="field1" class="field-style field-split align-left" placeholder="Forum Name" />
+                </li>
+                <li>
+                <textarea name="field5" class="field-style" placeholder="Description"></textarea>
+                </li>
+                <li>
+                <input type="submit" value="Create" />
+                </li>
+          </ul>
+    </form>
+    </div>
+</div>
+
+
+{% endblock %}

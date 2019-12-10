@@ -76,17 +76,32 @@
             </section>
             <section class="whitebox b3">
               <div class = "profile_container">
+                <div class = "profile_name_container">
+                  <b>{{ forum_pro.username }}</b>
+                </div>
+                <div class = "profile_bio_container">
+                  <div class = "profile_bio">
+                    <div>
+                    {{ forum_pro.bio }}
+                    </div>
+                  </div>
+                </div>
                 <div class = "profile_pic_container">
                   <div class = "user_frame">
                     <img src="{{ url_for('static', filename= 'files_uploaded/profile/' + (current_user.user_id)|string + '/icon.png') }}" class="post_img" />
                   </div>
                 </div>
+                <div class = "profile_banner_container">
+                  <img src="/templates/css/img/christmas_balls.png" class="xmas_img">
+                </div>
               </div>
+
 
             </section>
             <section class="whitebox b4">
               <div class = "forum_container">
-                <div class = "top_forums_title">
+                <div class = "top_forums_title" style = "font-size:30px">
+                  Top Forums
                 </div>
                 <div class = "top_forums_content pushed">
                   {% for top, forum in top_f %}
