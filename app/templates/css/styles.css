@@ -985,11 +985,17 @@ body {
 	border-radius: 4px;
 }
 
+.no_float{
+	float:none;
+	display: grid;
+	grid-template-columns: calc(100% - 42px) 42px;
+}
+
 .search_wrap .textbox {
 	font-size: 2em;
 	outline: 0;
 	height: 100%;
-	width:90%;
+	width:calc(100% - 42px);
 	line-height: 42px;
 	text-align: left;
 	padding: 0 16px;
