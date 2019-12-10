@@ -417,12 +417,62 @@
 	grid-column-end: 7;
 	grid-row-start: 2;
 	grid-row-end: 6;
+	display: flex;
+	justify-content: center;
+  align-items: center;
+}
+
+.profile_banner_container{
+	grid-column-start: 1;
+	grid-column-end: 10;
+	grid-row-start: 1;
+	grid-row-end: 4;
+	display: flex;
+	justify-content: center;
+  align-items: center;
+}
+
+.profile_name_container{
+	grid-column-start: 3;
+	grid-column-end: 7;
+	grid-row-start: 6;
+	grid-row-end: 6;
+	display: flex;
+	justify-content: center;
+  align-items: center;
+	color: black;
+	font-size: 20px;
+}
+
+.profile_bio_container{
+	grid-column-start: 1;
+	grid-column-end: 10;
+	grid-row-start: 7;
+	grid-row-end: 12;
+	display: flex;
+	justify-content: center;
+  align-items: center;
+	color: black;
+	font-size: 15px;
+	padding: 15px;
+	padding-top: 2px;
+	overflow-y: scroll;
+}
+
+.profile_bio{
+	height:100%;
+	width:100%;
+	border-radius: 15px;
+	background: rgb(194, 227, 255);
+	padding: 5px;
+	box-shadow: inset 0 0 2px #000000;
+	overflow-y: scroll;
 }
 
 .user_frame{
 	position: relative;
-	height: 100%;
-	width: 100%;		/* desired width */
+	height: 125px;
+	width: 125px;		/* desired width */
 	overflow: hidden;
 	border-color: black;
 	border-width: 1px;
