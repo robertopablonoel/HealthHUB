@@ -995,7 +995,7 @@ body {
 	font-size: 2em;
 	outline: 0;
 	height: 100%;
-	width:calc(100% - 42px);
+	width:100%;
 	line-height: 42px;
 	text-align: left;
 	padding: 0 16px;

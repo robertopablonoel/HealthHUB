@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, IntegerField#,DateField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, IntegerField,TextAreaField#,DateField
 from wtforms.validators import Required, Email, Length, Regexp, EqualTo, NumberRange
 from wtforms import ValidationError
 from wtforms.fields.html5 import DateField
@@ -37,7 +37,7 @@ class InlineSubmitField(BooleanField):
 
 class NewPrescriptionForm(FlaskForm):
     expir_date = DateField('Expiration_Date', validators = [Required()])
-    description = StringField('Enter a description', validators = [Required(), Length(max=2000)])
+    description = TextAreaField('Enter a description', validators = [Required(), Length(max=2000)])
     submit = InlineSubmitField('Confim Prescription')
     #When a form defines a method with the prefix validate_ followed by the name of a fiel0d,
     # #the method is invoked in addition to any regularly defined validators
