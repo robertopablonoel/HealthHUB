@@ -6,328 +6,255 @@
 {{ super() }}
 <meta charset='utf-8'>
 <title>Calendar</title>
-<style type="text/css">
-
-  .container {
-    /* margin-left: 50px;
-    margin-right: 10px; */
-    padding-right: 0;
-    padding-left: 0;
-    margin-right: auto;
-    margin-left: auto;
-  }
-
-  .container-fluid {
-    padding-right: 0;
-    padding-left: 0;
-    margin-right: auto;
-    margin-left: auto;
-  }
-
-  .col {
-    width: 50px;
-  }
-
-  #header, i.fa, #weekdays, #form-container {
-    color: white;
-    text-align: center;
-  }
-  .fl_left{
-    float:right;
-  }
-
-  i.fa {
-    text-align: center;
-  }
-
-  #header {
-    color: white;
-    text-align: center;
-  }
-
-  #calendar {
-    z-index: 900;
-    padding: 0;
-    margin: 0;
-  }
-
-  body {
-    background: rgba(50, 50, 50, 1) !important;
-    color: white;
-    /* opacity: .; */
-  }
-
-  #pad {
-    padding: 2%;
-  }
-
-  #hourly {
-      height: 100px;
-  }
-
-  #scheduling-blocks {
-    overflow: auto !important;
-    background: rgba(70, 70, 70, 1) !important;
-    display: block;
-    height: 500px;
-  }
-
-  .appointment-label {
-    height:100px;
-    position: relative;
-
-  }
-
-  .schedule_grid{
-    height: 2400px;
-    width: 100%;
-    display: grid;
-    grid-template-columns: 9% 13% 13% 13% 13% 13% 13% 13%;
-    grid-template-rows: repeat(96, 25px);
-  }
-  /* #weekdays {
-    border-bottom: 10px rgba(10, 10, 10, 1) !important;
-  } */
-
-</style>
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<script  src="{{ url_for('static', filename= 'js/moment.min.js') }}"></script>
-<!-- <script src="https://unpkg.com/vuex"></script> -->
+  <meta charset="UTF-8">
+  <title>CSS-only Colorful Calendar Concept</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename= 'css/sched_style.css') }}">
 {% endblock %}
 {% block page_content %}
+
 <body>
-  <div id = "appointment" class = "container-fluid">
-    <div id = "pad" class = "row"></div>
-    <div id = "form-container" class = "fl_left">
-      <div class = "row appointment-label text-center">
-        <h3>Appointment Form</h3>
+<!-- partial:index.partial.html -->
+<div class="route" id="index"></div>
+<div class="route" id="oct-week-3"></div>
+<div class="route" id="oct-week-4"></div>
+<div class="route" id="nov-week-1"></div>
+<div class="route" id="schedule"></div>
+<form class="form-style-9" method = "POST" role = "form">
+  {{ form.hidden_tag() }}
+      {{ wtf.form_field(form.physician, placeholder="Choose your physician") }}
+      {{ wtf.form_field(form.purpose, placeholder="Purpose of your visit") }}
+      {{ wtf.form_field(form.time_slot, placeholder="Desired time") }}
+      {{ wtf.form_field(form.notes, placeholder="Additional notes") }}
+      {{ form.submit(type="submit", value="Create", class = "create_forum_button", style = "margin-top:10px;") }}
+
+</form>
+  <main class="cal-device">
+  <header class="cal-header">
+    <div class="cal-subheader"></div>
+    <div class="cal-bar">
+      <div class="cal-button -left">
+        <i class="fa fa-bars -calendar"></i>
+        <a href="#index" class="fa fa-chevron-left -schedule"></a>
       </div>
-      <div id = "form" onchange="update_physician()">
-          {{ wtf.quick_form(form) }}
+      <div class="cal-title">
+        <div class="cal-heading -calendar">Calendar</div>
+        <div class="cal-heading -schedule">Wednesday, November 10</div>
       </div>
-  </div>
-    <div id = "calendar" class = "col-md-9">
-
-      <div id = "header" class = "row">
-        <div id = "empty" class = "col-md-1"></div>
-        <div id = "prev_button" class = "col-md-3">
-          <button v-on:click = "updateDaysPrev">
-            <i class = "fa fa-toggle-left fa-2x"></i>
-          </button>
-        </div>
-        <div id = "month" class = "col-md-5">
-          <h1>{a days_of_week[days_of_week.length - 1].date.format("MMMM") a}</h1>
-        </div>
-        <div id = "next_button" class = "col-md-3">
-          <button v-on:click = "updateDaysNext">
-            <i class = "fa fa-toggle-right fa-2x"></i>
-          </button>
-        </div>
+      <div class="cal-button-right">
+        <i class="fa fa-search"></i>
       </div>
-      <div id = "weekdays" class = "row">
-        <!-- <span class="border-bottom"></span> -->
-        <div id = "time" class = "col-md-1">
+    </div>
+  </header>
+  <section class="cal-app">
+    <header class="cal-week">
+      {% for day in weekDays %}
+        <div class="cal-weekday">
+          {{ day }}
         </div>
-        <div class = "col" v-for="item in days_of_week"
-              v-bind:key="item.id"
-              v-bind:item="item">
-              <h4>{a (item.date.format("ddd")).toUpperCase() a}</h4>
-              <h4>{a item.date.format("D") a}</h4>
-        </div>
-      </div>
-      <div id = "scheduling-blocks" class = "container border-top">
-        <div class = "schedule_grid">
-          <div id = "time" class = "col-md-1">
-            <div id = "hourly" class = "row" v-for="id in hour_of_day">
-              {a id a}
-            </div>
-          </div>
-            <div id = "calendar-table" class = "col-md-11">
-              <div class = "col weekday" id = "weekday" v-for="item in days_of_week"
-                    v-bind:key="item.id"
-                    v-bind:item="item"
-                    v-on:click = "createDiv"
-                    >
-              </div>
-            </div>
-          <div id="appt-blocks" class = >
-
-          </div>
-        </div>
-      </div>
-
-
-  <script type="text/javascript">
-    // Choosing the current physician
-    var node_value = document.getElementById('physician').value
-    console.log(node_value)
-
-
-    // Each column will have a function that works on click
-    //Step 1: create background + date finder (range, setter)
-    // Add the date number, use the moment package
-    // When it is clicked, it will identify the position and snap to the line
-    // After which it will add that information to the schedule (if the area has a click)
-    // It will prevent the user from clicking (and that's it)
-    // (Next thing to do is the clicking canvas)
-
-    var ar_times = ([...Array(24).keys()]).map(val => val + ":00")
-    // var js_times = ar_times.map()
-    var days_in_week = function() {
-      var days_sub = Array()
-      for (i=0; i<7;i++){
-        days_sub.push((moment().add(i,"days")))
-      }
-      return days_sub
-    }
-
-    <!-- console.log(days_in_week()) -->
-
-    var moment_days = [...Array(7)]
-    //Start day should be 0, then when it itterates, see day of week and end
-    //iteration when it hits the next 0
-
-    var days_in_week = days_in_week()
-
-    var today = moment().startOf('day').fromNow()
-    console.log(today)
-    console.log(moment().date())
-    console.log(moment().day(0).date())
-    //simply go moment() + 7 for each div
-
-    var select_month = (moment().format("MMMM")).toUpperCase()
-
-    console.log(days_in_week)
-
-    var cal = new Vue({
-      el: '#calendar',
-      data: {
-        days_of_week : [
-          {id: 0, date: moment()},
-          {id: 1, date: moment().add(1,"days")},
-          {id: 2, date: moment().add(2,"days")},
-          {id: 3, date: moment().add(3,"days")},
-          {id: 4, date: moment().add(4,"days")},
-          {id: 5, date: moment().add(5,"days")},
-          {id: 6, date: moment().add(6,"days")}
-        ],
-        hour_of_day : ar_times
-      },
-      methods: {
-        updateDaysNext : function() {
-          //fancy maths to get back to Sunday Centered
-          var itter
-          if (this.days_of_week[0].date.day() != 0) {
-            itter = 7 - this.days_of_week[0].date.day()
-          } else {
-            itter = 7
-          }
-          for(i=0; i < this.days_of_week.length; i++) {
-            this.days_of_week[i].date.add(itter,"days")
-          }
-          console.log(this.days_of_week)
-          this.$forceUpdate()
-          return this.days_of_week
-        },
-        updateDaysPrev : function() {
-          var itter
-          if (this.days_of_week[0].date > moment()) {
-            var difference = this.days_of_week[0].date.dayOfYear() - moment().dayOfYear()
-            var year_difference = this.days_of_week[0].date.year() - moment().year()
-            if (difference > 7 || year_difference >= 1){
-              itter = 7
-              for(i=0; i < this.days_of_week.length; i++) {
-                this.days_of_week[i].date.subtract(itter,"days")
-              }
-              console.log(this.days_of_week)
-              this.$forceUpdate()
-              return this.days_of_week
-            } else {
-              itter = difference
-              for(i=0; i < this.days_of_week.length; i++) {
-                this.days_of_week[i].date.subtract(itter,"days")
-              }
-              console.log(this.days_of_week)
-              this.$forceUpdate()
-              return this.days_of_week
-            }
-          }
-        },
-        createDiv : function () {
-          var child = document.getElementById("newappointment")
-          this.parentNode.removeChild(child)
-          var div = document.createElement("div")
-          div.setAttribute("id", "newappointment")
-          div.style.backgroundColor = "red";
-          div.style.left = 5;
-          div.style.top = 10;
-          this.appendChild(div)
-          console.log(div)
-        }
-      },
-      delimiters: ['{a','a}']
-    })
-
-    function update_physician() {
-      var node_value = document.getElementById('physician').value
-      console.log(node_value)
-    }
-    function update() {
-      var taken_schedules = Array(0)
-      {% for events in physician_schedule %}
-        {% if events.user_id == node_value %}
-          taken_schedules.push("{{events.start_time}}")
-        {% endif %}
       {% endfor %}
-      //ordered
-      //Operating hours in moment()
-      moment().isBetween()
-      var moment_array = Array(0)
-      var curr_month = moment().format("MM")
-      var curr_year = moment().format("YYYY")
-      var curr_day = moment().format("DD")
-      var now_time = moment(curr_year + "-" + curr_month + "-" + curr_day + " " + "07:00:00", "YYYY-MM-DD HH:mm:ss")
-      // console.log(now_time.add(1, "days").format("YYYY-MM-DD HH:mm:ss"))
-      var quit = parseFloat(moment().endOf("month").format("D"))
-      for(i = 0; i < quit; i++) {
-        if (i != 0){
-        var now_updated = now_time.add(1, "days").subtract(11, "hours")
-      } else {
-        var now_updated = now_time
-      }
-        for(j=0; j < 22 ; j++){
-          now_updated = now_updated.add(30,'minutes')
-          <!-- console.log(now_updated.format("YYYY-MM-DD HH:mm:ss")) -->
-          moment_array.push(now_updated.format("YYYY-MM-DD HH:mm:ss"))
-        }
-      }
-      console.log(taken_schedules)
-      // console.log(taken_schedules.map(value => value + " "))
-      // console.log(taken_schedules.map(value => moment(value,"YYYY-MM-DD HH:mm:ss").format("YYYY-MM-DD HH:mm:ss")))
-      var new_array = Array(0)
-      for(i = 0; i < moment_array.length; i++){
-        // console.log(moment_array[i].format("YYYY-MM-DD HH:mm:ss"))
-        // console.log(moment_array[i])
-        if (taken_schedules.indexOf(moment_array[i]) == -1)  {
-          new_array.push(moment_array[i])
-          <!-- console.log(moment_array[i]) -->
-        }
-      }
-      var selected = document.getElementById('time_slot')
-      var length = selected.options.length;
-      while (selected.firstChild){
-        selected.removeChild(selected.firstChild)
-      }
-      // for (i = 0; i < length; i++) {
-      //   selected.options.remove(i);
-      // }
-      for (i = 0; i < new_array.length; i++){
-        selected.options[selected.options.length] = new Option(new_array[i] + " to " + moment(new_array[i], "YYYY-MM-DD HH:mm:ss").add(30, "minutes").format("YYYY-MM-DD HH:mm:ss"), i)
-      }
-    }
-
-    console.log("This is the current selected physician >>> " + node_value)
-  </script>
+    </header>
+    <div class="cal-scene -calendar">
+      <div class="cal-month -october">
+        <header class="cal-header">
+          <a class="cal-link" href="#oct-week-1"><span>October</span></a>
+          <a class="cal-arrow" href="#nov-week-1"><i class="fa fa-chevron-up"></i></a>
+          <a class="cal-arrow" href="#oct-week-4"><i class="fa fa-chevron-up"></i></a>
+        </header>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a href="#schedule"  class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+      </div>
+      <div class="cal-month -november">
+        <header class="cal-header">
+          <a class="cal-link" href="#nov-week-1"><span>November</span></a>
+          <a class="cal-arrow"><i class="fa fa-chevron-up"></i></a>
+        </header>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a href="#schedule" class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a href="#schedule" class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a href="#schedule" class="cal-day"></a>
+        <a href="#schedule" class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+      </div>
+      <div class="cal-month -december">
+        <header class="cal-header">
+          <a class="cal-link"><span>December</span></a>
+          <a class="cal-arrow" href="#nov-week-1"><i class="fa fa-chevron-down"></i></a>
+          <a class="cal-arrow" href="#oct-week-3"><i class="fa fa-chevron-down"></i></a>
+        </header>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a href="#schedule" class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a href="#schedule" class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+      </div>
+      <div class="cal-month -january">
+        <header class="cal-header">
+          <div class="cal-link"><span>January</span></div>
+          <a class="cal-arrow" href="#oct-week-4"><i class="fa fa-chevron-down"></i></a>
+        </header>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+      </div>
+    </div>
+    <div class="cal-scene -schedule">
+      <div class="cal-item">
+        <div class="cal-time"><span>08:00</span></div>
+        <div class="cal-task">
+          <p>wake up</p>
+        </div>
+      </div>
+      <div class="cal-item -long">
+        <div class="cal-time"><span>12:15</span></div>
+        <div class="cal-task">
+          <p>meeting with the team, discussing the project requirements</p>
+        </div>
+      </div>
+      <div class="cal-item">
+        <div class="cal-time"><span>13:00</span></div>
+        <div class="cal-task">
+          <p>lunch with Peter</p>
+          <a><i class="fa fa-map-marker"></i>cafe <q>Petit brasserie</q></a>
+        </div>
+      </div>
+      <div class="cal-item">
+        <div class="cal-time"><span>14:30</span></div>
+        <div class="cal-task">
+          <p>call with Johnathan and Stevie</p>
+        </div>
+      </div>
+      <div class="cal-item -long">
+        <div class="cal-time"><span>16:45</span></div>
+        <div class="cal-task">
+          <p>project presentation</p>
+          <a><i class="fa fa-map-marker"></i>Head Office</a>
+        </div>
+      </div>
+      <div class="cal-item">
+        <div class="cal-time"><span>18:00</span></div>
+        <div class="cal-task">
+          <p>call with Johnathan and Stevie</p>
+        </div>
+      </div>
+      <div class="cal-item -long">
+        <div class="cal-time"><span>19:00</span></div>
+        <div class="cal-task">
+          <p>David\'s birthday party</p>
+          <a><i class="fa fa-map-marker"></i>bar <q>Tailor\'s John</q></a>
+        </div>
+      </div>
+      <div class="cal-item">
+        <div class="cal-time"></div>
+        <div class="cal-task"></div>
+      </div>
+    </div>
+  </section>
+</main>
+<div class="meta">
+  <h1>CSS-only Colorful <br>Calendar Concept</h1>
+  <p>
+    Dribbble Rework<br />
+    Original Shot by <a href="https://dribbble.com/shots/2335073-Calendar-App-Animation" target="_blank">Ludmila Shevchenko</a>
+  </p>
+  <p>
+    Click on the arrows (when enabled) and the highlighted date to see the effect.<br>
+    You can also go <strong>back</strong> in your browser to navigate between scenes, or click the left arrow in the schedule view.
+  </p>
+  <p>
+    Works in all modern browsers.
+  </p>
+</div>
+<!-- partial -->
 
 </body>
 {% endblock %}

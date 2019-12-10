@@ -1,4 +1,4 @@
-from flask import render_template, redirect, request, url_for, flash, current_app
+from flask import render_template, redirect, request, url_for, flash, current_app, session
 from . import forum
 from flask_login import login_user, login_required, logout_user, current_user
 from ..models import Permission, Patient, User, Hospital, Forum, Forum_role, Forum_members, ForumPermission, Post, Likes, Reaction, Top_forums, Top_posts, Task, Forum_profile, Forum_role
@@ -11,12 +11,14 @@ from dateutil.relativedelta import relativedelta
 from .forms import PostForm, createForumForm
 import re
 from flask import Flask
+from flask_jsonpify import jsonify
+
 
 @forum.route('/home',  methods = ['GET','POST'])
 @login_required
 def home():
-    update_forum()
-    update_posts()
+    # update_forum()
+    # update_posts()
     top_f = db.session.query(Top_forums, Forum).join(Forum, (Top_forums.forum_id == Forum.forum_id)).filter(Top_forums.forum_id == Forum.forum_id).order_by(Top_forums.subscribers.desc()).limit(8).all()
     print(top_f)
     top_p = db.session.query(Top_posts, Post, Likes, Forum_profile) \
@@ -95,6 +97,11 @@ def profile_upload(req, user_id):
         os.mkdir(os.path.join(UPLOAD_FOLDER, USER_FOLDER))
         f.save(os.path.join(UPLOAD_FOLDER, USER_FOLDER, secure_filename("icon.png")))
     files=os.listdir(os.path.join(UPLOAD_FOLDER, USER_FOLDER))
+
+@forum.route('/mini_direct')
+def mini_direct():
+    print(session.get("forum_name"))
+    return redirect(url_for("forum.page", forum_name= session.get("forum_name")))
 
 @forum.route('/hh/<forum_name>', methods = ['GET', 'POST'])
 def page(forum_name):
@@ -178,6 +185,8 @@ def add_subscription(curr_forum):
     db.session.add(subscription)
     db.session.commit()
     return True
+
+
 
 @forum.route('/hh/<forum_name>/<post_id>', methods = ["GET", "POST"])
 def page_post(forum_name, post_id):
@@ -264,3 +273,23 @@ def createForum(form):
                     )
     db.session.add(new_forum)
     db.session.commit()
+
+
+@forum.route('/autocomplete', methods = ['GET', 'POST'])
+@login_required
+def autocomplete():
+    session["forum_name"] = ""
+    if request.method == 'GET':
+        search = request.args.get('q')
+        if search == None:
+            search = ""
+        #.filter_by(role_id = Role.query(Role.id).filter_by(name = "Patient"))
+        query = db.session.query(Forum.forum_name).filter(Forum.forum_name.like('%' + str(search) + '%'))
+        #.filter_by(hospital_id = current_user.hospital_id)
+        results = [[i[0]] for i in query.all()]
+        return jsonify(matching_results = results)
+    else:
+        print("help")
+        session["forum_name"] = str(request.get_json())
+        print(session.get("forum_name"))
+        return render_template('profile/search_patient.html')
