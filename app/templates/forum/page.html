@@ -36,22 +36,21 @@
                           <div class = "like_btn">
                             {% if current_user.liked(post[1]) %}
                             <form action="{{ url_for('forum.page', forum_name=curr_forum.forum_name) }}" method="POST" enctype="multipart/form-data">
-                              <input class="fa fa-thumbs-up" style="color: #378de5; font-size: 1.5rem;" id="like" name="like">
-                                <a href = "#" class="fa fa-thumbs-up" style="color: #378de5; font-size: 1.5rem;"></a>
+                                <input type="hidden" name="unlike" value="{{post[1]}}" />
+                                <input id = "submit" name = "submit" type = "submit" class="fa fa-thumbs-up fa-input" style="background-color: transparent; border-color: transparent; color: #378de5; font-size: 1.5rem;" value = "&#xf164" >
                               </input>
                             </form>
-                            <!-- <a href = "#" class="fa fa-thumbs-up" style="color: #378de5; font-size: 1.5rem;"></a> -->
                             {% else %}
                             <form action="{{ url_for('forum.page', forum_name=curr_forum.forum_name) }}" method="POST" enctype="multipart/form-data">
-                              <input class="fa fa-thumbs-up" style="font-size: 1.5rem;" id="like" name="like">
+                              <input type="hidden" name="like" value="{{post[1]}}" />
+                              <input id = "submit" name = "submit"  type = "submit" class="fa fa-thumbs-up fa-input" style="background-color: transparent; border-color: transparent; color: #666666; font-size: 1.5rem;" value = "&#xf164">
                             </input>
                             </form>
-                            <!-- <a href = "#" class="fa fa-thumbs-up" style="font-size: 1.5rem;"></a> -->
                             {% endif %}
                           </div>
                           <div class = "like_num">
                             <div>
-                            <p4>{{ post[4] }}</p4>
+                              <p4>{{ post[4] }}</p4>
                             </div>
                           </div>
                         </div>

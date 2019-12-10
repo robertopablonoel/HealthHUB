@@ -106,8 +106,6 @@ def page(forum_name):
                                 .group_by(Post.post_id).order_by(Post.date_posted.desc()).all()
         subscribed = get_subscribed(forum_members)
         if request.method == "POST":
-            print([i for i in request.form.keys()])
-            print(request.form['submit'])
             if request.values.get('submit') == 'subscribe':
                 print('subscribe')
                 subscribed = add_subscription(curr_forum)
@@ -120,10 +118,14 @@ def page(forum_name):
                 subscribed = False
                 flash('You have been successfully unsubscribed.')
                 return redirect(url_for('forum.home'))
-            elif request.values.get('like') == "like":
-                print('like')
-            elif request.values.get('like') == "unlike":
-                print("unlike")
+            elif request.values.get('like'):
+                like(request.values.get('like'))
+                flash("liked!")
+                return redirect(url_for('forum.page', forum_name = forum_name))
+            elif request.values.get('unlike'):
+                unlike(request.values.get('unlike'))
+                flash("unliked :(")
+                return redirect(url_for('forum.page', forum_name = forum_name))
         if form.validate_on_submit():
             try:
                 add_post(form.text.data, curr_forum)
@@ -137,6 +139,17 @@ def page(forum_name):
     else:
         flash('Invalid Forum Route')
         return redirect(url_for('forum.home'))
+
+def like(post_id):
+    new_like = Likes(post_id = post_id,
+                        user_id = current_user.user_id,
+                        date_liked = datetime.now())
+    db.session.add(new_like)
+    db.session.commit()
+
+def unlike(post_id):
+    Likes.query.filter((Likes.post_id == post_id) & (Likes.user_id == current_user.user_id)).delete()
+    db.session.commit()
 
 def get_subscribed(forum_members):
     if current_user.user_id in [i.user_id for i in forum_members]:
