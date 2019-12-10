@@ -571,3 +571,9 @@ html, body {
 .cal-month:after {
   clear: both;
 }
+
+.form-style-9{
+  width: auto;
+  margin-right: 0%;
+  margin-bottom: -30%;
+}

@@ -20,8 +20,16 @@
 <div class="route" id="oct-week-4"></div>
 <div class="route" id="nov-week-1"></div>
 <div class="route" id="schedule"></div>
-{{ wtf.form }}
-<main class="cal-device">
+<form class="form-style-9" method = "POST" role = "form">
+  {{ form.hidden_tag() }}
+      {{ wtf.form_field(form.physician, placeholder="Choose your physician") }}
+      {{ wtf.form_field(form.purpose, placeholder="Purpose of your visit") }}
+      {{ wtf.form_field(form.time_slot, placeholder="Desired time") }}
+      {{ wtf.form_field(form.notes, placeholder="Additional notes") }}
+      {{ form.submit(type="submit", value="Create", class = "create_forum_button", style = "margin-top:10px;") }}
+
+</form>
+  <main class="cal-device">
   <header class="cal-header">
     <div class="cal-subheader"></div>
     <div class="cal-bar">
