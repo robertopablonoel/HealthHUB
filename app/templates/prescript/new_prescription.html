@@ -3,7 +3,6 @@
 {% block title %}Create New Prescriptions{% endblock %}
 {% block page_content %}
 {{ super() }}
-<h1>Create New Prescription</h1>
 
 
 
@@ -12,21 +11,22 @@
       <!-- <form class="form-style-9"> -->
           <ul>
             <form class="form-style-9" method = "POST" role = "form">
+              <h1 style = "margin-bottom: 20px; color: white">Create New Prescription</h1>
+
               {{ form.hidden_tag() }}
                 <!-- <li> -->
                   <!-- <input type="text" name="field1" class="field-style field-split align-left" placeholder="Forum Name" /> -->
-                  {{ wtf.form_field(form.expir_date, placeholder="Enter a date") }}
+                  {{ wtf.form_field(form.expir_date, style="font-size: 20px; font-weight: 700", placeholder="Enter a date") }}
                 <!-- </li> -->
                 <!-- <li> -->
                   <!-- <textarea name="field5" class="field-style" placeholder="Description"></textarea> -->
-                  {{ wtf.form_field(form.description, rows = "5", cols = "100", placeholder="Enter a description", class = "textbox post_field pushed2") }}
-                  <div id="charNum">250/250</div>
+                  {{ wtf.form_field(form.description, rows = "5", cols = "100", placeholder="Enter a description", class = "form-field-9") }}
                 <!-- </li> -->
                 <!-- <li> -->
                 <!-- </li> -->
                 <!-- <li> -->
                   <!-- <input type="submit" value="Create" /> -->
-                  {{ form.submit(type="submit", value="Create", class = "create_forum_button", style = "margin-top:10px;") }}
+                  {{ form.submit(type="submit", value="Create", class = "form-input-button", style = "margin-top:10px;") }}
                 <!-- </li> -->
       				</form>
           </ul>

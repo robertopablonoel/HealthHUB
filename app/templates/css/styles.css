@@ -1400,6 +1400,11 @@ input[type="file"] {
 	color: black;
 }
 
+.form-field-9{
+	padding: 10px;
+	border-radius: 5px;
+}
+
 .post_submit {
 	grid-column-start: 2;
 	grid-column-end: 2;
@@ -1651,12 +1656,13 @@ input[type="file"] {
 
 .form-style-9{
 	max-width: 600px;
-	background: #FAFAFA;
+	background: #666666;
 	padding: 30px;
 	margin: 50px auto;
-	box-shadow: 1px 1px 25px rgba(0, 0, 0, 0.35);
+	box-shadow: 1px 1px 25px;
 	border-radius: 10px;
 	border: 6px solid #3b5998;
+
 }
 .form-style-9 ul{
 	padding:0;
@@ -1718,4 +1724,31 @@ input[type="file"] {
 .form-style-9 ul li input[type="submit"]:hover {
 	background: linear-gradient(to bottom, #2D77A2 5%, #337DA8 100%);
 	background-color: #03324d;
+}
+
+.form-input-button{
+	margin-top: 10px;
+	background-color:#4480c7;
+	border-radius:28px;
+	border:1px solid #4480c7;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:17px;
+	padding:8px 15.5px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #274666;
+	font-weight: 900;
+}
+
+.form-input-button:hover{
+	background-color:#4799d4;
+	box-shadow: 0px 1px 0px rgba(#20ff00, 0.39);
+	transform: scale(1.1);
+}
+
+.normal-corners{
+	border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
 }
