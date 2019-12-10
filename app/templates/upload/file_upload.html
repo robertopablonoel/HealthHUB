@@ -7,15 +7,22 @@
 <!DOCTYPE html>
 {% endblock %}
 {% block content %}
+{% if file_exists %}
+<script type="text/javascript">
+  alert("The file you are tyring to upload already exists.")
+</script>
+{% endif %}
 <div class = "outer center">
   <div class = "general_container whitebox">
     <div class = "fm_grid">
       <div class = "fm_top">
+        {% if current_user.role_id != 5 %}
         <form action='{{ url_for("upload.uploader") }}' method="POST" enctype="multipart/form-data">
           <input type="file" name="file" class= "fm_button">
           <input type="submit" name = "upload"class= "fm_button">
         </form>
         </div>
+        {% endif %}
       <div class = "fm_bottom pushed">
         {% for file in files %}
         <li class = "file_li"> {{file}}
