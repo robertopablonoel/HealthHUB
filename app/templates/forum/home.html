@@ -39,9 +39,16 @@
                         </div>
                         <div class = "like_btn">
                           {% if current_user.liked(top_post[1]) %}
-                          <a href = "#" class="fa fa-thumbs-up" style="color: #378de5; font-size: 1.5rem;"></a>
+                          <form action="{{ url_for('forum.home') }}" method="POST" enctype="multipart/form-data">
+                              <input type="hidden" name="unlike" value="{{top_post[1]}}" />
+                              <input id = "submit" name = "submit" type = "submit" class="fa fa-thumbs-up fa-input" style="background-color: transparent; border-color: transparent; color: #378de5; font-size: 1.5rem;" value = "&#xf164" >
+                            </input>
+                          </form>
                           {% else %}
-                          <a href = "#" class="fa fa-thumbs-up" style="font-size: 1.5rem;"></a>
+                          <form action="{{ url_for('forum.home') }}" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="like" value="{{top_post[1]}}" />
+                            <input id = "submit" name = "submit"  type = "submit" class="fa fa-thumbs-up fa-input" style="background-color: transparent; border-color: transparent; color: #666666; font-size: 1.5rem;" value = "&#xf164"></input>
+                          </form>
                           {% endif %}
                         </div>
                         <div class = "like_num">

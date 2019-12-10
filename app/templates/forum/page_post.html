@@ -29,13 +29,20 @@
                   </div>
                   <div class = "post_like">
                     <div class = "reply_btn">
-                      <a href = "#" class="fa fa-reply" style="color: #378de5; font-size: 1.5rem;"></a>
+                      <a href = "{{ url_for('forum.page', forum_name = curr_forum.forum_name) }}" class="fa fa-reply" style="color: #378de5; font-size: 1.5rem;"></a>
                     </div>
                     <div class = "like_btn">
                       {% if current_user.liked(curr_post[0].post_id) %}
-                      <input value = "&#xf164" type = "submit" class="fa fa-thumbs-up fa-input" style="background-color: transparent; border-color: transparent; color: #378de5; font-size: 1.5rem;">
+                      <form action="{{ url_for('forum.page_post', forum_name = curr_forum.forum_name, post_id = curr_post[0].post_id) }}" method="POST" enctype="multipart/form-data">
+                          <input type="hidden" name="unlike" value="{{curr_post[0].post_id}}" />
+                          <input id = "submit" name = "submit" type = "submit" class="fa fa-thumbs-up fa-input" style="background-color: transparent; border-color: transparent; color: #378de5; font-size: 1.5rem;" value = "&#xf164" >
+                        </input>
+                      </form>
                       {% else %}
-                      <input value = "&#xf164" type = "submit" class="fa fa-thumbs-up fa-input" style="background-color: transparent; border-color: transparent; color: #666666; font-size: 1.5rem;">
+                      <form action="{{ url_for('forum.page_post', forum_name = curr_forum.forum_name, post_id = curr_post[0].post_id) }}" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="like" value="{{curr_post[0].post_id}}" />
+                        <input id = "submit" name = "submit"  type = "submit" class="fa fa-thumbs-up fa-input" style="background-color: transparent; border-color: transparent; color: #666666; font-size: 1.5rem;" value = "&#xf164"></input>
+                      </form>
                       {% endif %}
                     </div>
                     <div class = "like_num">
@@ -56,131 +63,26 @@
                   </div>
               </li>
               <ul class = "post_container pushed">
+                <div class = "hello" style = "overflow-y: scroll">
+                  {% for react, pro in curr_comments %}
+                  <li class = "comment_bawx">
+                    <div class = "reply_icon">
+                      <div class = "reply_name">
+                        {{ pro.username }}
+                      </div>
+                      <div class = "retweet">
 
-
-
-                    <div class = "hello" style = "overflow-y: scroll">
-                    <li class = "comment_bawx">
-                      <div class = "reply_icon">
-                        <div class = "reply_name">Roberto</div>
-                        <div class = "retweet">
-                        </div>
                       </div>
-                      <div class = "bubble-container">
-                        <div class = "speech-bubble">
-
-                          I gots the poop I gots the poop
-                        </div>
+                    </div>
+                    <div class = "bubble-container">
+                      <div class = "speech-bubble">
+                        {{ react.comment }}
                       </div>
-                    </li>
-                    <li class = "comment_bawx">
-                      <div class = "reply_icon">
-                        <div class = "reply_name">Roberto</div>
-                        <div class = "retweet">
-                        </div>
-                      </div>
-                      <div class = "bubble-container">
-                        <div class = "speech-bubble">
-
-                          I gots the poop I gots the poop
-                        </div>
-                      </div>
-                    </li>
-                    <li class = "comment_bawx">
-                      <div class = "reply_icon">
-                        <div class = "reply_name">Roberto</div>
-                        <div class = "retweet">
-                        </div>
-                      </div>
-                      <div class = "bubble-container">
-                        <div class = "speech-bubble">
-
-                          I gots the poop I gots the poop
-                        </div>
-                      </div>
-                    </li>
-                    <li class = "comment_bawx">
-                      <div class = "reply_icon">
-                        <div class = "reply_name">Roberto</div>
-                        <div class = "retweet">
-                        </div>
-                      </div>
-                      <div class = "bubble-container">
-                        <div class = "speech-bubble">
-
-                          I gots the poop I gots the poop
-                        </div>
-                      </div>
-                    </li>
-                    <li class = "comment_bawx">
-                      <div class = "reply_icon">
-                        <div class = "reply_name">Roberto</div>
-                        <div class = "retweet">
-                        </div>
-                      </div>
-                      <div class = "bubble-container">
-                        <div class = "speech-bubble">
-
-                          I gots the poop I gots the poop
-                        </div>
-                      </div>
-
-                    <li class = "comment_bawx">
-                      <div class = "reply_icon">
-                        <div class = "reply_name">Roberto</div>
-                        <div class = "retweet">
-                        </div>
-                      </div>
-                      <div class = "bubble-container">
-                        <div class = "speech-bubble">
-
-                          I gots the poop I gots the poop
-                        </div>
-                      </div>
-                    </li>
-                    <li class = "comment_bawx">
-                      <div class = "reply_icon">
-                        <div class = "reply_name">Roberto</div>
-                        <div class = "retweet">
-                        </div>
-                      </div>
-                      <div class = "bubble-container">
-                        <div class = "speech-bubble">
-
-                          I gots the poop I gots the poop
-                        </div>
-                      </div>
-                    </li>
-                    <li class = "comment_bawx">
-                      <div class = "reply_icon">
-                        <div class = "reply_name">Roberto</div>
-                        <div class = "retweet">
-                        </div>
-                      </div>
-                      <div class = "bubble-container">
-                        <div class = "speech-bubble">
-
-                          I gots the poop I gots the poop
-                        </div>
-                      </div>
-                    </li>
-                    <li class = "comment_bawx">
-                      <div class = "reply_icon">
-                        <div class = "reply_name">Roberto</div>
-                        <div class = "retweet">
-                        </div>
-                      </div>
-                      <div class = "bubble-container">
-                        <div class = "speech-bubble">
-
-                          I gots the poop I gots the poop
-                        </div>
-                      </div>
-                    </li>
-
-
-
-                </ul>
+                    </div>
+                  </li>
+                  {% endfor %}
+                </div>
+              </ul>
 
             {% endif %}
             </section>
@@ -205,10 +107,10 @@
                     <h4>Subs: {{ forum_members | length }}</h4>
                   </div>
                   <div class = "forum_posts">
-                    <h4>Posts: {{ forum_posts | length }}</h4>
+                    <h4>Posts: {{ tot_posts }}</h4>
                   </div>
                   <div class = "forum_likes">
-                    <h4>Likes: {{ forum_posts | sum(attribute='count_likes') }}</h4>
+                    <h4>Likes: {{ tot_likes }}</h4>
                   </div>
 
                 </div>
