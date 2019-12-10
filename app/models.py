@@ -4,6 +4,7 @@ from flask import current_app
 from flask_login import UserMixin, AnonymousUserMixin
 from . import db, login_manager
 from datetime import datetime
+from datetime import date
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -222,7 +223,10 @@ class Prescription(db.Model):
     expir_date = db.Column(db.Date, nullable = False)
     description = db.Column(db.Text, nullable = True)
     active = db.Column(db.Boolean, default = True)
-    notify = db.Column(db.Boolean, default = True)
+    notify = db.Column(db.Boolean, default = False)
+    time = db.Column(db.Integer, nullable = False, unique = False)
+    frequency = db.Column(db.String(32), nullable = False, unique = False)
+    last_notified = db.Column(db.DateTime, nullable = True, unique = False, default = date.fromisoformat('2010-01-01'))
 
 
 class Physician_schedule(db.Model):

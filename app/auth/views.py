@@ -5,6 +5,7 @@ from ..models import Patient, User, Hospital
 from .forms import LoginForm, PatientRegistrationForm
 from ..email import send_email
 from .. import db
+from config import config
 import re
 
 
@@ -62,7 +63,7 @@ def register_patient():
         db.session.commit()
         token = user.generate_confirmation_token()
         send_email(user.email, 'Confirm Your Account',
-                     'auth/email/confirm', user=user, token=token)
+                   'auth/email/confirm', user=user, token=token)
         flash('A confirmation email has been sent to you by email.')
         return redirect(url_for('auth.login'))
     return render_template('auth/register_patient.html', form = form)
