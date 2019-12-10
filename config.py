@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 #Config base class contains settings common to all configurations
@@ -18,6 +19,15 @@ class Config:
     SYSTEM_MAIL_SENDER = 'healthhubnotify@gmail.com'
     SYSTEM_ADMIN = os.environ.get('SYSTEM_ADMIN')
     REDIS_URL = os.environ.get('REDIS_URL') or 'redis://'
+    CELERY_BROKER_URL = 'redis://localhost:6379/0'
+    CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+    CELERYBEAT_SCHEDULE = {
+    'schedule-name': {
+        'task': 'demo_task_name',
+        'schedule': timedelta(seconds = 5),
+    },
+}
+
 
     #method takes application insatnce as argument
     #allows config-specific initialization to be performed

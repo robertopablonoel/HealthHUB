@@ -2,8 +2,26 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block title %}HealthHub Home{% endblock %}
+{% block head %}
+{{ super() }}
 
+<script>
+
+function changeBio(){
+  var newTextArea = document.createElement("input");
+  newTextArea.innerHTML = {{ forum_pro.bio }};
+  var old_element = document.getElementById('bio');
+  var parent = old_element.parentNode;
+  parent.replaceChild(newTextArea, old_element);
+  newTextArea.setAttribute('type', 'textarea');
+  console.log(newTextArea);
+}
+</script>
+
+{% endblock %}
 {% block page_content %}
+
+
 <div class = "outer forum">
     <div class="middle">
         <section class="forum_grid">
@@ -79,11 +97,17 @@
                 <div class = "profile_name_container">
                   <b>{{ forum_pro.username }}</b>
                 </div>
+
                 <div class = "profile_bio_container">
-                  <div class = "profile_bio">
-                    <div>
-                    {{ forum_pro.bio }}
-                    </div>
+                  <div class = "extra_container">
+                      <div id = "bio" class = "profile_bio" style = "color:black">
+                        {{ forum_pro.bio }}
+                        <div class = "overlay">
+                          <div class = "overlay_text">
+                            <input id = "bio_change" type = "button" class="fa fa-input" style="overflow: visible; height: 30px; background-color: transparent; border-color: transparent; color: white; font-size: 2rem;" value = "&#xf0ad" onclick="changeBio()"></input>
+                          </div>
+                        </div>
+                      </div>
                   </div>
                 </div>
                 <div class = "profile_pic_container">
