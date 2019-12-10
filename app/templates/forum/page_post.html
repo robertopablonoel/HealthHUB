@@ -140,9 +140,9 @@
               <form class="whitebox post-form" method = "post" role = "form">
       					{{ form.hidden_tag() }}
 
-                {{ wtf.form_field(form.text, rows = "5", cols = "60", type="text", id="textboxid", onkeyup="countChar(this)", class="textbox post_field pushed2", placeholder="Write a post...", maxlength="250") }}
+                {{ wtf.form_field(form.text, rows = "5", cols = "60", type="text", id="textboxid", onkeyup="countChar(this)", class="textbox post_field pushed2", placeholder="Write a comment...", maxlength="150") }}
                 <div id="charNum">250/250</div>
-                {{ form.submit(type="submit", value="Post", class = "post_submit") }}
+                {{ form.submit(type="submit", value="Comment", class = "post_submit") }}
       				</form>
 
 

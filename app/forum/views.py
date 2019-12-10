@@ -8,7 +8,7 @@ from ..decorators import permission_required
 from datetime import date
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from .forms import PostForm
+from .forms import PostForm, createForumForm
 import re
 from flask import Flask
 
@@ -237,7 +237,7 @@ def page_post(forum_name, post_id):
         return redirect(url_for('forum.home'))
 
 def add_comment(text, curr_post):
-    new_comment = Reaction(post_id = curr_post.post_id,
+    new_comment = Reaction(post_id = curr_post[0].post_id,
                     user_id = current_user.user_id,
                     comment = text,
                     date_commented = datetime.now())
@@ -246,4 +246,21 @@ def add_comment(text, curr_post):
 
 @forum.route('/create', methods = ["GET", "POST"])
 def create():
-    return render_template('forum/create.html')
+    form = createForumForm()
+    if form.validate_on_submit():
+        try:
+            createForum(form)
+            return redirect(url_for('forum.page', forum_name = form.title.data))
+        except:
+            flash("Error Creating Forum")
+            return redirect(url_for('forum.home'))
+    return render_template('forum/create.html', form = form)
+
+def createForum(form):
+    new_forum = Forum(forum_name = form.title.data,
+                        hospital_id = current_user.hospital_id,
+                        description = form.text.data,
+                        public = 1 if form.visibility.data == 1 else 0,
+                    )
+    db.session.add(new_forum)
+    db.session.commit()
