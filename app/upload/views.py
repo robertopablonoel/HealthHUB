@@ -19,8 +19,13 @@ from flask import Flask
 @permission_required(Permission.UPLOAD_FILE)
 def uploads():
     print(os.getcwd())
+    print(request.referrer)
+    if (request.referrer).split("/")[-1] == "search":
+        USER_FOLDER = str(session.get("Patient_ID"))
+    else:
+        USER_FOLDER = str(current_user.user_id)
+        session["Patient_ID"] = current_user.user_id
     UPLOAD_FOLDER = "app/templates/files_uploaded/"
-    USER_FOLDER = str(session.get("Patient_ID"))
     try:
         files=os.listdir(os.path.join(UPLOAD_FOLDER, USER_FOLDER))
         print(files)
@@ -39,7 +44,8 @@ def uploader():
     if request.method == "POST":
         print("Request Files", request.files)
         f = request.files['file']
-
+        if not f:
+            return redirect(url_for("upload.uploads"))
         file = secure_filename(f.filename)
         try:
             files = os.listdir(os.path.join(UPLOAD_FOLDER, USER_FOLDER))

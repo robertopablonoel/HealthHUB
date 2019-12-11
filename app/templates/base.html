@@ -72,7 +72,7 @@
                 </a>
 
             </li>
-            {% if current_user.is_nurse() or current_user.is_physician() %}
+            {% if current_user.is_nurse() %}
             <li class="has-subnav">
                 <a href="{{ url_for('roomres.reserve') }}">
                     <span class="nav-icon">
@@ -84,6 +84,8 @@
                 </a>
 
             </li>
+            {% endif %}
+            {% if current_user.is_physician() %}
             <li class="has-subnav">
                     <a href="{{ url_for('profile.set_search') }}">
                         <span class="nav-icon">
