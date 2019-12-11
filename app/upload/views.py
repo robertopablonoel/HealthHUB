@@ -35,7 +35,6 @@ def uploader():
     file_exists = False
     UPLOAD_FOLDER = "app/templates/files_uploaded/"
     USER_FOLDER = str(session.get("Patient_ID"))
-    print(USER_FOLDER)
     if request.method == "POST":
         print("Request Files", request.files)
         f = request.files['file']
