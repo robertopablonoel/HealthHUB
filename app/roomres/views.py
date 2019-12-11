@@ -6,7 +6,7 @@ from .forms import viewRooms
 from .. import db
 from ..decorators import permission_required
 import re
-
+from ..decorators import permission_required
 @roomres.route('/reserve', methods = ['GET','POST'])
 @permission_required(Permission.BOOK_ROOMS)
 def reserve():
