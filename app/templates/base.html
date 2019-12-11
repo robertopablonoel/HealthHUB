@@ -37,7 +37,7 @@
                 </a>
 
             </li>
-            {% if current_user.role_id == 5 %}
+            {% if current_user.is_nurse() or  current_user.is_physician() %}
             <li class="has-subnav">
                 <a href="{{ url_for('upload.uploads') }}">
                     <span class="nav-icon">
@@ -61,7 +61,6 @@
                     </a>
 
             </li>
-            {% if current_user.role_id != 5 %}
             <li class="has-subnav">
                 <a href="{{ url_for('sched.schedule') }}">
                     <span class="nav-icon">
@@ -73,6 +72,7 @@
                 </a>
 
             </li>
+            {% if current_user.is_nurse() or current_user.is_physician() %}
             <li class="has-subnav">
                 <a href="{{ url_for('roomres.reserve') }}">
                     <span class="nav-icon">
@@ -95,7 +95,7 @@
                     </a>
             </li>
             {% endif %}
-            {% if current_user.role_id == 5 %}
+            {% if current_user.is_patient() %}
             <li class="has-subnav">
                     <a href="{{ url_for('profile.patient') }}">
                         <span class="nav-icon">

@@ -75,7 +75,16 @@ class User(UserMixin, db.Model):
         return True if Likes.query.filter((Likes.post_id == posts) & (Likes.user_id == self.user_id)).first() else False
 
     def is_administrator(self):
-        return self.can(Permission.ADMINISTER)
+        return self.can(Permission.ADMINISTRATOR)
+
+    def is_patient(self):
+        return self.can(Permission.ADMINISTRATOR) or self.can(Permission.PATIENT_PERMISSION)
+
+    def is_nurse(self):
+        return self.can(Permission.ADMINISTRATOR) or self.can(Permission.NURSE_PERMISSION)
+
+    def is_physician(self):
+        return self.can(Permission.ADMINISTRATOR) or self.can(Permission.PHYSICIAN_PERMISSION)
 
     def ping(self):
         self.last_seen = datetime.utcnow()
@@ -132,6 +141,7 @@ class Permission:
     PATIENT_PERMISSION = 0x01
     NURSE_PERMISSION = 0x02
     PHYSICIAN_PERMISSION = 0x04
+    SCHEDULE_PERMISSION = 0x08
     ADMINISTRATOR = 0x80
 
 class Role(db.Model):
@@ -144,12 +154,13 @@ class Role(db.Model):
     @staticmethod
     def insert_roles():
         roles = {
-            'Patient' : (Permission.PATIENT_PERMISSION, True),
-            'Physician' : (Permission.PHYSICIAN_PERMISSION,
-                                False),
+            'Patient' : (Permission.PATIENT_PERMISSION |
+                        Permission.SCHEDULE_PERMISSION, True),
+            'Physician' : (Permission.PHYSICIAN_PERMISSION |
+                            Permission.SCHEDULE_PERMISSION, False),
             'Nurse' : (Permission.NURSE_PERMISSION,
                                 False),
-            'Administrator' : (0x80, False)
+            'Administrator' : (Permission.ADMINISTRATOR, False)
         }
         for r in roles:
             role = Role.query.filter_by(name = r).first()

@@ -10,7 +10,6 @@ import re
 
 
 @auth.route('/login', methods = ['GET','POST'])
-
 def login():
     form = LoginForm()
     if form.validate_on_submit():
