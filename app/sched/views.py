@@ -56,7 +56,7 @@ def schedule():
     return render_template('sched/schedule.html', form = form,
                             physician_schedule = physician_schedule,
                             permissions = Permission, weekDays = weekDays,
-                            theMonths = theMonths
+                            theMonths = theMonths, daySelect = -1
                             )
 
 #Here comes the scheduling code...
