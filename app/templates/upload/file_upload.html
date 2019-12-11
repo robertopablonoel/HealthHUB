@@ -14,20 +14,27 @@
 {% endif %}
 <div class = "outer center">
   <div class = "general_container whitebox">
+    <div class = "fm_title" style = "font-color: white; font-weight: 600; font-size: 20px;">File Manager</div>
     <div class = "fm_grid">
       <div class = "fm_top">
         {% if current_user.role_id != 5 %}
-        <form action='{{ url_for("upload.uploader") }}' method="POST" enctype="multipart/form-data">
-          <input type="file" name="file" class= "fm_button">
-          <input type="submit" name = "upload"class= "fm_button">
+        <form action='{{ url_for("upload.uploader") }}' method="POST" style = "display:flex; justify-content: center; align-items: center; vertical-align: middle;"enctype="multipart/form-data">
+          <input type="file" name="file">
+          <input type="submit" value = "Upload" name = "upload"class= "fm_button">
         </form>
-        </div>
+
         {% endif %}
+      </div>
+      {% if current_user.role_id == 5 %}
+      <div class = "fm_bottom pushed" style = "grid-row-start:2; grid-row-end: 4">
+
+      {% else %}
       <div class = "fm_bottom pushed">
+      {% endif %}
         {% for file in files %}
         <li class = "file_li"> {{file}}
           <form action="{{ url_for('files_uploaded.view_pdf', pdf_name=file)}}" method="POST" class="view_button">
-           <input type="submit" value = "view" name = "view" class= "">
+           <input type="submit" value = "view" name = "view" style="margin-left: auto; order: 2; padding: 2px; border-radius: 2px; font-size: 10px; margin:5px;" class="form-input-button" id="submit">
          </form>
         </li>
         {% endfor %}
