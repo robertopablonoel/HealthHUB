@@ -7,9 +7,8 @@ from flask_login import LoginManager
 from config import config
 from flask import json
 from redis import Redis
+from celery import Celery
 import rq
-
-
 
 bootstrap = Bootstrap()
 moment = Moment()
@@ -20,6 +19,7 @@ login_manager = LoginManager()
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'
 
+celery = Celery(__name__, broker = config['default'].CELERY_BROKER_URL)
 
 def create_app(config_name = config):
     app = Flask(__name__, static_folder = 'templates')
@@ -29,12 +29,13 @@ def create_app(config_name = config):
     app.redis = Redis.from_url(app.config['REDIS_URL'])
     app.task_queue = rq.Queue('forum-tasks', connection = app.redis)
 
+    celery.conf.update(app.config)
+
     bootstrap.init_app(app)
     moment.init_app(app)
     mail.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
-
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
@@ -65,5 +66,8 @@ def create_app(config_name = config):
 
     from .templates.files_uploaded import files_uploaded as files_uploaded_blueprint
     app.register_blueprint(files_uploaded_blueprint, url_prefix = '/templates/files_uploaded')
+
+    from .health_check import health_check as health_check_blueprint
+    app.register_blueprint(health_check_blueprint, url_prefex = '/health_check')
 
     return app

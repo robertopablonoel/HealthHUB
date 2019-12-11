@@ -1,7 +1,12 @@
 from flask import current_app
 from rq import get_current_job
-from app import db, create_app
-from app.models import Forum, Forum_members, Top_forums, Post, Likes, Top_posts, Reaction, Task
+import celery
+from celery.task.base import periodic_task, task
+from app import create_app, db
+from app.models import Forum, Forum_members, Top_forums, Post, Likes, Top_posts, Reaction, Task, Prescription, User
+from app.email import send_email
+from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 import os
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
@@ -58,3 +63,28 @@ def update_posts(id):
     except:
         _set_task_progress(100)
         app.logger.error('Unhandled exception', exc_info=sys.exc_info())
+
+def send_reminders(id, prescription, user):
+    print("sending")
+    try:
+        user = user
+        prescription = prescription
+        prescription.last_notified = datetime.now()
+        send_email(user.email, 'Reminder to take your Prescription',
+                   'email/prescription_reminder', user=user, prescription=prescription)
+    except:
+        print("Error Sending")
+
+@celery.task(name = "demo_task_name")
+def queue_reminders():
+    print("queuing")
+    print(datetime.now())
+    if datetime.now().hour < 23: # datetime.now().hour > 7 and
+        print("here")
+        notify = Prescription.query.filter(Prescription.notify == True).all()
+        for prescript in notify:
+            print("here")
+            if prescript.last_notified  < datetime.now() - relativedelta(hours = prescript.time):
+                print("here")
+                user = User.query.filter(User.user_id == prescript.patient_id).first()
+                current_app.task_queue.enqueue('app.tasks.' + "send_reminders", None, prescript, user)

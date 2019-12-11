@@ -124,12 +124,73 @@
                 </div>
                 <div>
                   <ul>
-                    <li class = "center_content"><a href="{{ url_for('prescript.new_prescription') }}"><input style = "font-size: 10px; margin:5px;" class="form-input-button" id="submit" name="submit" type="submit" value="Checkup"></a>
+                    <li class = "center_content"><a href="{{ url_for('health_check.new_health_check') }}"><input style = "font-size: 10px; margin:5px;" class="form-input-button" id="submit" name="submit" type="submit" value="Checkup"></a>
                   </ul>
                 </div>
               </div>
         </div>
 
+        {% if health_check %}
+
+          <div class="table-striped"  style = "background: white; padding: 0px; border-radius: 4px">
+            <!-- Moved the New Prescription from above in order to keep it inline with table -->
+
+            <table class = "table">
+                <thead>
+                  <tr class = "table_head">
+                    <th scope="col">Record ID</th>
+                    <th scope="col">Physician ID</th>
+                    <th scope="col">Date of Checkup</th>
+                    <th scope="col">Height</th>
+                    <th scope="col">Weight</th>
+                    <th scope="col">BMI</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Blood Pressure</th>
+                    <th scope="col">Blood Type</th>
+                    <th scope="col">Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for check in health_check %}
+                    <tr class="clickable-row" data-href="{{url_for('profile.search')}}">
+                      <td>{{check.record_id}}</td>
+                      <td>{{check.physician_id}}</td>
+                      <td>{{check.date}}</td>
+                      <td>{{check.height}}</td>
+                      <td>{{check.weight}}</td>
+                      <td>{{check.bmi}}</td>
+                      <td>{% if check.gender == 0 %}
+                          Female
+                          {% else %}
+                          Male
+                          {% endif %}
+                      <td>{{check.blood_pressure}}</td>
+                      <td>{% if check.blood_type == 0 %}
+                          O-
+                          {% elif check.blood_type == 1 %}
+                          O+
+                          {% elif check.blood_type == 2 %}
+                          A-
+                          {% elif check.blood_type == 3 %}
+                          A+
+                          {% elif check.blood_type == 4 %}
+                          B-
+                          {% elif check.blood_type == 5 %}
+                          B+
+                          {% elif check.blood_type == 6 %}
+                          AB-
+                          {% elif check.blood_type == 7 %}
+                          AB+
+                          {% else %}
+                          ??
+                          {% endif %}</td>
+                      <td>{{check.description[:30]}}...</td>
+                      {% endfor %}
+                      </tbody>
+                      </table>
+                    </div>
+
+                    {% endif %}
         <!-- Going to leave this new prescription href in case it breaks anything I haven't considered. Consult Jack -->
         <!-- <div>
           <ul>

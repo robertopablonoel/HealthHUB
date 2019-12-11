@@ -1,0 +1,7 @@
+Dear {{ user.first_name }},
+
+Please remember that you must take your medication at {{ prescription.last_notified }}
+
+Sincerely,
+
+The Microblog Team

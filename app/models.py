@@ -4,6 +4,7 @@ from flask import current_app
 from flask_login import UserMixin, AnonymousUserMixin
 from . import db, login_manager
 from datetime import datetime
+from datetime import date
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -222,7 +223,10 @@ class Prescription(db.Model):
     expir_date = db.Column(db.Date, nullable = False)
     description = db.Column(db.Text, nullable = True)
     active = db.Column(db.Boolean, default = True)
-    notify = db.Column(db.Boolean, default = True)
+    notify = db.Column(db.Boolean, default = False)
+    time = db.Column(db.Integer, nullable = False, unique = False)
+    frequency = db.Column(db.String(32), nullable = False, unique = False)
+    last_notified = db.Column(db.DateTime, nullable = True, unique = False, default = date.fromisoformat('2010-01-01'))
 
 
 class Physician_schedule(db.Model):
@@ -315,3 +319,16 @@ class Top_posts(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('post.post_id'), primary_key = True)
     forum_id = db.Column(db.Integer,db.ForeignKey('post.forum_id'), primary_key = True)
     forum_name = db.Column(db.String(128), db.ForeignKey('forum.forum_name'), unique = False, nullable = False)
+
+class Health_check(db.Model):
+    record_id = db.Column(db.Integer, primary_key = True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('patient.user_id'), nullable = False)
+    physician_id = db.Column(db.Integer, db.ForeignKey('physician.user_id'), nullable = False)
+    height = db.Column(db.Integer, nullable = False, unique = False)
+    weight = db.Column(db.Integer, nullable = False, unique = False)
+    gender = db.Column(db.Integer, default = True, nullable = False)
+    bmi = db.Column(db.Integer, nullable = False, unique = False)
+    blood_pressure = db.Column(db.Integer, nullable = False, unique = False)
+    blood_type = db.Column(db.Integer, unique = False, nullable = False)
+    date = db.Column(db.Date, nullable = False)
+    description = db.Column(db.Text, nullable = True)
