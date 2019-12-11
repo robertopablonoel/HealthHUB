@@ -24,7 +24,7 @@ class Config:
     CELERYBEAT_SCHEDULE = {
     'schedule-name': {
         'task': 'demo_task_name',
-        'schedule': timedelta(seconds = 5),
+        'schedule': timedelta(minutes = 1),
     },
 }
 

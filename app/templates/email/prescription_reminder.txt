@@ -1,6 +1,6 @@
 Dear {{ user.first_name }},
 
-Please remember that you must take your medication at {{ prescription.last_notified }}
+Please remember that you must take your medication every {{ prescript.time }} hours.
 
 Sincerely,
 

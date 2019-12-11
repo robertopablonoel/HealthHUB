@@ -17,10 +17,13 @@
                 <!-- <li> -->
                   <!-- <input type="text" name="field1" class="field-style field-split align-left" placeholder="Forum Name" /> -->
                   {{ wtf.form_field(form.expir_date, style="font-size: 20px; font-weight: 700", placeholder="Enter a date") }}
+                  {{ wtf.form_field(form.freq, style="font-size: 20px; font-weight: 700", placeholder="Select Times Per Day") }}
+
                 <!-- </li> -->
                 <!-- <li> -->
                   <!-- <textarea name="field5" class="field-style" placeholder="Description"></textarea> -->
                   {{ wtf.form_field(form.description, rows = "5", cols = "100", placeholder="Enter a description", class = "form-field-9") }}
+
                 <!-- </li> -->
                 <!-- <li> -->
                 <!-- </li> -->

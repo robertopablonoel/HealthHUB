@@ -7,6 +7,7 @@ from .. import db
 from . import prescript
 from flask_jsonpify import jsonify
 from flask import session
+import math
 import re
 
 
@@ -26,7 +27,8 @@ def new_prescription():
                     physician_id = current_user.user_id,
                     date_prescribed = datetime.utcnow(),
                     expir_date = form.expir_date.data,
-                    description = form.description.data)
+                    description = form.description.data,
+                    time = math.floor(16 / form.freq.data))
         db.session.add(prescription)
         print(prescription)
         db.session.commit()
