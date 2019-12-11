@@ -2,7 +2,7 @@ from flask import render_template, redirect, request, url_for, flash
 from .forms import ModifyPrescriptionForm
 from datetime import datetime, date
 from flask_login import login_user, login_required, logout_user, current_user
-from ..models import Prescription, User, Patient
+from ..models import Prescription, User, Patient, Health_check
 from .. import db
 from . import profile
 from flask_jsonpify import jsonify
@@ -25,7 +25,8 @@ def search():
     user_id = session.get("Patient_ID")
     patient_user = User.query.filter_by(user_id = user_id).first_or_404()
     patient = Patient.query.filter_by(user_id = user_id).first_or_404()
-    prescription = Prescription.query.filter_by(patient_id = user_id).all()
+    prescription = Prescription.query.filter_by(patient_id = user_id).order_by(Prescription.prescription_id.desc()).all()
+    health_check = Health_check.query.filter_by(patient_id = user_id).order_by(Health_check.record_id.desc()).all()
 
     if request.form.get('active'):
         prescription_id = int(request.form['active'][:-1])
@@ -47,7 +48,7 @@ def search():
         flash("Update Succesful")
         session["Patient_ID"] = user_id
         return redirect(url_for('profile.search'))
-    return render_template('profile/search_patient_alt.html', patient_user = patient_user, patient = patient, prescription = prescription)
+    return render_template('profile/search_patient_alt.html', patient_user = patient_user, patient = patient, prescription = prescription, health_check = health_check)
 
 
 
@@ -73,7 +74,8 @@ def patient():
     user_id = current_user.user_id
     patient_user = User.query.filter_by(user_id = user_id).first_or_404()
     patient = Patient.query.filter_by(user_id = user_id).first_or_404()
-    prescription = Prescription.query.filter_by(patient_id = user_id).all()
+    prescription = Prescription.query.filter_by(patient_id = user_id).order_by(Prescription.prescription_id.desc()).all()
+    health_check = Health_check.query.filter_by(patient_id = user_id).order_by(Health_check.record_id.desc()).all()
     if request.form.get('notify'):
         prescription_id = int(request.form['notify'][:-1])
         status = int(request.form['notify'][-1])
@@ -82,4 +84,4 @@ def patient():
         db.session.commit()
         flash("Update Succesful")
         return redirect(url_for('profile.patient'))
-    return render_template('profile/patient.html', patient_user = patient_user, patient = patient, prescription = prescription)
+    return render_template('profile/patient.html', patient_user = patient_user, patient = patient, prescription = prescription, health_check = health_check)

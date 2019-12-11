@@ -67,4 +67,7 @@ def create_app(config_name = config):
     from .templates.files_uploaded import files_uploaded as files_uploaded_blueprint
     app.register_blueprint(files_uploaded_blueprint, url_prefix = '/templates/files_uploaded')
 
+    from .health_check import health_check as health_check_blueprint
+    app.register_blueprint(health_check_blueprint, url_prefex = '/health_check')
+
     return app
