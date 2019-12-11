@@ -10,12 +10,44 @@ from flask_jsonpify import jsonify
 from flask import session
 import re
 
+@admin_tools.route('/register_staff', methods = ['GET', 'POST'])
+def register_staff():
+    hospitals = Hospital.query.all()
+    form = NewStaffForm()
+    form.hospital.choices = [(h.unique_id, h.name) for h in hospitals]
+    print(form.hospital.choices)
+    if form.validate_on_submit():
+        print(form.hospital.data)
+        user = User(email = form.email.data,
+                    password = form.password.data,
+                    first_name = form.first_name.data,
+                    last_name = form.last_name.data,
+                    hospital_id = form.hospital.data,
+                    role_id = form.roll.data)
+        db.session.add(user)
+        db.session.commit()
+        if form.roll.data == 6:
+            new_staff = Physician(
+                    user_id = user.user_id
+            )
+        if form.roll.data == 7:
+            new_staff = Nurse(
+                    user_id = user.user_id
+            )
+        db.session.add(new_staff)
+        db.session.commit()
+        print(user)
+        flash('A New Staff Member as been added')
+        return redirect(url_for('admin_tools.search'))
+    return render_template('admin_tools/register_staff.html', form = form)
+
+
 @admin_tools.route('/set_search')
 @login_required
 def set_search():
     if session.get("Staff_ID") != None:
         session.pop("Staff_ID")
-    return redirect(url_for('admin.search'))
+    return redirect(url_for('admin_tools.search'))
 
 @admin_tools.route('/search', methods = ['GET', 'POST'])
 @login_required
@@ -23,34 +55,23 @@ def set_search():
 def search():
     print(session.get("Staff_ID"))
     if session.get("Staff_ID") == None:
-        return render_template('profile/search_patient.html')
-    user_id = session.get("Patient_ID")
-    patient_user = User.query.filter_by(user_id = user_id).first_or_404()
-    patient = Patient.query.filter_by(user_id = user_id).first_or_404()
-    prescription = Prescription.query.filter_by(patient_id = user_id).order_by(Prescription.prescription_id.desc()).all()
-    health_check = Health_check.query.filter_by(patient_id = user_id).order_by(Health_check.record_id.desc()).all()
+        return render_template('admin_tools/search_staff.html')
+    user_id = session.get("Staff_ID")
+    staff_user = User.query.filter_by(user_id = user_id).first_or_404()
+    if staff_user.role_id == 6:
+        staff = Physician.query.filter_by(user_id = user_id).first_or_404()
+    if staff_user.role_id == 7:
+        staff = Nurse.query.filter_by(user_id = user_id).first_or_404()
 
     if request.form.get('active'):
-        prescription_id = int(request.form['active'][:-1])
         status = int(request.form['active'][-1])
-        target_prescript = Prescription.query.filter_by(prescription_id = prescription_id).first()
-        target_prescript.active = int(request.form['active'][-1])
+        staff_user.active = status
         db.session.commit()
         flash("Update Succesful")
-        session["Patient_ID"] = user_id
-        return redirect(url_for('profile.search'))
 
-    if request.form.get('notify'):
-        prescription_id = int(request.form['notify'][:-1])
-        status = int(request.form['notify'][-1])
-        target_prescript = Prescription.query.filter_by(prescription_id = prescription_id).first()
-        print(status)
-        target_prescript.notify = int(request.form['notify'][-1])
-        db.session.commit()
-        flash("Update Succesful")
-        session["Patient_ID"] = user_id
-        return redirect(url_for('profile.search'))
-    return render_template('profile/search_patient_alt.html', patient_user = patient_user, patient = patient, prescription = prescription, health_check = health_check)
+        return redirect(url_for('admin_tools.search'))
+
+    return render_template('admin_tools/search_staff_alt.html', staff_user = staff_user)
 
 
 
@@ -64,10 +85,15 @@ def autocomplete():
         if search == None:
             search = ""
         #.filter_by(role_id = Role.query(Role.id).filter_by(name = "Patient"))
-        query = db.session.query(User.first_name, User.last_name, User.user_id).filter_by(hospital_id = current_user.hospital_id).filter(User.last_name.like('%' + str(search) + '%'))
-        results = [[i[0] + " " + i[1], i[2]] for i in query.all()]
+        query = db.session.query(User.first_name, User.last_name, User.user_id, User.role_id).filter_by(hospital_id = current_user.hospital_id).filter(User.last_name.like('%' + str(search) + '%'))
+        rd = {6: "Physician", 7: "Nurse"}
+        results = [[rd[i[3]] + " : " + i[0] + " " + i[1], i[2]] for i in query.all()]
         return jsonify(matching_results = results)
     else:
+<<<<<<< HEAD
+        session["Staff_ID"] = int(request.get_json())
+        return render_template('admin_tools/search_staff.html')
+=======
         session["Patient_ID"] = int(request.get_json())
         return render_template('profile/search_patient.html')
 
@@ -119,3 +145,4 @@ def new_health_check():
         return redirect(url_for('profile.search'))
         #Need to figure out form formatting for where to throw each patient
     return render_template('health_check/new_health_check.html', form = form)
+>>>>>>> 9e5cd6ca84f0551f48c77da5295c14b3370e90eb

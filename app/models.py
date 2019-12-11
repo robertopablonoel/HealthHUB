@@ -206,8 +206,10 @@ class Patient(db.Model):
 
 class Physician(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id', ondelete = 'CASCADE'), primary_key = True)
+    active = db.Column(db.Boolean, default = True)
     prescribed = db.relationship('Prescription', backref = 'physician', lazy = True)
     schedule = db.relationship('Physician_schedule', backref = 'physician', lazy = True)
+
     # appointments = db.relationship('Appointment', backref = 'patient', lazy = True)
 
     def get_id(self):
@@ -215,6 +217,7 @@ class Physician(db.Model):
 
 class Nurse(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id', ondelete = 'CASCADE'), primary_key = True)
+    active = db.Column(db.Boolean, default = True)
 
     def get_id(self):
         return self.user_id
