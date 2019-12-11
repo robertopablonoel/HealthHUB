@@ -6,7 +6,7 @@
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"</script> -->
-    <div class="form-style-9" style = "background: white">
+    <div class="form-style-9 smaller" style = "background: white">
       <div class = "search_wrap no_float">
         <input name="autocomplete" type="text" id="autocomplete" placeholder = "Search for a patient by last name..." class="full_text textbox form-control input-lg"/>
         <a href="{{ url_for('profile.search') }}" class = "button"><input title="Search" value="" type="submit" class="button"></a>
@@ -64,7 +64,7 @@
           display: block;
           width: 100%;
           overflow-y: scroll;
-          max-height: 500px;
+          max-height: 400px;
           width: 75%;
           margin: auto;
           color: black;
@@ -73,6 +73,9 @@
             background: #666666;
             position: sticky;
             top: 0;
+        }
+        .small-table{
+          max-height: 105px;
         }
         .scrollable{
           overflow: scroll;
@@ -85,6 +88,7 @@
         .main_contain{
           padding: 20px;
           border-radius: 10px;
+          height: 600px;
         }
         .center_content{
           display: flex;
@@ -103,6 +107,10 @@
           top: 0;
         }
 
+        .smaller{
+          padding: 0px;
+          margin: 20px auto;
+        }
       </style>
       <div class = "main_contain visible">
         <div class="user-profile">
@@ -127,12 +135,17 @@
                     <li class = "center_content"><a href="{{ url_for('health_check.new_health_check') }}"><input style = "font-size: 10px; margin:5px;" class="form-input-button" id="submit" name="submit" type="submit" value="Checkup"></a>
                   </ul>
                 </div>
+                <div>
+                  <ul>
+                    <li class = "center_content"><a href="{{ url_for('upload.uploader') }}"><input style = "font-size: 10px; margin:5px;" class="form-input-button" id="submit" name="submit" type="submit" value="Files"></a>
+                  </ul>
+                </div>
               </div>
         </div>
 
         {% if health_check %}
 
-          <div class="table-striped"  style = "background: white; padding: 0px; border-radius: 4px">
+          <div class="table-striped small-table"  style = "margin-bottom: 10px; background: white; padding: 0px; border-radius: 4px">
             <!-- Moved the New Prescription from above in order to keep it inline with table -->
 
             <table class = "table">
