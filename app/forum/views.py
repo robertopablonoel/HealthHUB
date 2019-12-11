@@ -70,6 +70,7 @@ def update_posts():
 
 
 @forum.route('/profile', methods = ['GET', 'POST'])
+@login_required
 def profile():
     #Returns recent comments, recent posts, recent likes, bio_link,
     posted_posts = Post.query.filter(Post.user_id == current_user.user_id).order_by(Post.date_posted.desc()).all()

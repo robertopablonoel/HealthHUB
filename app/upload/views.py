@@ -16,6 +16,7 @@ from flask import Flask
 # Upload files routing
 @upload.route("/uploads", methods=['GET','POST'])
 @login_required
+@permission_required(Permission.UPLOAD_FILE)
 def uploads():
     print(os.getcwd())
     UPLOAD_FOLDER = "app/templates/files_uploaded/"

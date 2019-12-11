@@ -2,9 +2,10 @@ from flask import render_template, redirect, request, url_for, flash
 from .forms import NewHealthCheckForm
 from datetime import datetime, date
 from flask_login import login_user, login_required, logout_user, current_user
-from ..models import Health_check, User
+from ..models import Health_check, User, Permission
 from .. import db
 from . import health_check
+from ..decorators import permission_required
 from flask_jsonpify import jsonify
 from flask import session
 import re
@@ -12,6 +13,7 @@ import re
 
 @health_check.route('/new_health_check', methods = ['GET','POST'])
 @login_required
+@permission_required(Permission.ADD_CHECKUP)
 def new_health_check():
     form = NewHealthCheckForm()
     if form.validate_on_submit():
