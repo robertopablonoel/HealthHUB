@@ -65,9 +65,10 @@ def update_posts(id):
         app.logger.error('Unhandled exception', exc_info=sys.exc_info())
 
 def send_reminders(id, prescription, user):
-    print("sending")
     try:
         user = user
+        print(user.first_name)
+        print(prescription.last_notified)
         prescription = prescription
         prescription.last_notified = datetime.now()
         send_email(user.email, 'Reminder to take your Prescription',
