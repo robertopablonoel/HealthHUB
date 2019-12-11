@@ -20,7 +20,7 @@ def new_health_check():
         print(form.blood_pressure.data)
         health_check = Health_check(
                     patient_id = pi,
-                    physician_id = current_user.user_id,
+                    #physician_id = current_user.user_id,
                     height = form.height.data,
                     weight = form.weight.data,
                     gender = form.gender.data,
