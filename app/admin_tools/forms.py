@@ -36,7 +36,7 @@ class InlineSubmitField(BooleanField):
 
 
 class NewStaffForm(FlaskForm):
-    hospital = SelectField('Hospital', validators = [Required()], coerce = int)
+    hospital = SelectField('Hospital', validators = [Required()], coerce = int, default =  0)
     email = StringField('Email', validators=[Required(), Length(1, 64), Email()])
     first_name = StringField('First Name', validators = [Required(), Length(1, 64), Regexp('^[A-Za-z\s]*$', 0, 'Name must have only letters')])
     last_name = StringField('Last Name', validators = [Required(), Length(1, 64), Regexp('^[A-Za-z\s]*$', 0, 'Name must have only letters')])
@@ -44,7 +44,7 @@ class NewStaffForm(FlaskForm):
     date_of_birth = DateField('Date of Birth', validators = [Required(), DateRange(date(1900,1,1), date.today())])
     password = PasswordField('Password', validators = [Required(), Length(8,64), EqualTo('password2', message = 'Passwords must match.')])
     password2 = PasswordField('Confirm password', validators = [Required()])
-    roll = SelectField("Staff Category", choices=[(6,"Physicans"), (7, "Nurse")], coerce=int)
+    roll = SelectField("Staff Category", choices=[(6,"Physicans"), (7, "Nurse")], coerce=int, default = 6)
     submit = InlineSubmitField('Register Staff')
 
     #When a form defines a method with the prefix validate_ followed by the name of a fiel0d,

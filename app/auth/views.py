@@ -1,7 +1,7 @@
 from flask import render_template, redirect, request, url_for, flash
 from . import auth
 from flask_login import login_user, login_required, logout_user, current_user
-from ..models import Patient, User, Hospital
+from ..models import Patient, User, Hospital, Permission, Forum_profile
 from .forms import LoginForm, PatientRegistrationForm
 from ..email import send_email
 from .. import db
@@ -55,9 +55,12 @@ def register_patient():
                     last_name = form.last_name.data,
                     hospital_id = form.hospital.data)
         db.session.add(user)
-        print(user)
         db.session.commit()
-        print(user)
+        forum_pro = Forum_profile(user_id = user.user_id,
+                                    username = "{}_{}".format(form.last_name.data, user.user_id),
+                                    bio = "Hi, my name is {} and I'm new to HealthHub!".format(form.first_name.data))
+        db.session.add(forum_pro)
+        db.session.commit()
         patient = Patient(date_of_birth = form.date_of_birth.data, user = user)
         db.session.add(patient)
         db.session.commit()

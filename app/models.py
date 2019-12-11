@@ -142,8 +142,15 @@ class Permission:
     NURSE_PERMISSION = 0x02
     PHYSICIAN_PERMISSION = 0x04
     SCHEDULE_PERMISSION = 0x08
-    BOOK_ROOMS = 0x16
+    BOOK_ROOMS = 0x10
+    INSERT_PRESCRIPTION = 0x20
+    VIEW_PRESCRIPTION = 0x40
     ADMINISTRATOR = 0x80
+    SEARCH_PATIENT = 0x100
+    UPDATE_NOTIFICATIONS = 0x200
+    ADD_CHECKUP = 0x400
+    VIEW_PROFILE = 0x800
+    UPLOAD_FILE = 0x1000
 
 class Role(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -156,11 +163,24 @@ class Role(db.Model):
     def insert_roles():
         roles = {
             'Patient' : (Permission.PATIENT_PERMISSION |
-                        Permission.SCHEDULE_PERMISSION, True),
+                        Permission.SCHEDULE_PERMISSION |
+                        Permission.UPDATE_NOTIFICATIONS |
+                        Permission.VIEW_PROFILE, True),
             'Physician' : (Permission.PHYSICIAN_PERMISSION |
-                            Permission.SCHEDULE_PERMISSION, False),
+                            Permission.SCHEDULE_PERMISSION |
+                            Permission.INSERT_PRESCRIPTION |
+                            Permission.VIEW_PRESCRIPTION |
+                            Permission.SEARCH_PATIENT |
+                            Permission.ADD_CHECKUP |
+                            Permission.VIEW_PROFILE |
+                            Permission.UPLOAD_FILE, False),
             'Nurse' : (Permission.NURSE_PERMISSION |
-                        Permission.BOOK_ROOMS, False),
+                        Permission.BOOK_ROOMS |
+                        Permission.VIEW_PRESCRIPTION |
+                        Permission.SEARCH_PATIENT |
+                        Permission.ADD_CHECKUP |
+                        Permission.VIEW_PROFILE |
+                        Permission.UPLOAD_FILE, False),
             'Administrator' : (Permission.ADMINISTRATOR, False)
         }
         for r in roles:
@@ -186,8 +206,10 @@ class Patient(db.Model):
 
 class Physician(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id', ondelete = 'CASCADE'), primary_key = True)
+    active = db.Column(db.Boolean, default = True)
     prescribed = db.relationship('Prescription', backref = 'physician', lazy = True)
     schedule = db.relationship('Physician_schedule', backref = 'physician', lazy = True)
+
     # appointments = db.relationship('Appointment', backref = 'patient', lazy = True)
 
     def get_id(self):
@@ -195,6 +217,7 @@ class Physician(db.Model):
 
 class Nurse(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id', ondelete = 'CASCADE'), primary_key = True)
+    active = db.Column(db.Boolean, default = True)
 
     def get_id(self):
         return self.user_id

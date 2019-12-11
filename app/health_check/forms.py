@@ -55,3 +55,7 @@ class NewHealthCheckForm(FlaskForm):
             raise ValidationError('Enter a height greater than 0')
         if weight.data <= 0:
             raise ValidationError('Enter a weight greater than 0')
+
+    def validate_blood_pressure(self, form):
+        if type(form.data) != type(1):
+            raise ValidationError('Please input a numerical Blood Pressure')

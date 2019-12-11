@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}Create New Prescriptions{% endblock %}
+{% block page_content %}
+{{ super() }}
+
+
+
+<div class = "outer forum">
+    <div class="middle">
+      <!-- <form class="form-style-9"> -->
+          <ul>
+            <form class="form-style-9" method = "POST" role = "form">
+              <h1 style = "margin-bottom: 20px; color: white">Register a new Staff Member!</h1>
+
+              {{ form.hidden_tag() }}
+                <!-- <li> -->
+                  <!-- <input type="text" name="field1" class="field-style field-split align-left" placeholder="Forum Name" /> -->
+                  {{ wtf.form_field(form.hospital, style="font-size: 20px; font-weight: 700", placeholder="Choose Hospital") }}
+                  {{ wtf.form_field(form.email, style="font-size: 20px; font-weight: 700", placeholder="Enter Email") }}
+                  {{ wtf.form_field(form.first_name, style="height: 34px; font-size: 20px; font-weight: 700", placeholder="First Name:") }}
+                  {{ wtf.form_field(form.last_name, style="font-size: 20px; font-weight: 700", placeholder="Last Name:") }}
+                  {{ wtf.form_field(form.data_of_birth, style="height: 34px;  font-size: 20px; font-weight: 700", placeholder="DOB") }}
+                  {{ wtf.form_field(form.password, style="height: 34px; font-size: 20px; font-weight: 700", placeholder="Enter Password") }}
+                  {{ wtf.form_field(form.password2, style="font-size: 20px; font-weight: 700", placeholder="Re-enter Matching Password") }}
+                  {{ wtf.form_field(form.roll, style="height: 34px;  font-size: 20px; font-weight: 700", placeholder="Roll") }}
+
+                <!-- </li> -->
+                <!-- <li> -->
+                  <!-- <textarea name="field5" class="field-style" placeholder="Description"></textarea> -->
+                <!-- </li> -->
+                <!-- <li> -->
+                <!-- </li> -->
+                <!-- <li> -->
+                  <!-- <input type="submit" value="Create" /> -->
+                  {{ form.submit(type="submit", value="Create", class = "form-input-button", style = "margin-top:10px;") }}
+                <!-- </li> -->
+      				</form>
+          </ul>
+    <!-- </form> -->
+    </div>
+</div>
+
+{% endblock %}

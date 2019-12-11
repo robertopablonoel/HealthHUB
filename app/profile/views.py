@@ -2,8 +2,9 @@ from flask import render_template, redirect, request, url_for, flash
 from .forms import ModifyPrescriptionForm
 from datetime import datetime, date
 from flask_login import login_user, login_required, logout_user, current_user
-from ..models import Prescription, User, Patient, Health_check
+from ..models import Prescription, User, Patient, Health_check, Permission
 from .. import db
+from ..decorators import permission_required
 from . import profile
 from flask_jsonpify import jsonify
 from flask import session
@@ -11,6 +12,7 @@ import re
 
 @profile.route('/set_search')
 @login_required
+@permission_required(Permission.SEARCH_PATIENT)
 def set_search():
     if session.get("Patient_ID") != None:
         session.pop("Patient_ID")
@@ -18,6 +20,7 @@ def set_search():
 
 @profile.route('/search', methods = ['GET', 'POST'])
 @login_required
+@permission_required(Permission.SEARCH_PATIENT)
 def search():
     print(session.get("Patient_ID"))
     if session.get("Patient_ID") == None:
@@ -55,13 +58,14 @@ def search():
 #<a href="{{ url_for('profile.patient', user_id=selected_id) }}">Confirm Selection</a>
 @profile.route('/autocomplete', methods = ['GET', 'POST'])
 @login_required
+@permission_required(Permission.SEARCH_PATIENT)
 def autocomplete():
     if request.method == 'GET':
         search = request.args.get('q')
         if search == None:
             search = ""
         #.filter_by(role_id = Role.query(Role.id).filter_by(name = "Patient"))
-        query = db.session.query(User.first_name, User.last_name, User.user_id).filter_by(hospital_id = current_user.hospital_id).filter(User.last_name.like('%' + str(search) + '%'))
+        query = db.session.query(User.first_name, User.last_name, User.user_id).filter_by(hospital_id = current_user.hospital_id, role_id = 5).filter(User.last_name.like('%' + str(search) + '%'))
         results = [[i[0] + " " + i[1], i[2]] for i in query.all()]
         return jsonify(matching_results = results)
     else:
@@ -70,6 +74,7 @@ def autocomplete():
 
 @profile.route("/patient")
 @login_required
+@permission_required(Permission.VIEW_PROFILE)
 def patient():
     user_id = current_user.user_id
     patient_user = User.query.filter_by(user_id = user_id).first_or_404()

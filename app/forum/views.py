@@ -18,9 +18,14 @@ import os
 @forum.route('/home',  methods = ['GET','POST'])
 @login_required
 def home():
+<<<<<<< HEAD
+    update_forum()
+    update_posts()
+=======
     # update_forum()
     # update_posts()
 
+>>>>>>> 9e5cd6ca84f0551f48c77da5295c14b3370e90eb
     top_f = db.session.query(Top_forums, Forum).join(Forum, (Top_forums.forum_id == Forum.forum_id)).filter(Top_forums.forum_id == Forum.forum_id).order_by(Top_forums.subscribers.desc()).limit(8).all()
     top_p = db.session.query(Top_posts, Post, Likes, Forum_profile) \
                             .join(Post, Top_posts.post_id == Post.post_id) \
@@ -70,6 +75,7 @@ def update_posts():
 
 
 @forum.route('/profile', methods = ['GET', 'POST'])
+@login_required
 def profile():
     #Returns recent comments, recent posts, recent likes, bio_link,
     posted_posts = Post.query.filter(Post.user_id == current_user.user_id).order_by(Post.date_posted.desc()).all()

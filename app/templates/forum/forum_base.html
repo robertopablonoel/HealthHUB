@@ -63,10 +63,12 @@
 
 
           </script>
-        <div class = "create_forum_container">
-          <a href="{{ url_for('forum.create') }}">
-            <input class="create_forum_button" id="submit" name="submit" type="submit" value="Create Forum">
-          </a>
-        </div>
+          {% if current_user.is_nurse() or current_user.is_physician() or current_user.is_administrator() %}
+            <div class = "create_forum_container">
+              <a href="{{ url_for('forum.create') }}">
+                <input class="create_forum_button" id="submit" name="submit" type="submit" value="Create Forum">
+              </a>
+            </div>
+          {% endif %}
 </nav>
 {% endblock %}

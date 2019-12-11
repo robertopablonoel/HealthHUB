@@ -38,7 +38,7 @@ class InlineSubmitField(BooleanField):
 class NewPrescriptionForm(FlaskForm):
     expir_date = DateField('Expiration_Date', validators = [Required()])
     description = TextAreaField('Enter a description', validators = [Required(), Length(max=2000)])
-    freq = SelectField("Frequency", choices=[(1, "Once a day"), (2, "Twice a Day"), (3, "Three Times a Day"), (4, "Four Times a day"), (5, "Five times a day"), (6, "6 Times a day")], coerce=int)
+    freq = SelectField("Frequency", choices=[(1, "1 Times/day"), (2, "2 Times/day"), (3, "3 Times/day"), (4, "4 Times/day"), (5, "5 Times/day"), (6, "6 Times/day")], coerce=int)
     submit = InlineSubmitField('Confim Prescription')
     #When a form defines a method with the prefix validate_ followed by the name of a fiel0d,
     # #the method is invoked in addition to any regularly defined validators
