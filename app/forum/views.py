@@ -12,15 +12,16 @@ from .forms import PostForm, createForumForm
 import re
 from flask import Flask
 from flask_jsonpify import jsonify
-
+from os import path
+import os
 
 @forum.route('/home',  methods = ['GET','POST'])
 @login_required
 def home():
     # update_forum()
     # update_posts()
+
     top_f = db.session.query(Top_forums, Forum).join(Forum, (Top_forums.forum_id == Forum.forum_id)).filter(Top_forums.forum_id == Forum.forum_id).order_by(Top_forums.subscribers.desc()).limit(8).all()
-    print(top_f)
     top_p = db.session.query(Top_posts, Post, Likes, Forum_profile) \
                             .join(Post, Top_posts.post_id == Post.post_id) \
                             .outerjoin(Likes, (Post.post_id == Likes.post_id)) \
@@ -36,9 +37,14 @@ def home():
             unlike(request.values.get('unlike'))
             flash("unliked :(")
             return redirect(url_for('forum.home'))
+
+    filepath = '/Users/robertonoel/Desktop/EHR/app/templates/files_uploaded/profile/' + str(current_user.user_id) + '/icon.png'
+    has_icon = path.exists(filepath)
+    print(filepath)
+    print(has_icon)
     forum_pro = Forum_profile.query.filter(Forum_profile.user_id == current_user.user_id).first()
     user_forums = db.session.query(Forum_members, Forum).join(Forum, Forum_members.forum_id == Forum.forum_id).filter(Forum_members.user_id == current_user.user_id).all()
-    return render_template('forum/home.html', top_f = top_f, top_p = top_p, forum_pro = forum_pro, user_forums = user_forums)
+    return render_template('forum/home.html', top_f = top_f, top_p = top_p, forum_pro = forum_pro, user_forums = user_forums, has_icon = has_icon)
 
 def update_forum():
     update_f_task = Task.query.filter(Task.name == "update_forum").first()
