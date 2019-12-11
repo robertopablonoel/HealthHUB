@@ -17,8 +17,8 @@ from flask_jsonpify import jsonify
 @forum.route('/home',  methods = ['GET','POST'])
 @login_required
 def home():
-    # update_forum()
-    # update_posts()
+    update_forum()
+    update_posts()
     top_f = db.session.query(Top_forums, Forum).join(Forum, (Top_forums.forum_id == Forum.forum_id)).filter(Top_forums.forum_id == Forum.forum_id).order_by(Top_forums.subscribers.desc()).limit(8).all()
     print(top_f)
     top_p = db.session.query(Top_posts, Post, Likes, Forum_profile) \
