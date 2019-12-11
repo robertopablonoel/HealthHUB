@@ -14,6 +14,7 @@
 {% endif %}
 <div class = "outer center">
   <div class = "general_container whitebox">
+    <div class = "fm_title"></div>
     <div class = "fm_grid">
       <div class = "fm_top">
         {% if current_user.role_id != 5 %}
@@ -27,7 +28,7 @@
         {% for file in files %}
         <li class = "file_li"> {{file}}
           <form action="{{ url_for('files_uploaded.view_pdf', pdf_name=file)}}" method="POST" class="view_button">
-           <input type="submit" value = "view" name = "view" class= "">
+           <input type="submit" value = "view" name = "view" style="margin-left: auto; order: 2; padding: 2px; border-radius: 2px; font-size: 10px; margin:5px;" class="form-input-button" id="submit">
          </form>
         </li>
         {% endfor %}
