@@ -68,6 +68,9 @@ def register_patient():
         return redirect(url_for('auth.login'))
     return render_template('auth/register_patient.html', form = form)
 
+# insert into prescription
+# values (2395, 105, 62, "2019-12-01", "2020-02-02", "this is a description", 1, 1, 4, 4, "2010-01-01 00:00:00")
+
 @auth.route('/confirm/<token>')
 @login_required
 def confirm(token):
