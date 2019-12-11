@@ -47,16 +47,19 @@ def schedule():
     print("Permissions >>> ", Permission, '\n')
     weekDays = ['SUN','MON','TUE','WED','THU','FRI','SAT']
     theMonths = [
-                ['jan','January',31], ['feb','February',28],
-                ['mar','March',31], ['apr','April',30], ['jun','June',30],
-                ['jul','July',31], ['aug','August',31], ['sep','September',30],
-                ['oct','October',31], ['nov','November',30],
-                ['dec','December',31]
+                ['jan','January',31, '01'], ['feb','February',28,'02'],
+                ['mar','March',31, '03'], ['apr','April',30,'04'],
+                ['may', 'May', 31, '05'], ['jun','June',30,'06'],
+                ['jul','July',31, '07'], ['aug','August',31, '08'],
+                ['sep','September',30, '09'], ['oct','October',31, '10'],
+                ['nov','November',30, '11'], ['dec','December',31, '12']
                 ]
+    dayStrings = [str(i) for i in range(1,32)]
+    print(dayStrings)
     return render_template('sched/schedule.html', form = form,
                             physician_schedule = physician_schedule,
                             permissions = Permission, weekDays = weekDays,
-                            theMonths = theMonths
+                            theMonths = theMonths, dayStrings = dayStrings,
                             )
 
 #Here comes the scheduling code...

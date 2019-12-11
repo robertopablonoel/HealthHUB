@@ -54,6 +54,7 @@
         </div>
       {% endfor %}
     </header>
+    {% set ids=[] %}
     <div class="cal-scene -calendar" style = "overflow: scroll">
       {% for weekday in range(7) %}
       <div class="cal-day"></div>
@@ -62,24 +63,17 @@
       <div class="cal-month -{{month[1].lower()}}">
         <header class="cal-header">
 
-
         </header>
-
         {% for i in range(1, month[2]+1) %}
 
-        <a href="#schedule" class="cal-day" id="{{month[0]}}-{{i}}""></a>
+        <a href="#schedule" onclick="popAlert(this.id)" class="cal-day" id="{{ '2019-' + month[3]+'-'+ dayStrings[i-1]}}"></a>
+        {% set currID = '2019-' + dayStrings[i-1]+'-'+ month[3] %}
+        {% do ids.append(currID) %}
 
         {% endfor %}
       </div>
     {% endfor %}
-    <div class="cal-scene -schedule" style="overflow-y:scroll">
-
-      <div class="cal-item">
-        <div class="cal-time"><span>09:00</span></div>
-        <div class="cal-task">
-          <p>wake up</p>
-        </div>
-      </div>
+    <div class="cal-scene -schedule" id="parentNodeCalScene" style="overflow-y:scroll"></div>
     </div>
   </section>
 </main>
@@ -100,4 +94,70 @@
 <!-- partial -->
 
 </body>
+<script type="text/javascript">
+  function addCalTimeTask(id) {
+    console.log("Inside addCalTimeTask function");
+    var calTime = document.createElement("div");
+    calTime.setAttribute("class", "cal-time");
+    // console.log(calTime);
+    var calTimeSpan = document.createElement("SPAN");
+    calTimeSpan.innerHTML="What's Up?";
+    // node1 = document.getElementsByClassName("cal-time")[0];
+    calTime.appendChild(calTimeSpan);
+    // console.log(node1);
+    var calTask = document.createElement("div");
+    calTask.setAttribute("class", "cal-task");
+    // console.log(calTask);
+    parentNode = document.getElementById("parentNodeCalScene");
+    parentNode.appendChild(calTime);
+    parentNode.appendChild(calTask);
+    console.log(parentNode);
+    // parentNode.appendChild()
+    // var parNode = document.getElementsByClassName("cal-scene -schedule");
+
+  }
+  function popAlert(id){
+    alert("The id of this date is >>> " + id);
+
+    `{% for day in physician_schedule %}`
+    // console.log("ID >>> " + id)
+    // console.log( `{{ day.start_time }}`)
+    var dayTimeString = `{{ day.start_time.strftime('%Y-%m-%d') }}`;
+    // console.log("dayTimeString >>> " + dayTimeString);
+    // console.log("dayTimeString >>> " + dayTimeString + ' >>> ' + typeof(dayTimeString));
+    // console.log("ID >>> " + id + ' >>> ' + typeof(id));
+
+
+    if(id == dayTimeString){
+    console.log("Should be logging this >>> " + `{{ day.start_time }}`);
+    console.log("HEY");
+    console.log("Inside addCalTimeTask function");
+    var calTime = document.createElement("div");
+    calTime.setAttribute("class", "cal-time");
+    // console.log(calTime);
+    var calTimeSpan = document.createElement("SPAN");
+    calTimeSpan.innerHTML=`{{ day.end_time }}`;
+    // node1 = document.getElementsByClassName("cal-time")[0];
+    calTime.appendChild(calTimeSpan);
+    // console.log(node1);
+    var calTask = document.createElement("div");
+    calTask.setAttribute("class", "cal-task");
+    // console.log(calTask);
+    parentNode = document.getElementById("parentNodeCalScene");
+    parentNode.appendChild(calTime);
+    parentNode.appendChild(calTask);
+    console.log(parentNode);
+  }
+    `{% endfor %}`
+    var array =  `{{ physician_schedule[0] }}`
+    for (var i = 0; i < `{{ physician_schedule[0] }}`.length; i++) {
+    }
+    console.log(array)
+    for (var i = 0; i < array.length; i++) {
+      array[i]
+    }
+    console.log(`{{ physician_schedule[0].start_time }}`);
+
+  }
+</script>
 {% endblock %}
