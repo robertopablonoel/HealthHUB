@@ -56,7 +56,7 @@
                         <div class = "post_poster">
                           <div class = "post_top">
                             <div class = "post_frame">
-                              <img src="{{ url_for('static', filename= 'files_uploaded/profile/' + (current_user.user_id)|string + '/icon.png') }}" class="post_img" />
+                              <img src="{{ url_for('static', filename= 'files_uploaded/profile/default/icon' + (post[3][-1]|int % 10)|string + '.png') }}" class="post_img" />
                             </div>
                           </div>
                           <div class = "post_bottom">
@@ -110,7 +110,7 @@
                     {% for mem in forum_members %}
                     <div class = "member">
                       <div class = "member_inner pushed">
-                        <img src="{{ url_for('static', filename= 'files_uploaded/profile/' + (current_user.user_id)|string + '/icon.png') }}" class="member_img" />
+                        <img src="{{ url_for('static', filename= 'files_uploaded/profile/default/icon' + (mem.user_id|int % 10)|string + '.png') }}" class="post_img" />
                       </div>
                     </div>
                     {% endfor %}

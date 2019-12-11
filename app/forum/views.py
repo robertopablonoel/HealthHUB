@@ -8,19 +8,25 @@ from ..decorators import permission_required
 from datetime import date
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from .forms import PostForm, createForumForm
+from .forms import PostForm, createForumForm, editBio
 import re
 from flask import Flask
 from flask_jsonpify import jsonify
-
+from os import path
+import os
 
 @forum.route('/home',  methods = ['GET','POST'])
 @login_required
 def home():
+<<<<<<< HEAD
     update_forum()
     update_posts()
+=======
+    # update_forum()
+    # update_posts()
+
+>>>>>>> 9e5cd6ca84f0551f48c77da5295c14b3370e90eb
     top_f = db.session.query(Top_forums, Forum).join(Forum, (Top_forums.forum_id == Forum.forum_id)).filter(Top_forums.forum_id == Forum.forum_id).order_by(Top_forums.subscribers.desc()).limit(8).all()
-    print(top_f)
     top_p = db.session.query(Top_posts, Post, Likes, Forum_profile) \
                             .join(Post, Top_posts.post_id == Post.post_id) \
                             .outerjoin(Likes, (Post.post_id == Likes.post_id)) \
@@ -36,9 +42,14 @@ def home():
             unlike(request.values.get('unlike'))
             flash("unliked :(")
             return redirect(url_for('forum.home'))
+
+    filepath = '/Users/robertonoel/Desktop/EHR/app/templates/files_uploaded/profile/' + str(current_user.user_id) + '/icon.png'
+    has_icon = path.exists(filepath)
+    print(filepath)
+    print(has_icon)
     forum_pro = Forum_profile.query.filter(Forum_profile.user_id == current_user.user_id).first()
     user_forums = db.session.query(Forum_members, Forum).join(Forum, Forum_members.forum_id == Forum.forum_id).filter(Forum_members.user_id == current_user.user_id).all()
-    return render_template('forum/home.html', top_f = top_f, top_p = top_p, forum_pro = forum_pro, user_forums = user_forums)
+    return render_template('forum/home.html', top_f = top_f, top_p = top_p, forum_pro = forum_pro, user_forums = user_forums, has_icon = has_icon)
 
 def update_forum():
     update_f_task = Task.query.filter(Task.name == "update_forum").first()
@@ -64,6 +75,7 @@ def update_posts():
 
 
 @forum.route('/profile', methods = ['GET', 'POST'])
+@login_required
 def profile():
     #Returns recent comments, recent posts, recent likes, bio_link,
     posted_posts = Post.query.filter(Post.user_id == current_user.user_id).order_by(Post.date_posted.desc()).all()
@@ -293,3 +305,23 @@ def autocomplete():
         session["forum_name"] = str(request.get_json())
         print(session.get("forum_name"))
         return render_template('profile/search_patient.html')
+
+@forum.route('/edit_profile', methods = ["GET", "POST"])
+def edit():
+    form = editBio()
+    if form.validate_on_submit():
+        try:
+            bioEditor(form)
+            return redirect(url_for('forum.home'))
+        except:
+            flash("Error Creating Forum")
+            return redirect(url_for('forum.home'))
+    forum_pro = Forum_profile.query.filter(Forum_profile.user_id == current_user.user_id).first()
+    return render_template('forum/edit_bio.html', form = form, forum_pro = forum_pro)
+
+def bioEditor(form):
+    #edit the bio
+    forum_pro = Forum_profile.query.filter(Forum_profile.user_id == current_user.user_id).first()
+    forum_pro.username = form.username.data
+    forum_pro.bio = form.bio.data
+    db.session.commit()

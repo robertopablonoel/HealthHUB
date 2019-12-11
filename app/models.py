@@ -75,7 +75,16 @@ class User(UserMixin, db.Model):
         return True if Likes.query.filter((Likes.post_id == posts) & (Likes.user_id == self.user_id)).first() else False
 
     def is_administrator(self):
-        return self.can(Permission.ADMINISTER)
+        return self.can(Permission.ADMINISTRATOR)
+
+    def is_patient(self):
+        return self.can(Permission.ADMINISTRATOR) or self.can(Permission.PATIENT_PERMISSION)
+
+    def is_nurse(self):
+        return self.can(Permission.ADMINISTRATOR) or self.can(Permission.NURSE_PERMISSION)
+
+    def is_physician(self):
+        return self.can(Permission.ADMINISTRATOR) or self.can(Permission.PHYSICIAN_PERMISSION)
 
     def ping(self):
         self.last_seen = datetime.utcnow()
@@ -132,7 +141,16 @@ class Permission:
     PATIENT_PERMISSION = 0x01
     NURSE_PERMISSION = 0x02
     PHYSICIAN_PERMISSION = 0x04
+    SCHEDULE_PERMISSION = 0x08
+    BOOK_ROOMS = 0x10
+    INSERT_PRESCRIPTION = 0x20
+    VIEW_PRESCRIPTION = 0x40
     ADMINISTRATOR = 0x80
+    SEARCH_PATIENT = 0x100
+    UPDATE_NOTIFICATIONS = 0x200
+    ADD_CHECKUP = 0x400
+    VIEW_PROFILE = 0x800
+    UPLOAD_FILE = 0x1000
 
 class Role(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -144,12 +162,26 @@ class Role(db.Model):
     @staticmethod
     def insert_roles():
         roles = {
-            'Patient' : (Permission.PATIENT_PERMISSION, True),
-            'Physician' : (Permission.PHYSICIAN_PERMISSION,
-                                False),
-            'Nurse' : (Permission.NURSE_PERMISSION,
-                                False),
-            'Administrator' : (0x80, False)
+            'Patient' : (Permission.PATIENT_PERMISSION |
+                        Permission.SCHEDULE_PERMISSION |
+                        Permission.UPDATE_NOTIFICATIONS |
+                        Permission.VIEW_PROFILE, True),
+            'Physician' : (Permission.PHYSICIAN_PERMISSION |
+                            Permission.SCHEDULE_PERMISSION |
+                            Permission.INSERT_PRESCRIPTION |
+                            Permission.VIEW_PRESCRIPTION |
+                            Permission.SEARCH_PATIENT |
+                            Permission.ADD_CHECKUP |
+                            Permission.VIEW_PROFILE |
+                            Permission.UPLOAD_FILE, False),
+            'Nurse' : (Permission.NURSE_PERMISSION |
+                        Permission.BOOK_ROOMS |
+                        Permission.VIEW_PRESCRIPTION |
+                        Permission.SEARCH_PATIENT |
+                        Permission.ADD_CHECKUP |
+                        Permission.VIEW_PROFILE |
+                        Permission.UPLOAD_FILE, False),
+            'Administrator' : (Permission.ADMINISTRATOR, False)
         }
         for r in roles:
             role = Role.query.filter_by(name = r).first()

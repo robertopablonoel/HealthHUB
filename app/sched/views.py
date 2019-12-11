@@ -6,10 +6,13 @@ from .. import db
 from .forms import PatientAppointmentForm
 from datetime import date
 from dateutil.relativedelta import relativedelta
+from ..decorators import permission_required
 import re
+
 
 @sched.route('/schedule', methods = ['GET','POST'])
 @login_required
+@permission_required(Permission.SCHEDULE_PERMISSION)
 def schedule():
     def calcLeapYear(time):
         pass
@@ -32,8 +35,8 @@ def schedule():
     form.time_slot.choices = [(ret.physician_id, "{} to {}"\
         .format(ret.start_time,ret.end_time)) for ret in physician_schedule]
     if form.validate_on_submit():
-        time_slot = dict(form.time_slot.choices).get(form.time_slot.data)\
-            .split(" to ")
+        print(form.time_slot.data)
+        time_slot = dict(form.time_slot.choices).get(form.time_slot.data).split(" to ")
         event_type = dict(form.purpose.choices).get(form.purpose.data)
         event = Physician_schedule(physician_id = form.physician.data,
                                     start_time = time_slot[0],
@@ -54,6 +57,7 @@ def schedule():
                 ['sep','September',30, '09'], ['oct','October',31, '10'],
                 ['nov','November',30, '11'], ['dec','December',31, '12']
                 ]
+<<<<<<< HEAD
     dayStrings = [str(i) for i in range(1,32)]
     print(dayStrings)
     return render_template('sched/schedule.html', form = form,
@@ -61,5 +65,12 @@ def schedule():
                             permissions = Permission, weekDays = weekDays,
                             theMonths = theMonths, dayStrings = dayStrings,
                             )
+=======
+
+    return render_template('sched/schedule.html', form = form,
+                            physician_schedule = physician_schedule,
+                            permissions = Permission, weekDays = weekDays,
+                            theMonths = theMonths)
+>>>>>>> 9e5cd6ca84f0551f48c77da5295c14b3370e90eb
 
 #Here comes the scheduling code...

@@ -1,16 +1,16 @@
 from flask import render_template, redirect, request, url_for, flash
 from . import auth
 from flask_login import login_user, login_required, logout_user, current_user
-from ..models import Patient, User, Hospital
+from ..models import Patient, User, Hospital, Permission
 from .forms import LoginForm, PatientRegistrationForm
 from ..email import send_email
 from .. import db
 from config import config
+from ..decorators import permission_required
 import re
 
 
 @auth.route('/login', methods = ['GET','POST'])
-
 def login():
     form = LoginForm()
     if form.validate_on_submit():
