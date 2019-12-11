@@ -13,6 +13,6 @@ import re
 def view_pdf(pdf_name):
     print("We got the viewing pdf")
     UPLOAD_FOLDER = "app/templates/"
-    USER_FOLDER = str(current_user.user_id)
+    USER_FOLDER = str(session.get("Patient_ID"))
 
     return render_template("files_uploaded/files.html", pdf_name = pdf_name, user_folder = USER_FOLDER)
