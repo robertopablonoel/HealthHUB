@@ -4,6 +4,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 from ..models import Patient, User, Physician
 from .forms import viewRooms
 from .. import db
+from ..decorators import permission_required
 import re
 
 @roomres.route('/reserve', methods = ['GET','POST'])

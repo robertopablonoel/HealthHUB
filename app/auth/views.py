@@ -6,6 +6,7 @@ from .forms import LoginForm, PatientRegistrationForm
 from ..email import send_email
 from .. import db
 from config import config
+from ..decorators import permission_required
 import re
 
 
