@@ -142,6 +142,7 @@ class Permission:
     NURSE_PERMISSION = 0x02
     PHYSICIAN_PERMISSION = 0x04
     SCHEDULE_PERMISSION = 0x08
+    BOOK_ROOMS = 0x16
     ADMINISTRATOR = 0x80
 
 class Role(db.Model):
@@ -158,7 +159,7 @@ class Role(db.Model):
                         Permission.SCHEDULE_PERMISSION, True),
             'Physician' : (Permission.PHYSICIAN_PERMISSION |
                             Permission.SCHEDULE_PERMISSION, False),
-            'Nurse' : (Permission.NURSE_PERMISSION | 
+            'Nurse' : (Permission.NURSE_PERMISSION |
                         Permission.BOOK_ROOMS, False),
             'Administrator' : (Permission.ADMINISTRATOR, False)
         }
