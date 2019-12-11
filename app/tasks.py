@@ -64,28 +64,22 @@ def update_posts(id):
         _set_task_progress(100)
         app.logger.error('Unhandled exception', exc_info=sys.exc_info())
 
-def send_reminders(id, prescription, user):
-    try:
-        user = user
-        print(user.first_name)
-        print(prescription.last_notified)
-        prescription = prescription
-        prescription.last_notified = datetime.now()
-        send_email(user.email, 'Reminder to take your Prescription',
-                   'email/prescription_reminder', user=user, prescription=prescription)
-    except:
-        print("Error Sending")
+def send_reminders(id, prescript, user):
+    print("sending reminders")
+    print(user.email)
+    update_prescript = Prescription.query.filter(Prescription.prescription_id == prescript.prescription_id).first()
+    update_prescript.last_notified = datetime.now()
+    db.session.commit()
+    send_email(user.email, 'Reminder to take your Prescription',
+               'email/prescription_reminder', user=user, prescript=update_prescript)
+    print("no issues encountered")
+    # current_app.db.session.commit()
 
 @celery.task(name = "demo_task_name")
 def queue_reminders():
-    print("queuing")
-    print(datetime.now())
-    if datetime.now().hour < 23: # datetime.now().hour > 7 and
-        print("here")
-        notify = Prescription.query.filter(Prescription.notify == True).all()
+    if datetime.now().hour > 7 and datetime.now().hour < 23: # datetime.now().hour > 7 and
+        notify = Prescription.query.filter((Prescription.notify == True) & (Prescription.active == True)).all()
         for prescript in notify:
-            print("here")
             if prescript.last_notified  < datetime.now() - relativedelta(hours = prescript.time):
-                print("here")
                 user = User.query.filter(User.user_id == prescript.patient_id).first()
                 current_app.task_queue.enqueue('app.tasks.' + "send_reminders", None, prescript, user)

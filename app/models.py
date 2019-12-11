@@ -225,7 +225,6 @@ class Prescription(db.Model):
     active = db.Column(db.Boolean, default = True)
     notify = db.Column(db.Boolean, default = False)
     time = db.Column(db.Integer, nullable = False, unique = False)
-    frequency = db.Column(db.String(32), nullable = False, unique = False)
     last_notified = db.Column(db.DateTime, nullable = True, unique = False, default = date.fromisoformat('2010-01-01'))
 
 
