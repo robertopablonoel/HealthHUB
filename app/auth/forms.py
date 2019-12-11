@@ -32,6 +32,28 @@ class InlineSubmitField(BooleanField):
     """
     widget = InlineButtonWidget()
 
+class InlineButtonWidget2(object):
+    """
+    Render a basic ``<button>`` field.
+    """
+    input_type = 'submit'
+    html_params = staticmethod(html_params)
+
+    def __call__(self, field, **kwargs):
+        kwargs.setdefault('id', field.id)
+        kwargs.setdefault('type', self.input_type)
+        kwargs.setdefault('value', field.label.text)
+        return HTMLString('<button %s> Register' % self.html_params(name=field.name, **kwargs))
+
+
+
+class InlineSubmitField2(BooleanField):
+    """
+    Represents an ``<button type="submit">``.  This allows checking if a given
+    submit button has been pressed.
+    """
+    widget = InlineButtonWidget2()
+
 class PatientRegistrationForm(FlaskForm):
 
     hospital = SelectField('Hospital', validators = [Required()], coerce = int)
@@ -42,7 +64,7 @@ class PatientRegistrationForm(FlaskForm):
     date_of_birth = DateField('Date of Birth', validators = [Required(), DateRange(date(1900,1,1), date.today())])
     password = PasswordField('Password', validators = [Required(), Length(8,64), EqualTo('password2', message = 'Passwords must match.')])
     password2 = PasswordField('Confirm password', validators = [Required()])
-    submit = InlineSubmitField('Register')
+    submit = InlineSubmitField2('Register')
     #When a form defines a method with the prefix validate_ followed by the name of a field,
     #the method is invoked in addition to any regularly defined validators
     def validate_email(self, field):

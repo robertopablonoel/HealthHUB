@@ -1,22 +1,22 @@
 from flask import render_template, redirect, request, url_for, flash
-from .forms import *
+from .forms import NewStaffForm
 from datetime import datetime, date
 from flask_login import login_user, login_required, logout_user, current_user
 from ..models import Physician, Nurse, User
 from .. import db
-from . import profile
+from . import admin_tools
 from flask_jsonpify import jsonify
 from flask import session
 import re
 
-@profile.route('/set_search')
+@admin_tools.route('/set_search')
 @login_required
 def set_search():
     if session.get("Patient_ID") != None:
         session.pop("Patient_ID")
     return redirect(url_for('profile.search'))
 
-@profile.route('/search', methods = ['GET', 'POST'])
+@admin_tools.route('/search', methods = ['GET', 'POST'])
 @login_required
 def search():
     print(session.get("Patient_ID"))
@@ -53,7 +53,7 @@ def search():
 
 
 #<a href="{{ url_for('profile.patient', user_id=selected_id) }}">Confirm Selection</a>
-@profile.route('/autocomplete', methods = ['GET', 'POST'])
+@admin_tools.route('/autocomplete', methods = ['GET', 'POST'])
 @login_required
 def autocomplete():
     if request.method == 'GET':
@@ -68,7 +68,7 @@ def autocomplete():
         session["Patient_ID"] = int(request.get_json())
         return render_template('profile/search_patient.html')
 
-@profile.route("/patient")
+@admin_tools.route("/patient")
 @login_required
 def patient():
     user_id = current_user.user_id
@@ -87,7 +87,7 @@ def patient():
     return render_template('profile/patient.html', patient_user = patient_user, patient = patient, prescription = prescription, health_check = health_check)
 
 
-@health_check.route('/new_health_check', methods = ['GET','POST'])
+@admin_tools.route('/new_health_check', methods = ['GET','POST'])
 @login_required
 def new_health_check():
     form = NewHealthCheckForm()
