@@ -1,5 +1,5 @@
 from flask import render_template, redirect, request, url_for, flash
-from .forms import
+from .forms import *
 from datetime import datetime, date
 from flask_login import login_user, login_required, logout_user, current_user
 from ..models import Physician, Nurse, User
