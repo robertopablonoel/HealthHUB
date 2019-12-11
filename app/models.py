@@ -323,7 +323,7 @@ class Top_posts(db.Model):
 class Health_check(db.Model):
     record_id = db.Column(db.Integer, primary_key = True)
     patient_id = db.Column(db.Integer, db.ForeignKey('patient.user_id'), nullable = False)
-    physician_id = db.Column(db.Integer, db.ForeignKey('physician.user_id'), nullable = False)
+    #physician_id = db.Column(db.Integer, db.ForeignKey('physician.user_id'), nullable = False)
     height = db.Column(db.Integer, nullable = False, unique = False)
     weight = db.Column(db.Integer, nullable = False, unique = False)
     gender = db.Column(db.Integer, default = True, nullable = False)
