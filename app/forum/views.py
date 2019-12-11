@@ -314,6 +314,7 @@ def edit():
     return render_template('forum/edit_bio.html', form = form, forum_pro = forum_pro)
 
 def bioEditor(form):
+    #edit the bio
     forum_pro = Forum_profile.query.filter(Forum_profile.user_id == current_user.user_id).first()
     forum_pro.username = form.username.data
     forum_pro.bio = form.bio.data
