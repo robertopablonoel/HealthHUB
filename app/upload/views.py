@@ -17,10 +17,9 @@ from flask import Flask
 @upload.route("/uploads", methods=['GET','POST'])
 @login_required
 def uploads():
-    print('here dumbass')
     print(os.getcwd())
     UPLOAD_FOLDER = "app/templates/files_uploaded/"
-    USER_FOLDER = str(current_user.user_id)
+    USER_FOLDER = str(session.get("patient_id"))
     try:
         files=os.listdir(os.path.join(UPLOAD_FOLDER, USER_FOLDER))
         print(files)
@@ -35,7 +34,7 @@ def uploader():
     print('arrived')
     file_exists = False
     UPLOAD_FOLDER = "app/templates/files_uploaded/"
-    USER_FOLDER = str(current_user.user_id)
+    USER_FOLDER = str(session.get("patient_id"))
     if request.method == "POST":
         print("Request Files", request.files)
         f = request.files['file']

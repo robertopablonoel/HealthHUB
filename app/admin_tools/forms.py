@@ -6,7 +6,7 @@ from wtforms.fields.html5 import DateField
 from wtforms_components import DateRange
 from datetime import datetime, date
 from .. import db
-from ..models import User, Prescription
+from ..models import User, admin_tools
 from wtforms.widgets.core import html_params
 from wtforms.widgets import HTMLString
 
@@ -35,23 +35,21 @@ class InlineSubmitField(BooleanField):
     widget = InlineButtonWidget()
 
 
-class NewHealthCheckForm(FlaskForm):
-    height = IntegerField("Enter Height in Centimeters", validators = [Required()])
-    weight = IntegerField("Enter Weight", validators = [Required()])
-    blood_pressure = IntegerField("Enter Blood Pressure", validators = [Required()])
-    bt = [(0, "O-"), (1, "O+"),(2, "A-"),(3, "A+"),(4, "B-"),(5, "B+"),(6, "AB-"),(7, "AB+")]
-    blood_type = SelectField("blood_type", coerce=int, default = 0,  choices = bt)
-    gender = SelectField("gender", coerce=int, default = 0, choices=[(0, "Female"),(1, "Male")])
-    description = TextAreaField('Enter a description', validators = [Required(), Length(max=2000)])
-    submit = InlineSubmitField('Confim Checkup Information')
+class NewStaffForm(FlaskForm):
+    hospital = SelectField('Hospital', validators = [Required()], coerce = int)
+    email = StringField('Email', validators=[Required(), Length(1, 64), Email()])
+    first_name = StringField('First Name', validators = [Required(), Length(1, 64), Regexp('^[A-Za-z\s]*$', 0, 'Name must have only letters')])
+    last_name = StringField('Last Name', validators = [Required(), Length(1, 64), Regexp('^[A-Za-z\s]*$', 0, 'Name must have only letters')])
+    #middle_name = StringField('Middle Name', validators = [Regexp('^[A-Za-z\s]*$', 0, 'Name must have only letters')])
+    date_of_birth = DateField('Date of Birth', validators = [Required(), DateRange(date(1900,1,1), date.today())])
+    password = PasswordField('Password', validators = [Required(), Length(8,64), EqualTo('password2', message = 'Passwords must match.')])
+    password2 = PasswordField('Confirm password', validators = [Required()])
+    roll = SelectField("Staff Category", choices=[(6,"Physicans"), (7, "Nurse")], coerce=int)
+    submit = InlineSubmitField('Register Staff')
 
     #When a form defines a method with the prefix validate_ followed by the name of a fiel0d,
     # #the method is invoked in addition to any regularly defined validators
     def validate_form(self, form):
-        form.blood_type = int(form.blood_type.data)
-        form.gender = int(form.gender.data)
-        print("checking sheet")
-        if height.data <= 0:
-            raise ValidationError('Enter a height greater than 0')
-        if weight.data <= 0:
-            raise ValidationError('Enter a weight greater than 0')
+        def validate_email(self, field):
+            if User.query.filter_by(email = field.data).first():
+                raise ValidationError('Email already registered.')
