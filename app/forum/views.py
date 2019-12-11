@@ -8,7 +8,7 @@ from ..decorators import permission_required
 from datetime import date
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from .forms import PostForm, createForumForm
+from .forms import PostForm, createForumForm, editBio
 import re
 from flask import Flask
 from flask_jsonpify import jsonify
@@ -299,3 +299,22 @@ def autocomplete():
         session["forum_name"] = str(request.get_json())
         print(session.get("forum_name"))
         return render_template('profile/search_patient.html')
+
+@forum.route('/edit_profile', methods = ["GET", "POST"])
+def edit():
+    form = editBio()
+    if form.validate_on_submit():
+        try:
+            bioEditor(form)
+            return redirect(url_for('forum.home'))
+        except:
+            flash("Error Creating Forum")
+            return redirect(url_for('forum.home'))
+    forum_pro = Forum_profile.query.filter(Forum_profile.user_id == current_user.user_id).first()
+    return render_template('forum/edit_bio.html', form = form, forum_pro = forum_pro)
+
+def bioEditor(form):
+    forum_pro = Forum_profile.query.filter(Forum_profile.user_id == current_user.user_id).first()
+    forum_pro.username = form.username.data
+    forum_pro.bio = form.bio.data
+    db.session.commit()

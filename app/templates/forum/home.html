@@ -104,7 +104,7 @@ function changeBio(){
                         {{ forum_pro.bio }}
                         <div class = "overlay">
                           <div class = "overlay_text">
-                            <input id = "bio_change" type = "button" class="fa fa-input" style="overflow: visible; height: 30px; background-color: transparent; border-color: transparent; color: white; font-size: 2rem;" value = "&#xf0ad" onclick="changeBio()"></input>
+                            <a href = "{{ url_for('forum.edit') }}"><input id = "bio_change" type = "button" class="fa fa-input" style="overflow: visible; height: 30px; background-color: transparent; border-color: transparent; color: white; font-size: 2rem;" value = "&#xf0ad" onclick="changeBio()"></input></a>
                           </div>
                         </div>
                       </div>

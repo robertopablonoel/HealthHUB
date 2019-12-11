@@ -6,7 +6,7 @@ from wtforms.fields.html5 import DateField
 from wtforms_components import DateRange
 from datetime import datetime, date
 from .. import db
-from ..models import User, Hospital, Forum
+from ..models import User, Hospital, Forum, Forum_profile
 from wtforms.widgets.core import html_params
 from wtforms.widgets import HTMLString
 
@@ -27,3 +27,12 @@ class createForumForm(FlaskForm):
     def validate_visibility(self, field):
         if field.data == 2:
             raise ValidationError('Please Select Visibility!')
+
+class editBio(FlaskForm):
+    username = TextField('Username', validators = [Required(), Length(5, 25)]) # Regexp(r'^[\w.@+-]+$'
+    bio = TextAreaField('Post', validators = [Required(), Length(10,250)])
+    submit = SubmitField('Post')
+
+    def validate_username(self, field):
+        if Forum_profile.query.filter(Forum_profile.username == field.data).first():
+            raise ValidationError('Username already registered.')
