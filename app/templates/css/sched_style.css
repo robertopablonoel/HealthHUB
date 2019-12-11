@@ -134,10 +134,14 @@
 [id="schedule"]:target ~ .cal-device .cal-scene.-calendar, [id="schedule"]:target ~ .cal-device .cal-scene.-calendar * {
   transition-delay: 0.6s;
 }
-
+.container{
+  margin-left: auto;
+  width: 100%;
+  overflow: hidden;
+}
 .cal-device {
   width: 54vh;
-  height: 96vh;
+  height: 50vh;
   background: white;
 }
 .cal-device > .cal-header {

@@ -12,15 +12,15 @@ import re
 @admin_tools.route('/set_search')
 @login_required
 def set_search():
-    if session.get("Patient_ID") != None:
-        session.pop("Patient_ID")
-    return redirect(url_for('profile.search'))
+    if session.get("Staff_ID") != None:
+        session.pop("Staff_ID")
+    return redirect(url_for('admin.search'))
 
 @admin_tools.route('/search', methods = ['GET', 'POST'])
 @login_required
 def search():
-    print(session.get("Patient_ID"))
-    if session.get("Patient_ID") == None:
+    print(session.get("Staff_ID"))
+    if session.get("Staff_ID") == None:
         return render_template('profile/search_patient.html')
     user_id = session.get("Patient_ID")
     patient_user = User.query.filter_by(user_id = user_id).first_or_404()

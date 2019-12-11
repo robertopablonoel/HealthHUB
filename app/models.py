@@ -158,8 +158,8 @@ class Role(db.Model):
                         Permission.SCHEDULE_PERMISSION, True),
             'Physician' : (Permission.PHYSICIAN_PERMISSION |
                             Permission.SCHEDULE_PERMISSION, False),
-            'Nurse' : (Permission.NURSE_PERMISSION,
-                                False),
+            'Nurse' : (Permission.NURSE_PERMISSION | 
+                        Permission.BOOK_ROOMS, False),
             'Administrator' : (Permission.ADMINISTRATOR, False)
         }
         for r in roles:

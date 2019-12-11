@@ -79,7 +79,7 @@ function changeBio(){
                       <div class = "post_poster">
                         <div class = "post_top">
                           <div class = "post_frame">
-                            <img src="{{ url_for('static', filename= 'files_uploaded/profile/' + (current_user.user_id)|string + '/icon.png') }}" class="post_img" />
+                            <img src="{{ url_for('static', filename= 'files_uploaded/profile/default/icon' + (top_post[3][-1]|int % 10)|string + '.png') }}" class="post_img" />
                           </div>
                         </div>
                         <div class = "post_bottom">
@@ -112,7 +112,11 @@ function changeBio(){
                 </div>
                 <div class = "profile_pic_container">
                   <div class = "user_frame">
+                    {% if has_icon %}
                     <img src="{{ url_for('static', filename= 'files_uploaded/profile/' + (current_user.user_id)|string + '/icon.png') }}" class="post_img" />
+                    {% else %}
+                    <img src="{{ url_for('static', filename= 'files_uploaded/profile/default/icon' + (current_user.user_id % 10)|string + '.png') }}" class="post_img" />
+                    {% endif %}
                   </div>
                 </div>
                 <div class = "profile_banner_container">

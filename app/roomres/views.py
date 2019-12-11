@@ -7,6 +7,7 @@ from .. import db
 import re
 
 @roomres.route('/reserve', methods = ['GET','POST'])
+@permission_required(Permission.BOOK_ROOMS)
 def reserve():
     full_rooms = [i for i in range(0,1000,2)]
     all_rooms = [i for i in range(0,1000)]
