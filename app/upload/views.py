@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from werkzeug import secure_filename
 import os, sys
-from flask import render_template, redirect, request, url_for, flash, current_app
+from flask import render_template, redirect, request, url_for, flash, current_app, session
 from . import upload
 from flask_login import login_user, login_required, logout_user, current_user
 from ..models import Permission, Patient, User, Hospital, Forum, Forum_members, ForumPermission, Post, Likes, Reaction, Top_forums, Top_posts, Task
@@ -17,10 +17,9 @@ from flask import Flask
 @upload.route("/uploads", methods=['GET','POST'])
 @login_required
 def uploads():
-    print('here dumbass')
     print(os.getcwd())
     UPLOAD_FOLDER = "app/templates/files_uploaded/"
-    USER_FOLDER = str(current_user.user_id)
+    USER_FOLDER = str(session.get("Patient_ID"))
     try:
         files=os.listdir(os.path.join(UPLOAD_FOLDER, USER_FOLDER))
         print(files)
@@ -35,7 +34,8 @@ def uploader():
     print('arrived')
     file_exists = False
     UPLOAD_FOLDER = "app/templates/files_uploaded/"
-    USER_FOLDER = str(current_user.user_id)
+    USER_FOLDER = str(session.get("Patient_ID"))
+    print(USER_FOLDER)
     if request.method == "POST":
         print("Request Files", request.files)
         f = request.files['file']

@@ -37,7 +37,7 @@
                 </a>
 
             </li>
-
+            {% if current_user.role_id == 5 %}
             <li class="has-subnav">
                 <a href="{{ url_for('upload.uploads') }}">
                     <span class="nav-icon">
@@ -49,7 +49,7 @@
                 </a>
 
             </li>
-
+            {% endif %}
             <li class="has-subnav">
                     <a href="{{ url_for('forum.home') }}">
                         <span class="nav-icon">

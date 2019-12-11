@@ -70,4 +70,7 @@ def create_app(config_name = config):
     from .health_check import health_check as health_check_blueprint
     app.register_blueprint(health_check_blueprint, url_prefex = '/health_check')
 
+    from .admin_tools import admin_tools as admin_tools_blueprint
+    app.register_blueprint(admin_tools_blueprint, url_prefex = '/admin_tools')
+
     return app
