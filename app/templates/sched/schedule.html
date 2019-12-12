@@ -7,7 +7,7 @@
 <meta charset='utf-8'>
 <title>Calendar</title>
   <meta charset="UTF-8">
-  <title>CSS-only Colorful Calendar Concept</title>
+  <title>Book an Appointment Today!</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename= 'css/sched_style.css') }}">
 {% endblock %}
@@ -78,17 +78,17 @@
   </section>
 </main>
 <div class="meta" style = "margin-left: 50%; margin-bottom: 60px;">
-  <h1>CSS-only Colorful <br>Calendar Concept</h1>
-  <p>
+  <h1> Howdy {{current_user.first_name}}! <br> Book an appointment! </h1>
+  <!-- <p>
     Dribbble Rework<br />
     Original Shot by <a href="https://dribbble.com/shots/2335073-Calendar-App-Animation" target="_blank">Ludmila Shevchenko</a>
   </p>
   <p>
     Click on the arrows (when enabled) and the highlighted date to see the effect.<br>
     You can also go <strong>back</strong> in your browser to navigate between scenes, or click the left arrow in the schedule view.
-  </p>
+  </p> -->
   <p>
-    Works in all modern browsers.
+    Checkout out our forum at <a href="{{url_for('forum.home')}}">healthhubnotify@gmail.com</a>
   </p>
 </div>
 <!-- partial -->

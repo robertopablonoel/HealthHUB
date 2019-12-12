@@ -26,7 +26,19 @@
 {% block navbar %}
 <nav class="main-menu navbar-expand-lg">
         <ul>
-            <li>
+          <li>
+              <a href="{{ url_for('main.index') }}">
+                  <span class="nav-icon">
+                      <i class="fa fa-home fa-15x"></i>
+                  </span>
+                  <span class="nav-text">
+                      Home
+                  </span>
+              </a>
+
+          </li>
+
+            <!-- <li>
                 <a href="{{ url_for('admin_tools.set_search') }}">
                     <span class="nav-icon">
                         <i class="fa fa-home fa-15x"></i>
@@ -36,7 +48,8 @@
                     </span>
                 </a>
 
-            </li>
+            </li> -->
+
             {% if current_user.is_nurse() or  current_user.is_physician() %}
             <li class="has-subnav">
                 <a href="{{ url_for('upload.uploads') }}">

@@ -31,7 +31,7 @@ def schedule():
         .order_by(Physician_schedule.start_time\
         .asc())\
         .all()
-    form.purpose.choices = [(0,'Check-up'), (1, 'Sickness'), (2, 'Other')]
+    form.purpose.choices = [(1,'Check-up'), (2, 'Sickness'), (3, 'Other')]
     form.time_slot.choices = [(ret.physician_id, "{} to {}"\
         .format(ret.start_time,ret.end_time)) for ret in physician_schedule]
     if form.validate_on_submit():
@@ -57,7 +57,6 @@ def schedule():
                 ['sep','September',30, '09'], ['oct','October',31, '10'],
                 ['nov','November',30, '11'], ['dec','December',31, '12']
                 ]
-<<<<<<< HEAD
     dayStrings = [str(i) for i in range(1,32)]
     print(dayStrings)
     return render_template('sched/schedule.html', form = form,
@@ -65,12 +64,10 @@ def schedule():
                             permissions = Permission, weekDays = weekDays,
                             theMonths = theMonths, dayStrings = dayStrings,
                             )
-=======
 
     return render_template('sched/schedule.html', form = form,
                             physician_schedule = physician_schedule,
                             permissions = Permission, weekDays = weekDays,
                             theMonths = theMonths)
->>>>>>> 9e5cd6ca84f0551f48c77da5295c14b3370e90eb
 
 #Here comes the scheduling code...
