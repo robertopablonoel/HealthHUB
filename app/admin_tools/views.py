@@ -90,12 +90,13 @@ def autocomplete():
         results = [[rd[i[3]] + " : " + i[0] + " " + i[1], i[2]] for i in query.all()]
         return jsonify(matching_results = results)
     else:
-<<<<<<< HEAD
+
         session["Staff_ID"] = int(request.get_json())
         return render_template('admin_tools/search_staff.html')
-=======
+''''
         session["Patient_ID"] = int(request.get_json())
         return render_template('profile/search_patient.html')
+        '''
 
 @admin_tools.route("/patient")
 @login_required
@@ -145,4 +146,3 @@ def new_health_check():
         return redirect(url_for('profile.search'))
         #Need to figure out form formatting for where to throw each patient
     return render_template('health_check/new_health_check.html', form = form)
->>>>>>> 9e5cd6ca84f0551f48c77da5295c14b3370e90eb

@@ -49,31 +49,211 @@
   <section class="cal-app">
     <header class="cal-week">
       {% for day in weekDays %}
-        <div class="cal-weekday" style = "background: #34495e">
+        <div class="cal-weekday">
           {{ day }}
         </div>
       {% endfor %}
     </header>
-    {% set ids=[] %}
-    <div class="cal-scene -calendar" style = "overflow: scroll">
-      {% for weekday in range(7) %}
-      <div class="cal-day"></div>
-      {% endfor %}
-      {% for month in theMonths %}
-      <div class="cal-month -{{month[1].lower()}}">
+    <div class="cal-scene -calendar">
+      <div class="cal-month -october">
         <header class="cal-header">
-
+          <a class="cal-link" href="#oct-week-1"><span>October</span></a>
+          <a class="cal-arrow" href="#nov-week-1"><i class="fa fa-chevron-up"></i></a>
+          <a class="cal-arrow" href="#oct-week-4"><i class="fa fa-chevron-up"></i></a>
         </header>
-        {% for i in range(1, month[2]+1) %}
-
-        <a href="#schedule" onclick="popAlert(this.id)" class="cal-day" id="{{ '2019-' + month[3]+'-'+ dayStrings[i-1]}}"></a>
-        {% set currID = '2019-' + dayStrings[i-1]+'-'+ month[3] %}
-        {% do ids.append(currID) %}
-
-        {% endfor %}
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a href="#schedule"  class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
       </div>
-    {% endfor %}
-    <div class="cal-scene -schedule" id="parentNodeCalScene" style="overflow-y:scroll"></div>
+      <div class="cal-month -november">
+        <header class="cal-header">
+          <a class="cal-link" href="#nov-week-1"><span>November</span></a>
+          <a class="cal-arrow"><i class="fa fa-chevron-up"></i></a>
+        </header>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a href="#schedule" class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a href="#schedule" class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a href="#schedule" class="cal-day"></a>
+        <a href="#schedule" class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+      </div>
+      <div class="cal-month -december">
+        <header class="cal-header">
+          <a class="cal-link"><span>December</span></a>
+          <a class="cal-arrow" href="#nov-week-1"><i class="fa fa-chevron-down"></i></a>
+          <a class="cal-arrow" href="#oct-week-3"><i class="fa fa-chevron-down"></i></a>
+        </header>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a href="#schedule" class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a href="#schedule" class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+      </div>
+      <div class="cal-month -january">
+        <header class="cal-header">
+          <div class="cal-link"><span>January</span></div>
+          <a class="cal-arrow" href="#oct-week-4"><i class="fa fa-chevron-down"></i></a>
+        </header>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+        <a class="cal-day"></a>
+      </div>
+    </div>
+    <div class="cal-scene -schedule" style="overflow-y:scroll">
+      <div class="cal-item">
+        <div class="cal-time"><span>09:15 - 09:45</span></div>
+        <div class="cal-task">
+          <p>Booked</p>
+        </div>
+      </div>
+      <div class="cal-item -long">
+        <div class="cal-time"><span>10:00 - 11:30</span></div>
+        <div class="cal-task">
+          <p>Booked</p>
+        </div>
+      </div>
+      <div class="cal-item">
+        <div class="cal-time"><span>11:30 - 12:15</span></div>
+        <div class="cal-task">
+        <p>Booked</p>
+        </div>
+      </div>
+      <div class="cal-item">
+        <div class="cal-time"><span>12:15 - 12:45</span></div>
+        <div class="cal-task">
+          <p>Booked</p>
+        </div>
+      </div>
+      <div class="cal-item -long">
+        <div class="cal-time"><span>13:00 - 14:30</span></div>
+        <div class="cal-task">
+          <p>Booked</p>
+        </div>
+      </div>
+      <div class="cal-item">
+        <div class="cal-time"><span>14:45 - 15:15</span></div>
+        <div class="cal-task">
+          <p>Booked</p>
+        </div>
+      </div>
+      <div class="cal-item -long">
+        <div class="cal-time"><span>15:30 - 16:45</span></div>
+        <div class="cal-task">
+          <p>Booked</p>
+        </div>
+      </div>
+      <div class="cal-item">
+        <div class="cal-time"><span>17:30 - 18:15</span></div>
+        <div class="cal-task">
+          <p>Booked</p>
+        </div>
+      </div>
+      <div class="cal-item">
+        <div class="cal-time"><span>18:30 - 19:00</span></div>
+        <div class="cal-task">
+          <p>Booked</p>
+        </div>
+      </div>
+<div class="cal-item">
+        <div class="cal-time"><span>19:00 - 20:00</span></div>
+        <div class="cal-task">
+          <p>Booked</p>
+        </div>
+      </div>
+<div class="cal-item">
+        <div class="cal-time"><span>19:00</span></div>
+        <div class="cal-task">
+          <p>Booked</p>
+        </div>
+      </div>
     </div>
   </section>
 </main>
@@ -94,70 +274,4 @@
 <!-- partial -->
 
 </body>
-<script type="text/javascript">
-  function addCalTimeTask(id) {
-    console.log("Inside addCalTimeTask function");
-    var calTime = document.createElement("div");
-    calTime.setAttribute("class", "cal-time");
-    // console.log(calTime);
-    var calTimeSpan = document.createElement("SPAN");
-    calTimeSpan.innerHTML="What's Up?";
-    // node1 = document.getElementsByClassName("cal-time")[0];
-    calTime.appendChild(calTimeSpan);
-    // console.log(node1);
-    var calTask = document.createElement("div");
-    calTask.setAttribute("class", "cal-task");
-    // console.log(calTask);
-    parentNode = document.getElementById("parentNodeCalScene");
-    parentNode.appendChild(calTime);
-    parentNode.appendChild(calTask);
-    console.log(parentNode);
-    // parentNode.appendChild()
-    // var parNode = document.getElementsByClassName("cal-scene -schedule");
-
-  }
-  function popAlert(id){
-    alert("The id of this date is >>> " + id);
-
-    `{% for day in physician_schedule %}`
-    // console.log("ID >>> " + id)
-    // console.log( `{{ day.start_time }}`)
-    var dayTimeString = `{{ day.start_time.strftime('%Y-%m-%d') }}`;
-    // console.log("dayTimeString >>> " + dayTimeString);
-    // console.log("dayTimeString >>> " + dayTimeString + ' >>> ' + typeof(dayTimeString));
-    // console.log("ID >>> " + id + ' >>> ' + typeof(id));
-
-
-    if(id == dayTimeString){
-    console.log("Should be logging this >>> " + `{{ day.start_time }}`);
-    console.log("HEY");
-    console.log("Inside addCalTimeTask function");
-    var calTime = document.createElement("div");
-    calTime.setAttribute("class", "cal-time");
-    // console.log(calTime);
-    var calTimeSpan = document.createElement("SPAN");
-    calTimeSpan.innerHTML=`{{ day.end_time }}`;
-    // node1 = document.getElementsByClassName("cal-time")[0];
-    calTime.appendChild(calTimeSpan);
-    // console.log(node1);
-    var calTask = document.createElement("div");
-    calTask.setAttribute("class", "cal-task");
-    // console.log(calTask);
-    parentNode = document.getElementById("parentNodeCalScene");
-    parentNode.appendChild(calTime);
-    parentNode.appendChild(calTask);
-    console.log(parentNode);
-  }
-    `{% endfor %}`
-    var array =  `{{ physician_schedule[0] }}`
-    for (var i = 0; i < `{{ physician_schedule[0] }}`.length; i++) {
-    }
-    console.log(array)
-    for (var i = 0; i < array.length; i++) {
-      array[i]
-    }
-    console.log(`{{ physician_schedule[0].start_time }}`);
-
-  }
-</script>
 {% endblock %}

@@ -57,7 +57,7 @@ def schedule():
                 ['sep','September',30, '09'], ['oct','October',31, '10'],
                 ['nov','November',30, '11'], ['dec','December',31, '12']
                 ]
-<<<<<<< HEAD
+
     dayStrings = [str(i) for i in range(1,32)]
     print(dayStrings)
     return render_template('sched/schedule.html', form = form,
@@ -65,12 +65,5 @@ def schedule():
                             permissions = Permission, weekDays = weekDays,
                             theMonths = theMonths, dayStrings = dayStrings,
                             )
-=======
-
-    return render_template('sched/schedule.html', form = form,
-                            physician_schedule = physician_schedule,
-                            permissions = Permission, weekDays = weekDays,
-                            theMonths = theMonths)
->>>>>>> 9e5cd6ca84f0551f48c77da5295c14b3370e90eb
 
 #Here comes the scheduling code...

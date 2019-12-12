@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}HealthHub - Schedule{% endblock %}
+{% block head %}
+{{ super() }}
+<meta charset='utf-8'>
+<title>Calendar</title>
+  <meta charset="UTF-8">
+  <title>CSS-only Colorful Calendar Concept</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename= 'css/sched_style.css') }}">
+{% endblock %}
+{% block page_content %}
+
+<body>
+<!-- partial:index.partial.html -->
+<div class="route" id="index"></div>
+<div class="route" id="oct-week-3"></div>
+<div class="route" id="oct-week-4"></div>
+<div class="route" id="nov-week-1"></div>
+<div class="route" id="schedule"></div>
+<form class="form-style-9" style = "float:right; width: 70vh" method = "POST" role = "form">
+  {{ form.hidden_tag() }}
+      {{ wtf.form_field(form.physician, placeholder="Choose your physician") }}
+      {{ wtf.form_field(form.purpose, placeholder="Purpose of your visit") }}
+      {{ wtf.form_field(form.time_slot, placeholder="Desired time") }}
+      {{ wtf.form_field(form.notes, placeholder="Additional notes") }}
+      {{ form.submit(type="submit", value="Create", class = "create_forum_button", style = "margin-top:10px;") }}
+
+</form>
+  <main class="cal-device">
+  <header class="cal-header">
+    <div class="cal-subheader"></div>
+    <div class="cal-bar">
+      <div class="cal-button -left">
+        <i class="fa fa-bars -calendar"></i>
+        <a href="#index" class="fa fa-chevron-left -schedule"></a>
+      </div>
+      <div class="cal-title">
+        <div class="cal-heading -calendar">Calendar</div>
+        <div class="cal-heading -schedule">Wednesday, November 10</div>
+      </div>
+      <div class="cal-button-right">
+        <i class="fa fa-search"></i>
+      </div>
+    </div>
+  </header>
+  <section class="cal-app">
+    <header class="cal-week">
+      {% for day in weekDays %}
+        <div class="cal-weekday" style = "background: #34495e">
+          {{ day }}
+        </div>
+      {% endfor %}
+    </header>
+    {% set ids=[] %}
+    <div class="cal-scene -calendar" style = "overflow: scroll">
+      {% for weekday in range(7) %}
+      <div class="cal-day"></div>
+      {% endfor %}
+      {% for month in theMonths %}
+      <div class="cal-month -{{month[1].lower()}}">
+        <header class="cal-header">
+
+        </header>
+        {% for i in range(1, month[2]+1) %}
+
+        <a href="#schedule" onclick="popAlert(this.id)" class="cal-day" id="{{ '2019-' + month[3]+'-'+ dayStrings[i-1]}}"></a>
+        {% set currID = '2019-' + dayStrings[i-1]+'-'+ month[3] %}
+        {% do ids.append(currID) %}
+
+        {% endfor %}
+      </div>
+    {% endfor %}
+    <div class="cal-scene -schedule" id="parentNodeCalScene" style="overflow-y:scroll"></div>
+    </div>
+  </section>
+</main>
+<div class="meta" style = "margin-left: 50%; margin-bottom: 60px;">
+  <h1>CSS-only Colorful <br>Calendar Concept</h1>
+  <p>
+    Dribbble Rework<br />
+    Original Shot by <a href="https://dribbble.com/shots/2335073-Calendar-App-Animation" target="_blank">Ludmila Shevchenko</a>
+  </p>
+  <p>
+    Click on the arrows (when enabled) and the highlighted date to see the effect.<br>
+    You can also go <strong>back</strong> in your browser to navigate between scenes, or click the left arrow in the schedule view.
+  </p>
+  <p>
+    Works in all modern browsers.
+  </p>
+</div>
+<!-- partial -->
+
+</body>
+<script type="text/javascript">
+  function addCalTimeTask(id) {
+    console.log("Inside addCalTimeTask function");
+    var calTime = document.createElement("div");
+    calTime.setAttribute("class", "cal-time");
+    // console.log(calTime);
+    var calTimeSpan = document.createElement("SPAN");
+    calTimeSpan.innerHTML="What's Up?";
+    // node1 = document.getElementsByClassName("cal-time")[0];
+    calTime.appendChild(calTimeSpan);
+    // console.log(node1);
+    var calTask = document.createElement("div");
+    calTask.setAttribute("class", "cal-task");
+    // console.log(calTask);
+    parentNode = document.getElementById("parentNodeCalScene");
+    parentNode.appendChild(calTime);
+    parentNode.appendChild(calTask);
+    console.log(parentNode);
+    // parentNode.appendChild()
+    // var parNode = document.getElementsByClassName("cal-scene -schedule");
+
+  }
+  function popAlert(id){
+    alert("The id of this date is >>> " + id);
+
+    `{% for day in physician_schedule %}`
+    // console.log("ID >>> " + id)
+    // console.log( `{{ day.start_time }}`)
+    var dayTimeString = `{{ day.start_time.strftime('%Y-%m-%d') }}`;
+    // console.log("dayTimeString >>> " + dayTimeString);
+    // console.log("dayTimeString >>> " + dayTimeString + ' >>> ' + typeof(dayTimeString));
+    // console.log("ID >>> " + id + ' >>> ' + typeof(id));
+
+
+    if(id == dayTimeString){
+    console.log("Should be logging this >>> " + `{{ day.start_time }}`);
+    console.log("HEY");
+    console.log("Inside addCalTimeTask function");
+    var calTime = document.createElement("div");
+    calTime.setAttribute("class", "cal-time");
+    // console.log(calTime);
+    var calTimeSpan = document.createElement("SPAN");
+    calTimeSpan.innerHTML=`{{ day.end_time }}`;
+    // node1 = document.getElementsByClassName("cal-time")[0];
+    calTime.appendChild(calTimeSpan);
+    // console.log(node1);
+    var calTask = document.createElement("div");
+    calTask.setAttribute("class", "cal-task");
+    calTask.innerHTML = `{{ day.end_time }}`
+    // console.log(calTask);
+    parentNode = document.getElementById("parentNodeCalScene");
+    parentNode.appendChild(calTime);
+    parentNode.appendChild(calTask);
+    console.log(parentNode);
+  }
+    `{% endfor %}`
+    var array =  `{{ physician_schedule[0] }}`
+    for (var i = 0; i < `{{ physician_schedule[0] }}`.length; i++) {
+    }
+    console.log(array)
+    for (var i = 0; i < array.length; i++) {
+      array[i]
+    }
+    console.log(`{{ physician_schedule[0].start_time }}`);
+
+  }
+</script>
+{% endblock %}
