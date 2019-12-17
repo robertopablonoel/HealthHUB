@@ -90,10 +90,15 @@ def autocomplete():
         results = [[rd[i[3]] + " : " + i[0] + " " + i[1], i[2]] for i in query.all()]
         return jsonify(matching_results = results)
     else:
+<<<<<<< HEAD
+        session["Staff_ID"] = int(request.get_json())
+        return render_template('admin_tools/search_staff.html')
+=======
 
         session["Staff_ID"] = int(request.get_json())
         return render_template('admin_tools/search_staff.html')
 ''''
+>>>>>>> ae6654c74a358cf3368f4d091da86ec7c1cb1451
         session["Patient_ID"] = int(request.get_json())
         return render_template('profile/search_patient.html')
         '''
