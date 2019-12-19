@@ -292,9 +292,8 @@
 	width: 100%;
   	top: 0; left: 0%; bottom: 0; right: 0;
 	grid-template-columns:
-	  auto-fit
-	  minmax(400px,800px)
-	  minmax(400px,800px);
+	  35%
+		65%;
 	height: 95%;
 	column-gap: 20px;
 	row-gap: 10px;
