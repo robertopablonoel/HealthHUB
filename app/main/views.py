@@ -22,3 +22,13 @@ def home():
                             .with_entities(Post.forum_id, Post.post_id, Post.content, Forum_profile.username,Top_posts.forum_name, db.func.count(Likes.user_id).label("count_likes")) \
                             .group_by(Post.post_id, Top_posts.forum_name).order_by(Post.date_posted.desc()).all()
     return render_template('home.html', top_p = top_p)
+
+@main.route('/shutdown')
+def server_shutdown():
+    if not current_app.testing:
+        abort(404)
+    shutdown = request.environ.get('werkzeug.server.shutdown')
+    if not shutdown:
+        abort(500)
+    shutdown()
+    return 'Shutting down...'

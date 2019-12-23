@@ -26,6 +26,27 @@ class User(UserMixin, db.Model):
     tasks = db.relationship('Task', backref = 'user', lazy = 'dynamic')
     hospital_id = db.Column(db.Integer, db.ForeignKey('hospital.unique_id'))
 
+    @staticmethod
+    def generate_fake(count=100):
+        from sqlalchemy.exc import IntegrityError
+        from random import seed
+        import forgery_py
+
+        seed()
+        for i in range(count):
+            u = User(email=forgery_py.internet.email_address(),
+                     first_name=forgery_py.lorem_ipsum.word(),
+                     last_name=forgery_py.lorem_ipsum.word(),
+                     password=forgery_py.lorem_ipsum.word(),
+                     confirmed=True,
+                     hospital_id = 1,
+                     creation_date=forgery_py.date.date(True))
+            db.session.add(u)
+            try:
+                db.session.commit()
+            except IntegrityError:
+                db.session.rollback()
+
     def get_id(self):
         return self.user_id
 
@@ -33,7 +54,7 @@ class User(UserMixin, db.Model):
         super(User, self).__init__(**kwargs)
         if self.role is None:
             if self.user_id == current_app.config['FLASKY_ADMIN']:
-                self.role_id = Role.query.filter_by(permissions=0xff).first()
+                self.role_id = Role.query.filter_by(permissions=0x80).first()
             if self.role_id is None:
                 self.role = Role.query.filter_by(default = True).first()
 

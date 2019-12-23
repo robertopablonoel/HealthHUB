@@ -1,10 +1,12 @@
 import unittest
 
-from flask import abort, url_for
+from flask import abort, url_for, current_app
 from flask_testing import TestCase
 
 # from app import create_app, db
-from ../app.models import User, Patient
+from app.models import User, Patient
+from app import create_app, db
+
 
 
 class TestBase(TestCase):
