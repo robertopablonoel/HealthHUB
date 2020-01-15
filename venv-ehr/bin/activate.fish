@@ -29,7 +29,7 @@ end
 # unset irrelevant variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/bogdanowicz/Documents/EHR/venv-ehr"
+set -gx VIRTUAL_ENV "/Users/robertonoel/Desktop/EHR/venv-ehr"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
